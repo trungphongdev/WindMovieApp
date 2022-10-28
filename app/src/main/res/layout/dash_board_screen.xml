@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.DashBroadScreen"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".fragment.DashBoardScreen">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/navHostFragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        app:defaultNavHost="false"
-        app:navGraph="@navigation/navigation"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/pagerDashBoard"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
@@ -20,12 +17,11 @@
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/menu_bottom_nav"
+        android:layout_gravity="bottom"
         app:backgroundTint="@color/black"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
-        android:layout_gravity="bottom"
-        />
+        app:menu="@menu/menu_bottom_nav" />
 
 
-</>
+</androidx.appcompat.widget.LinearLayoutCompat>

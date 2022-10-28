@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/action_search"
+    <item android:id="@+id/itemHome"
         android:title="@string/homeLabel"
         android:icon="@drawable/ic_home"/>
-    <item android:id="@+id/action_settings"
+    <item android:id="@+id/itemNewsHot"
         android:title="@string/newAndHotLabel"
         android:icon="@drawable/ic_new_hot"
         app:showAsAction="ifRoom"/>
-    <item android:id="@+id/action_navigation"
+    <item android:id="@+id/itemDownLoad"
         android:title="@string/downloadLabel"
         android:icon="@drawable/ic_download"
         app:showAsAction="ifRoom"/>

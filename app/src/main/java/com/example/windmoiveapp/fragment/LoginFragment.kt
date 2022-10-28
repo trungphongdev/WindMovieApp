@@ -1,6 +1,5 @@
 package com.example.windmoiveapp.fragment
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,23 +17,30 @@ import java.util.*
 class LoginFragment : Fragment() {
     private var binding: FragmentLoginBinding? = null
     private val authenViewModel by lazy { AuthViewModel() }
+
+    private var param1: String? = null
+    private var param2: String? = null
+
     companion object {
         const val RC_SIGN_IN_CODE_SUCCESS = 1
+        private const val ARG_PARAM1 = ""
+        private const val ARG_PARAM2 = ""
+
         @JvmStatic
         fun newInstance() =
             LoginFragment().apply {
-                /*  arguments = Bundle().apply {
-                      putString(ARG_PARAM1, param1)
-                      putString(ARG_PARAM2, param2)
-                  }*/
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
+                }
             }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-/*            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)*/
+            param1 = it.getString(ARG_PARAM1)
+            param2 = it.getString(ARG_PARAM2)
         }
     }
 
@@ -78,19 +84,24 @@ class LoginFragment : Fragment() {
     }
 
     private fun signInWithFbAcc() {
-       // authenViewModel.loginWithAccountGg()
+        // authenViewModel.loginWithAccountGg()
     }
+
     private fun signedInWithGoogleAcc() {
         authenViewModel.isLoggedInGg(context ?: return)
     }
+
     fun getUserInfo() {
-        LoginManager.getInstance().logInWithReadPermissions(this,
-        listOf("email",))
+        LoginManager.getInstance().logInWithReadPermissions(
+            this,
+            listOf("email")
+        )
     }
 
 
     private fun signInWithGoogle() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
+        val gso =
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
         val googleSignInClient = GoogleSignIn.getClient(context ?: return, gso)
         val signInIntent = googleSignInClient.signInIntent
         activity?.startActivityForResult(signInIntent, RC_SIGN_IN_CODE_SUCCESS)
@@ -100,7 +111,8 @@ class LoginFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN_CODE_SUCCESS) {
             try {
-                val googleSignInAccount = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException::class.java)
+                val googleSignInAccount = GoogleSignIn.getSignedInAccountFromIntent(data)
+                    .getResult(ApiException::class.java)
                 authenViewModel.loginWithAccountGg(googleSignInAccount)
             } catch (e: ApiException) {
                 authenViewModel.loginWithAccountGg(null)
