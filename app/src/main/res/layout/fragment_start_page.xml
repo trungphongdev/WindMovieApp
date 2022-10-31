@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragment.StartPageFragment"
+    android:orientation="vertical">
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vpContent"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp0"
+        android:layout_weight="1"/>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp113"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="@dimen/dp0"
+        app:tabPadding="@dimen/dp10"
+        app:tabPaddingEnd="@dimen/dp12"
+        app:tabBackground="@drawable/tab_selector_intro" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="@dimen/dp23">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnLogin"
+            style="@style/StyleButton"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="@dimen/dp40"
+            android:layout_marginBottom="@dimen/dp25"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_login"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/loginLabel"
+            android:textColor="@color/redB11313" />
+
+        <androidx.legacy.widget.Space
+            android:layout_width="@dimen/dp30"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnSignUp"
+            style="@style/StyleButton"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="@dimen/dp40"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_signup"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/signUpLabel"
+            android:textColor="@color/white" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

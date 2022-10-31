@@ -10,7 +10,7 @@ class PrefUtil(context: Context) {
         const val PREF_NAME = "PREF_NAME"
         var mPrefUtils: PrefUtil? = null
 
-        fun getInstance(context: Context = Application.): PrefUtil {
+        fun getInstance(context: Context = AppApplication.instance): PrefUtil {
             return mPrefUtils ?: PrefUtil(context)
         }
     }

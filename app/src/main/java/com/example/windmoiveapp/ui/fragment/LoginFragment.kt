@@ -1,4 +1,4 @@
-package com.example.windmoiveapp.fragment
+package com.example.windmoiveapp.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,12 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.windmoiveapp.databinding.FragmentLoginBinding
-import com.example.windmoiveapp.viewmodel.AuthViewModel
+import com.example.windmoiveapp.viewmodels.AuthViewModel
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import java.util.*
 
 class LoginFragment : Fragment() {
     private var binding: FragmentLoginBinding? = null
@@ -88,7 +87,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun signedInWithGoogleAcc() {
-        authenViewModel.isLoggedInGg(context ?: return)
+        //authenViewModel.isLoggedInGg(context ?: return)
     }
 
     fun getUserInfo() {
@@ -113,9 +112,9 @@ class LoginFragment : Fragment() {
             try {
                 val googleSignInAccount = GoogleSignIn.getSignedInAccountFromIntent(data)
                     .getResult(ApiException::class.java)
-                authenViewModel.loginWithAccountGg(googleSignInAccount)
+               // authenViewModel.loginWithAccountGg(googleSignInAccount)
             } catch (e: ApiException) {
-                authenViewModel.loginWithAccountGg(null)
+               // authenViewModel.loginWithAccountGg(null)
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.example.windmoiveapp.viewmodel
+package com.example.windmoiveapp.viewmodels
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData

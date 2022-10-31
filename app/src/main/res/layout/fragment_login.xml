@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.LoginFragment"
+    tools:context=".ui.fragment.LoginFragment"
     android:padding="16dp"
     android:background="@color/black">
 
@@ -94,7 +94,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:paddingVertical="10dp"
-        android:paddingStart="16dp" />
+        android:paddingHorizontal="16dp"/>
 
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/cbAccount"
@@ -164,11 +164,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        app:layout_constraintHorizontal_chainStyle="packed"
         android:layout_marginEnd="10dp"
         android:background="@drawable/icon_google"
         app:layout_constraintEnd_toStartOf="@id/fbLoginBtn"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvOr" />
+        app:layout_constraintTop_toBottomOf="@id/tvOr"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

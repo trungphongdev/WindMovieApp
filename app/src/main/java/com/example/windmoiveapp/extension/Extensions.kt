@@ -30,7 +30,7 @@ import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.navOptions
-import com.example.windmoiveapp.MainActivity
+import com.example.windmoiveapp.ui.MainActivity
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.databinding.DialogAlertBinding
 import com.example.windmoiveapp.util.EncryptUtil

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragment.MovieDetailBottomSheet"
+    android:paddingTop="@dimen/dp10"
+    android:background="@color/black">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgClose"
+        android:layout_width="@dimen/dp30"
+        android:layout_height="@dimen/dp30"
+        app:srcCompat="@drawable/ic_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="@dimen/dp10"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgMovie"
+        android:layout_width="@dimen/dp80"
+        android:layout_height="@dimen/dp100"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="@dimen/dp16"
+        />
+
+    <TextView
+        android:id="@+id/tvNameMovie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/imgMovie"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp22"
+        android:fontFamily="@font/roboto_bold"
+        tools:text="@string/homeLabel"
+        android:layout_marginStart="@dimen/dp12"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/dp4"
+        />
+
+    <TextView
+        android:id="@+id/tvYearRelease"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp12"
+        android:fontFamily="@font/roboto_regular"
+        tools:text="2022"
+        android:layout_marginTop="@dimen/dp8"
+        android:alpha="0.6"
+        app:layout_constraintStart_toStartOf="@id/tvNameMovie"
+        app:layout_constraintTop_toBottomOf="@id/tvNameMovie"
+        />
+
+    <TextView
+        android:id="@+id/tvAllowAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp12"
+        android:fontFamily="@font/roboto_regular"
+        tools:text="7+"
+        android:alpha="0.4"
+        android:layout_marginStart="@dimen/dp10"
+        app:layout_constraintStart_toEndOf="@id/tvYearRelease"
+        app:layout_constraintTop_toTopOf="@id/tvYearRelease"
+        />
+
+    <TextView
+        android:id="@+id/tvTimeTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp12"
+        android:fontFamily="@font/roboto_regular"
+        tools:text="1h 40m"
+        android:alpha="0.4"
+        android:layout_marginStart="@dimen/dp10"
+        app:layout_constraintStart_toEndOf="@id/tvAllowAge"
+        app:layout_constraintTop_toTopOf="@id/tvAllowAge"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
+    <TextView
+        android:id="@+id/tvSeasons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp12"
+        android:fontFamily="@font/roboto_regular"
+        tools:text="2 Seasons"
+        android:alpha="0.4"
+        android:layout_marginStart="@dimen/dp10"
+        app:layout_constraintStart_toEndOf="@id/tvTimeTotal"
+        app:layout_constraintTop_toTopOf="@id/tvTimeTotal"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp12"
+        android:fontFamily="@font/roboto_regular"
+        tools:text="Description"
+        android:maxLines="4"
+        android:ellipsize="end"
+        app:layout_constraintStart_toStartOf="@id/tvYearRelease"
+        app:layout_constraintTop_toBottomOf="@id/tvYearRelease"
+        android:layout_marginTop="@dimen/dp16"
+
+        />
+
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

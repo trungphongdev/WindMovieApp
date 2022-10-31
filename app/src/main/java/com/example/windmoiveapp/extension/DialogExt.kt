@@ -5,12 +5,12 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.support.annotation.StringRes
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentManager
 import com.example.windmoiveapp.R
-import com.example.windmoiveapp.fragment.CommonDialogFragment
+import com.example.windmoiveapp.ui.fragment.CommonDialogFragment
 
 const val DIALOG_TAG = "DIALOG"
 fun showCommonDialogFragment(

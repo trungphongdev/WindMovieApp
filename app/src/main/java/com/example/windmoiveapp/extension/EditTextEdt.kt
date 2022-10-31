@@ -13,7 +13,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.example.windmoiveapp.R
-import org.checkerframework.checker.units.qual.s
 
 const val TIME_SEARCH_DEFAULT  = 500L
 fun EditText.onSearch(onSearch: (String) -> Unit) {

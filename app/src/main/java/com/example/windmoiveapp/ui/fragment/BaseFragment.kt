@@ -1,4 +1,4 @@
-package com.example.windmoiveapp.fragment
+package com.example.windmoiveapp.ui.fragment
 
 import android.app.Activity
 import android.content.Context
@@ -7,11 +7,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
-import com.example.windmoiveapp.MainActivity
+import com.example.windmoiveapp.ui.MainActivity
 import com.example.windmoiveapp.extension.hideKeyboard
 import timber.log.Timber
 
@@ -113,10 +112,12 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     }
 
     protected fun navigateToDestination(destination: Int, bundle: Bundle? = null) {
-        Timber.tag(TAG).d("navigateToDestination: ")
-        bundle?.let {
-            findNavController().navigate(destination, it)
-        } ?: findNavController().navigate(destination)
+        activity?.let {
+            Timber.tag(TAG).d("navigateToDestination: ")
+            bundle?.let {
+                findNavController().navigate(destination, it)
+            } ?: findNavController().navigate(destination)
+        }
     }
 
     open fun hideKeyBoard() = activity.hideKeyboard()

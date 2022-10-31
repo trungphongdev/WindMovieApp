@@ -1,3 +1,4 @@
+/*
 package com.example.windmoiveapp.firebase
 
 import com.example.windmoiveapp.model.UserModel
@@ -69,4 +70,4 @@ object FireBaseService {
         return listUser
     }
 
-}
+}*/

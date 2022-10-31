@@ -1,4 +1,4 @@
-package com.example.windmoiveapp.fragment
+package com.example.windmoiveapp.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

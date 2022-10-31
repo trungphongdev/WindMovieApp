@@ -38,7 +38,7 @@ object EncryptUtil {
     private const val NAME_SHARE_PREF_FILE = "NAME_SHARE_PREF_FILE"
     private var pref: SharedPreferences? = null
 
-    fun encryptPassWord(
+    /*fun encryptPassWord(
         context: Context,
         password: String?,
         touchIDToken: String? = null,
@@ -59,7 +59,7 @@ object EncryptUtil {
             Log.getStackTraceString(e)
         }
         return encryptedPin
-    }
+    }*/
 
     fun encryptPassWordTouchId(
         context: Context,

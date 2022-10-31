@@ -29,8 +29,6 @@ object FacebookService {
                     }
                 })
         }
-    }
-
     //private
 
     private fun isUserLoggedInFb(
@@ -50,8 +48,6 @@ object FacebookService {
                 }
             })
         }
-    }
-
 
     fun accessTokenTrackerFb() {
             object : AccessTokenTracker() {

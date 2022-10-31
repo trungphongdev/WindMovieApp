@@ -20,3 +20,15 @@ fun ImageView.loadRoundedImage(
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(this)
 }
+
+fun ImageView.loadCircleImage(
+    image: Int?, @DimenRes radiusId: Int = R.dimen.dp4,
+    @DrawableRes defaultDrawableId: Int? = null
+) {
+    Glide.with(this)
+        .load(image)
+        .placeholder(defaultDrawableId ?: R.drawable.ic_user)
+        .error(defaultDrawableId ?: R.drawable.ic_baseline_error_24)
+        .circleCrop()
+        .into(this)
+}

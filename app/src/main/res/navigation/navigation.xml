@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/navigation">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/startPageFragment">
+
+    <fragment android:id="@+id/homeFragment"
+        android:label="@string/homeLabel"
+        android:name="com.example.windmoiveapp.ui.fragment.HomeFragment"
+        tools:layout="@layout/fragment_home"/>
+
+    <fragment android:id="@+id/loginFragment"
+        android:label="@string/homeLabel"
+        android:name="com.example.windmoiveapp.ui.fragment.LoginFragment"
+        tools:layout="@layout/fragment_login"/>
+
+    <fragment android:id="@+id/signUpFragment"
+        android:label="@string/homeLabel"
+        android:name="com.example.windmoiveapp.ui.fragment.SignUpFragment"
+        tools:layout="@layout/fragment_sign_up"/>
+
+    <fragment android:id="@+id/startPageFragment"
+        android:label="@string/homeLabel"
+        android:name="com.example.windmoiveapp.ui.fragment.StartPageFragment"
+        tools:layout="@layout/fragment_start_page"/>
+
 
 </navigation>
