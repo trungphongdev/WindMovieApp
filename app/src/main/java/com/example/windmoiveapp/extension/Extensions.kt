@@ -30,9 +30,9 @@ import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.navOptions
-import com.example.windmoiveapp.ui.MainActivity
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.databinding.DialogAlertBinding
+import com.example.windmoiveapp.ui.MainActivity
 import com.example.windmoiveapp.util.EncryptUtil
 import com.google.android.material.tabs.TabLayout
 import org.json.JSONObject
@@ -176,10 +176,10 @@ fun NavController.navigateWithAnim(
 ) {
     val anim = navOptions {
         anim {
-            popEnter = androidx.navigation.ui.R.anim.nav_default_pop_enter_anim
+/*            popEnter = androidx.navigation.ui.R.anim.nav_default_pop_enter_anim
             popExit = androidx.navigation.ui.R.anim.nav_default_pop_exit_anim
             enter = androidx.navigation.ui.R.anim.nav_default_enter_anim
-            exit = androidx.navigation.ui.R.anim.nav_default_enter_anim
+            exit = androidx.navigation.ui.R.anim.nav_default_enter_anim*/
         }
         popupToId?.let {
             popUpTo(popupToId) {

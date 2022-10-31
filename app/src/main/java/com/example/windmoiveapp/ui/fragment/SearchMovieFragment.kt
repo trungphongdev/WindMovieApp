@@ -4,20 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.windmoiveapp.databinding.FragmentHomeBinding
+import com.example.windmoiveapp.databinding.FragmentSearchMovieBinding
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>() {
-    // TODO: Rename and change types of parameters
+class SearchMovieFragment : BaseFragment<FragmentSearchMovieBinding>() {
     private var param1: String? = null
     private var param2: String? = null
 
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
+            SearchMovieFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
@@ -37,8 +36,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): FragmentHomeBinding {
-        TODO("Not yet implemented")
+    ): FragmentSearchMovieBinding {
+        return FragmentSearchMovieBinding.inflate(inflater, container, false)
     }
 
     override fun onViewInitialized(
@@ -46,6 +45,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         savedInstanceState: Bundle?,
         isViewCreated: Boolean
     ) {
-        TODO("Not yet implemented")
     }
+
+
 }

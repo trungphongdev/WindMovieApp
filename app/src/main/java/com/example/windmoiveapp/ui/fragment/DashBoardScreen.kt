@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.adapter.ViewPagerAdapter
 import com.example.windmoiveapp.databinding.DashBoardScreenBinding
@@ -19,9 +20,9 @@ class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
 
     private val listFragment by lazy {
         arrayListOf(
-            HomeFragment.newInstance("", ""),
-            NewsFragment.newInstance("", ""),
-            DownloadingFragment.newInstance("", "")
+            HomeFragment.newInstance("", "") as Fragment,
+            NewsFragment.newInstance("", "") as Fragment,
+            DownloadingFragment.newInstance("", "") as Fragment
         )
     }
 
@@ -92,7 +93,7 @@ class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
     private fun setDefaultIcon() {
         binding.bottomNav.menu.apply {
             val listIconDefault =
-                listOf(R.drawable.ic_home, R.drawable.ic_new_hot, R.drawable.ic_download)
+                listOf(R.drawable.ic_home, R.drawable.ic_new_hot, R.drawable.ic_round_download)
             listIconDefault.forEachIndexed { index, item ->
                 getItem(index).setIcon(item)
             }

@@ -4,8 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.viewpager.widget.PagerAdapter
 import com.example.windmoiveapp.R
+import com.example.windmoiveapp.extension.loadRoundedImage
 
 class IntroPagerAdapter(private val context: Context) : PagerAdapter() {
 
@@ -23,24 +26,26 @@ class IntroPagerAdapter(private val context: Context) : PagerAdapter() {
     private fun View.bindViews(position: Int) {
         when (position) {
             0 -> {
-                this.tvTitle.setText(R.string.startTitle1)
-                this.tvContent.setText(R.string.startMessage0)
-                this.imvIntro.loadImage(R.drawable.intro_0_new)
+                this.findViewById<TextView>(R.id.tvTitle).setText(R.string.okeLabel)
+                //  this.tvContent.setText(R.string.startMessage0)
+                this.findViewById<ImageView>(R.id.imvIntro).loadRoundedImage(R.drawable.logohome)
+
             }
             1 -> {
-                this.tvTitle.setText(R.string.startTitle1)
-                this.tvContent.setText(R.string.startMessage1)
-                this.imvIntro.loadImage(R.drawable.ic_intro_new_2)
+                this.findViewById<TextView>(R.id.tvTitle).setText(R.string.okeLabel)
+                //this.findViewById<TextView>(R.id.tv).setText(R.string.startMessage1)
+                // this.imvIntro.loadImage(R.drawable.ic_intro_new_2)
             }
             2 -> {
-                this.tvTitle.setText(R.string.startTitle2)
-                this.tvContent.setText(R.string.startMessage2)
-                this.imvIntro.loadImage(R.drawable.intro_2_no_ft)
+                this.findViewById<TextView>(R.id.tvTitle).setText(R.string.okeLabel)
+                // this.findViewById<TextView>(R.id.tvTitle).setText(R.string.startMessage2)
+                this.findViewById<ImageView>(R.id.imvIntro).loadRoundedImage(R.drawable.logohome)
             }
             else -> {
-                this.tvTitle.setText(R.string.startTitle3)
-                this.tvContent.setText(R.string.startMessage3)
-                this.imvIntro.loadImage(R.drawable.intro_3_new)
+                this.findViewById<TextView>(R.id.tvTitle).setText(R.string.okeLabel)
+                //  this.findViewById<TextView>(R.id.tvTitle).setText(R.string.startMessage3)
+                this.findViewById<ImageView>(R.id.imvIntro).loadRoundedImage(R.drawable.logohome)
+
             }
         }
     }

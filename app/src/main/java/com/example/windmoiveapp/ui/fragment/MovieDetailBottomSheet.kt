@@ -5,6 +5,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class MovieDetailBottomSheet : BottomSheetDialogFragment() {
     companion object {
-        private const val CONTENT_
+        //private const val CONTENT_
     }
 }

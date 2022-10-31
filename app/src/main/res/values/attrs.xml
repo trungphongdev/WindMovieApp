@@ -3,4 +3,13 @@
         <attr name="fullscreenBackgroundColor" format="color" />
         <attr name="fullscreenTextColor" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="HeaderBar">
+        <attr name="isShowLogo" format="boolean" />
+        <attr name="isShowButtonBack" format="boolean" />
+        <attr name="isShowSearch" format="boolean" />
+        <attr name="isShowNotification" format="boolean" />
+        <attr name="isShowTitle" format="boolean" />
+        <attr name="title" format="string" />
+    </declare-styleable>
 </resources>
