@@ -19,11 +19,12 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imgMovie"
-        android:layout_width="@dimen/dp80"
-        android:layout_height="@dimen/dp100"
+        android:layout_width="@dimen/dp90"
+        android:layout_height="@dimen/dp120"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="@dimen/dp16"
+        tools:src="@drawable/logohome"
         />
 
     <TextView
@@ -99,25 +100,143 @@
         android:visibility="gone"
         tools:visibility="visible"
         />
+
     <TextView
         android:id="@+id/tvDescription"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp12"
-        android:fontFamily="@font/roboto_regular"
-        tools:text="Description"
-        android:maxLines="4"
+        android:layout_marginEnd="@dimen/dp16"
         android:ellipsize="end"
+        android:fontFamily="@font/roboto_regular"
+        android:maxLines="4"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp13"
+        app:layout_constraintBottom_toBottomOf="@+id/imgMovie"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/tvYearRelease"
         app:layout_constraintTop_toBottomOf="@id/tvYearRelease"
-        android:layout_marginTop="@dimen/dp16"
+        tools:text="Description" />
 
-        />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgPlay"
+        android:layout_width="@dimen/dp40"
+        android:layout_height="@dimen/dp40"
+        android:layout_marginTop="@dimen/dp20"
+        android:padding="@dimen/dp4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgMovie"
+        app:layout_constraintEnd_toStartOf="@id/imgDownload"
+        app:srcCompat="@drawable/ic_play" />
 
+    <TextView
+        android:id="@+id/tvPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp14"
+        android:alpha="0.6"
+        android:text="@string/playLabel"
+        android:textColor="@color/white"
+        android:fontFamily="@font/roboto_regular"
+        app:layout_constraintTop_toBottomOf="@id/imgPlay"
+        app:layout_constraintStart_toStartOf="@id/imgPlay"
+        app:layout_constraintEnd_toEndOf="@id/imgPlay"/>
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgDownload"
+        android:layout_width="@dimen/dp40"
+        android:layout_height="@dimen/dp40"
+        android:padding="@dimen/dp4"
+        app:layout_constraintStart_toEndOf="@id/imgPlay"
+        app:layout_constraintEnd_toStartOf="@id/imgAdd"
+        app:layout_constraintTop_toTopOf="@id/imgPlay"
+        app:srcCompat="@drawable/ic_download" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp14"
+        android:alpha="0.6"
+        android:text="@string/downloadLabel"
+        android:textColor="@color/white"
+        android:fontFamily="@font/roboto_regular"
+        app:layout_constraintTop_toBottomOf="@id/imgDownload"
+        app:layout_constraintStart_toStartOf="@id/imgDownload"
+        app:layout_constraintEnd_toEndOf="@id/imgDownload"/>
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgAdd"
+        android:layout_width="@dimen/dp40"
+        android:layout_height="@dimen/dp40"
+        android:padding="@dimen/dp4"
+        app:layout_constraintStart_toEndOf="@id/imgDownload"
+        app:layout_constraintTop_toTopOf="@id/imgDownload"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_add" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp14"
+        android:alpha="0.6"
+        android:text="@string/myListLabel"
+        android:textColor="@color/white"
+        android:fontFamily="@font/roboto_regular"
+        app:layout_constraintTop_toBottomOf="@id/imgAdd"
+        app:layout_constraintStart_toStartOf="@id/imgAdd"
+        app:layout_constraintEnd_toEndOf="@id/imgAdd"/>
+
+    <View
+        android:id="@+id/viewLineHz"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp0_5"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/tvPlay"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/dp12" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/llInfoMovie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewLineHz"
+        android:paddingTop="@dimen/dp20"
+        android:paddingBottom="@dimen/dp24"
+        android:paddingHorizontal="@dimen/dp16">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_info"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/imgInfo"
+            android:text="@string/playAndInfoLabel"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="@dimen/sp14"
+            android:layout_marginStart="@dimen/dp8"
+            app:layout_constraintTop_toTopOf="@id/imgInfo"
+            app:layout_constraintBottom_toBottomOf="@id/imgInfo" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgForward"
+            android:layout_width="@dimen/dp20"
+            android:layout_height="@dimen/dp20"
+            android:layout_marginStart="@dimen/dp16"
+            app:srcCompat="@drawable/ic_forward"
+            android:layout_marginHorizontal="@dimen/dp16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

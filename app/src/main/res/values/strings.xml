@@ -22,4 +22,7 @@
     <string name="signUpLabel">sign up</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="playLabel">Play</string>
+    <string name="myListLabel">My List</string>
+    <string name="playAndInfoLabel"><![CDATA[Play & Info]]></string>
 </resources>
