@@ -13,8 +13,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 
-class LoginFragment : Fragment() {
-    private var binding: FragmentLoginBinding? = null
+class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     private val authenViewModel by lazy { AuthViewModel() }
 
     private var param1: String? = null
@@ -43,21 +42,8 @@ class LoginFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentLoginBinding.inflate(inflater, container, false)
-        return binding?.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        //binding?.fbLoginBtn?
-        initObserver()
-        initListener()
-        signedInWithGoogleAcc()
-    }
+
 
     private fun initListener() {
         TODO("Not yet implemented")
@@ -79,7 +65,6 @@ class LoginFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding = null
     }
 
     private fun signInWithFbAcc() {
@@ -117,5 +102,21 @@ class LoginFragment : Fragment() {
                // authenViewModel.loginWithAccountGg(null)
             }
         }
+    }
+
+    override fun onCreateViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): FragmentLoginBinding {
+        return FragmentLoginBinding.inflate(inflater, container, false)
+    }
+
+    override fun onViewInitialized(
+        view: View,
+        savedInstanceState: Bundle?,
+        isViewCreated: Boolean
+    ) {
+
     }
 }

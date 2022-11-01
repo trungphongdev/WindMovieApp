@@ -13,7 +13,7 @@
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imvIntro"
         android:layout_width="@dimen/dp220"
-        android:layout_height="@dimen/dp210"
+        android:layout_height="@dimen/dp280"
         android:layout_marginTop="@dimen/dp75"
         android:scaleType="fitCenter"
         android:layout_gravity="center"

@@ -25,4 +25,8 @@
     <string name="playLabel">Play</string>
     <string name="myListLabel">My List</string>
     <string name="playAndInfoLabel"><![CDATA[Play & Info]]></string>
+    <string name="qualityMovieLabel">Excellent movie quality with maximum realism</string>
+    <string name="premiumAccountLabel">Download Movie Unlimited with premium account</string>
+    <string name="hugeMovieStoreLabel">Huge movie store full of categories</string>
+    <string name="fastestMovieNotifiLabel">Get the fastest notifications from new movies</string>
 </resources>

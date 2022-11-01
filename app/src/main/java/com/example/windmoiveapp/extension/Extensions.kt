@@ -176,10 +176,10 @@ fun NavController.navigateWithAnim(
 ) {
     val anim = navOptions {
         anim {
-/*            popEnter = androidx.navigation.ui.R.anim.nav_default_pop_enter_anim
-            popExit = androidx.navigation.ui.R.anim.nav_default_pop_exit_anim
-            enter = androidx.navigation.ui.R.anim.nav_default_enter_anim
-            exit = androidx.navigation.ui.R.anim.nav_default_enter_anim*/
+            popEnter = R.anim.slide_in_left
+            popExit = R.anim.slide_out_right
+            enter = R.anim.slide_in_right
+            exit = R.anim.slide_out_left
         }
         popupToId?.let {
             popUpTo(popupToId) {
@@ -218,10 +218,10 @@ fun NavController.navigateBackWithAnim(
 ) {
     val anim = navOptions {
         anim {
-            popEnter = androidx.navigation.ui.R.anim.nav_default_pop_enter_anim
-            popExit = androidx.navigation.ui.R.anim.nav_default_pop_exit_anim
-            enter = androidx.navigation.ui.R.anim.nav_default_enter_anim
-            exit = androidx.navigation.ui.R.anim.nav_default_enter_anim
+            popEnter = R.anim.slide_in_right
+            popExit = R.anim.slide_out_left
+            enter = R.anim.slide_in_left
+            exit = R.anim.slide_out_right
         }
         popupToId?.let {
             popUpTo(popupToId) {

@@ -85,4 +85,12 @@ class StartPageFragment : BaseFragment<FragmentStartPageBinding>() {
     override fun onDestroyView() {
         super.onDestroyView()
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
 }

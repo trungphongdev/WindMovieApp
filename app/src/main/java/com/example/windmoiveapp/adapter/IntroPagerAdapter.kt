@@ -26,25 +26,25 @@ class IntroPagerAdapter(private val context: Context) : PagerAdapter() {
     private fun View.bindViews(position: Int) {
         when (position) {
             0 -> {
-                this.findViewById<TextView>(R.id.tvTitle).setText(R.string.okeLabel)
+                this.findViewById<TextView>(R.id.tvTitle).setText(R.string.qualityMovieLabel)
                 //  this.tvContent.setText(R.string.startMessage0)
-                this.findViewById<ImageView>(R.id.imvIntro).loadRoundedImage(R.drawable.logohome)
+                this.findViewById<ImageView>(R.id.imvIntro).loadRoundedImage(R.drawable.spidermanbanner)
 
             }
             1 -> {
-                this.findViewById<TextView>(R.id.tvTitle).setText(R.string.okeLabel)
+                this.findViewById<TextView>(R.id.tvTitle).setText(R.string.premiumAccountLabel)
                 //this.findViewById<TextView>(R.id.tv).setText(R.string.startMessage1)
-                // this.imvIntro.loadImage(R.drawable.ic_intro_new_2)
+                this.findViewById<ImageView>(R.id.imvIntro).loadRoundedImage(R.drawable.monsterhighbanner)
             }
             2 -> {
-                this.findViewById<TextView>(R.id.tvTitle).setText(R.string.okeLabel)
+                this.findViewById<TextView>(R.id.tvTitle).setText(R.string.hugeMovieStoreLabel)
                 // this.findViewById<TextView>(R.id.tvTitle).setText(R.string.startMessage2)
-                this.findViewById<ImageView>(R.id.imvIntro).loadRoundedImage(R.drawable.logohome)
+                this.findViewById<ImageView>(R.id.imvIntro).loadRoundedImage(R.drawable.sangchibanner)
             }
             else -> {
-                this.findViewById<TextView>(R.id.tvTitle).setText(R.string.okeLabel)
+                this.findViewById<TextView>(R.id.tvTitle).setText(R.string.fastestMovieNotifiLabel)
                 //  this.findViewById<TextView>(R.id.tvTitle).setText(R.string.startMessage3)
-                this.findViewById<ImageView>(R.id.imvIntro).loadRoundedImage(R.drawable.logohome)
+                this.findViewById<ImageView>(R.id.imvIntro).loadRoundedImage(R.drawable.blackwidowbanner)
 
             }
         }

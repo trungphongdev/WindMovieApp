@@ -8,11 +8,16 @@ import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Patterns
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import com.example.windmoiveapp.R
+import com.example.windmoiveapp.util.PASSWORD_CHAR_STYLE_DOT
+import com.example.windmoiveapp.util.PASSWORD_HIDE_7_CHAR
 
 const val TIME_SEARCH_DEFAULT  = 500L
 fun EditText.onSearch(onSearch: (String) -> Unit) {
@@ -65,17 +70,70 @@ fun EditText.hideKeyBoardOnTouch(context: Context) {
     }
 }
 
-const val PASSWORD_CHAR_STYLE_DOT: Char = '.'
 fun EditText.showPass(show: Boolean = true, hideCharStyle: Char? = PASSWORD_CHAR_STYLE_DOT) {
     val currentSelection = selectionStart to selectionEnd
-/*    transformationMethod = when {
+    transformationMethod = when {
         show -> HideReturnsTransformationMethod.getInstance()
         hideCharStyle == null -> PasswordTransformationMethod.getInstance()
         else -> CustomPasswordTransformationMethod(hideCharStyle)
-    }*/
+    }
     setSelection(currentSelection.first, currentSelection.second)
 }
 
+const val PASSWORD_HIDE = "00000"
+fun TextView.showPass(show: Boolean = true, data: String? = null, applyColor: Boolean? = false) {
+    this.changePassMode(show)
+    if (show) {
+        this.text = if (!data.isNullOrEmpty()) data else "0"
+    } else this.text = PASSWORD_HIDE
+    /*if (applyColor == true) {
+        this.setColorText(data)
+    }
+    if (!show) {
+        setTextColor(ContextCompat.getColor(context, R.color.colorRegular))
+    }*/
+}
 
+fun TextView.showPass7Char(
+    show: Boolean = true, data: String? = null,
+    applyColor: Boolean? = false, isBankAccNo: Boolean = false
+) {
+    this.changePassMode(show)
+    if (show) {
+        this.text = if (!data.isNullOrEmpty()) data else if (isBankAccNo) "-" else "0"
+    } else this.text = PASSWORD_HIDE_7_CHAR
 
+}
+
+fun TextView.changePassMode(show: Boolean = true, hideCharStyle: Char? = PASSWORD_CHAR_STYLE_DOT) {
+    transformationMethod = when {
+        show -> HideReturnsTransformationMethod.getInstance()
+        hideCharStyle == null -> PasswordTransformationMethod.getInstance()
+        else -> CustomPasswordTransformationMethod(hideCharStyle)
+    }
+}
+class CustomPasswordTransformationMethod(private val charStyle: Char = PASSWORD_CHAR_STYLE_DOT) :
+    PasswordTransformationMethod() {
+
+    override fun getTransformation(source: CharSequence, view: View?): CharSequence {
+        return PasswordCharSequence(source, charStyle)
+    }
+}
+
+class PasswordCharSequence(
+    private val charSequence: CharSequence,
+    private val charStyle: Char
+) : CharSequence {
+
+    override val length: Int
+        get() = charSequence.length
+
+    override fun get(index: Int): Char {
+        return charStyle
+    }
+
+    override fun subSequence(startIndex: Int, endIndex: Int): CharSequence {
+        return charSequence.subSequence(startIndex, endIndex)
+    }
+}
 
