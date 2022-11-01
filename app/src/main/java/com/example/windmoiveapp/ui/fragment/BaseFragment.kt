@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.example.windmoiveapp.extension.hideKeyboard
 import com.example.windmoiveapp.ui.MainActivity
+import com.example.windmoiveapp.util.PERMISSION_REQUEST_CODE
 import timber.log.Timber
 
 abstract class BaseFragment<VB : ViewBinding> : Fragment() {
@@ -24,8 +25,6 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     protected val binding get() = _binding!!
 
     private var isViewCreated: Boolean = false
-
-    pr
 
 /*    @get: LayoutRes
     abstract val layoutId: Int*/
@@ -136,7 +135,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         }
     }*/
 
-    fun hasPermissions(vararg permissions: String): Boolean =
+    private fun hasPermissions(vararg permissions: String): Boolean =
         permissions.all { permission ->
             activity?.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
         }
@@ -156,7 +155,17 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         grantResults: IntArray
     ) {
         when (requestCode) {
+            PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
+                } else {
+
+                }
+            }
+            else -> {
+
+            }
         }
     }
+
 }

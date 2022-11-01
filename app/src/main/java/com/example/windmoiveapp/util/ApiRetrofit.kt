@@ -1,3 +1,4 @@
+/*
 package com.example.windmoiveapp.util
 
 import com.google.gson.Gson
@@ -32,3 +33,4 @@ object ApiRetrofit {
     ): T = getRetrofitBuilder(isPassNull).create(T::class.java)
 }
 
+*/

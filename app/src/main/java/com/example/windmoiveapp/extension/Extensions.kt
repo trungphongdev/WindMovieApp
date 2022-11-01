@@ -33,7 +33,6 @@ import androidx.navigation.navOptions
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.databinding.DialogAlertBinding
 import com.example.windmoiveapp.ui.MainActivity
-import com.example.windmoiveapp.util.EncryptUtil
 import com.google.android.material.tabs.TabLayout
 import org.json.JSONObject
 import java.math.BigDecimal
@@ -41,8 +40,8 @@ import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-/*
-fun TextView.setIsSelected(isIsSelected: Boolean) {
+
+/*fun TextView.setIsSelected(isIsSelected: Boolean) {
     val color = ContextCompat.getColor(
         this.context,
         if (isIsSelected) R.color.purple_200 else R.color.teal_200
@@ -143,8 +142,8 @@ fun EditText.drawableRightClick(callback: () -> Unit) {
     })
 }
 
-fun Context.getDeviceID() =
-    EncryptUtil.decryptData(this, EncryptUtil.DEVICE_ID)
+/*fun Context.getDeviceID() =
+    EncryptUtil.decryptData(this, EncryptUtil.DEVICE_ID)*/
 
 fun Context?.isPortTraitScreen() =
     this?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
