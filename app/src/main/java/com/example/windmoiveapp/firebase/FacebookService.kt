@@ -25,6 +25,7 @@ object FacebookService {
                     }
 
                     override fun onSuccess(result: LoginResult) {
+                        handleAccessToken(result.accessToken)
 
                     }
                 })

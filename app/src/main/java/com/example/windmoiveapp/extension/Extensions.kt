@@ -637,7 +637,7 @@ fun Context.getAlertDialog(
     mess: String,
     buttonText: String? = null,
     isShowNegativeBtn: Boolean = false,
-    title: String? = getString(R.string.emptyLabel),
+    title: String? = getString(R.string.priceAlertTitleLabel),
     buttonNegativeText: String? = null,
     isCancelable: Boolean = true,
     cancelListener: (() -> Unit)? = null,
@@ -652,6 +652,13 @@ fun Context.getAlertDialog(
         dialog.setCancelable(isCancelable)
         dialog.setOnDismissListener {
             onDismiss?.invoke()
+        }
+        val widthWindow = root.context.getWindowWidth()
+        val heightCustom =
+            if (root.context.isPortTraitScreen()) (0.7 * widthWindow).toInt() else (0.3 * widthWindow).toInt()
+        containerDialogAlert.apply {
+            minWidth = heightCustom
+            maxWidth = heightCustom
         }
         title?.let {
             tvTitleAlert.text = it

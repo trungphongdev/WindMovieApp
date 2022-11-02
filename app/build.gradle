@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 33
     kapt {
         generateStubs = true
         correctErrorTypes = true
@@ -41,9 +41,8 @@ android {
 
 dependencies {
     def room_version = "2.4.3"
-
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
-  testImplementation 'junit:junit:4.13.2'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.facebook.android:facebook-login:15.0.1'
@@ -64,15 +63,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
     implementation("androidx.security:security-crypto:1.0.0")
     implementation 'com.google.code.gson:gson:2.10'
-
-  //   For Identity Credential APIs
     implementation "androidx.security:security-identity-credential:1.0.0-alpha03"
-
-    // For App Authentication APIs
     implementation "androidx.security:security-app-authenticator:1.0.0-alpha02"
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
-
-
     implementation 'pub.devrel:easypermissions:3.0.0'
 /*    implementation('com.google.api-client:google-api-client-android:1.22.0') {
         exclude group: 'org.apache.httpcomponents'
@@ -80,15 +73,11 @@ dependencies {
     implementation('com.google.apis:google-api-services-youtube:v3-rev183-1.22.0') {
         exclude group: 'org.apache.httpcomponents'
     }*/
- //  implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
-   //implementation 'com.google.guava:guava:27.0.1-android'
-   // Import the BoM for the Firebase platform
-   implementation platform('com.google.firebase:firebase-bom:31.0.2')
+    //  implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+    //implementation 'com.google.guava:guava:27.0.1-android'
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:31.0.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'
-
-
-    // Add the dependency for the Firebase Authentication library
-    // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
 

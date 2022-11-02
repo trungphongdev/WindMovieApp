@@ -3,20 +3,21 @@ package com.example.windmoiveapp.ui.fragment
 import android.app.Application
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.databinding.FragmentLoginBinding
-import com.example.windmoiveapp.extension.getAlertDialog
-import com.example.windmoiveapp.extension.isValidEmail
+import com.example.windmoiveapp.extension.*
+import com.example.windmoiveapp.model.UserModel
+import com.example.windmoiveapp.model.UserModel.Companion.PREF_USER
+import com.example.windmoiveapp.util.PrefUtil
 import com.example.windmoiveapp.viewmodels.AuthViewModel
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import timber.log.Timber
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     private val authenViewModel by lazy { AuthViewModel(activity?.application as Application) }
@@ -67,9 +68,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             try {
                 val googleSignInAccount = GoogleSignIn.getSignedInAccountFromIntent(data)
                     .getResult(ApiException::class.java)
-               // authenViewModel.loginWithAccountGg(googleSignInAccount)
+                // authenViewModel.loginWithAccountGg(googleSignInAccount)
             } catch (e: ApiException) {
-               // authenViewModel.loginWithAccountGg(null)
+                // authenViewModel.loginWithAccountGg(null)
             }
         }
     }
@@ -93,7 +94,17 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun initViews() {
+     isSaveUserInfo()
+    }
 
+    private fun isSaveUserInfo() {
+        context?.let {
+           val userInString =  PrefUtil.getInstance(it).getValue(PREF_USER, "")
+            if (userInString.isBlank().not()) {
+                val userModel = GsonExt.convertGsonToObjet(userInString, UserModel::class.java)
+                binding.edtEmail.setText(userModel.email)
+            }
+        }
     }
 
     private fun initListener() {
@@ -101,9 +112,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             if (invalidEmailPassword()) {
                 setEventLogin()
             } else {
-                activity?.let {
-                    it.getAlertDialog(getString(R.string.emailPasswordFailLabel))
-                }
+                activity?.getAlertDialog(getString(R.string.emailPasswordFailLabel))
             }
         }
     }
@@ -128,14 +137,18 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 signInWithGoogle()
             }
         }
-        authenViewModel.userModelLiveData.observe(viewLifecycleOwner) { fbUser ->
-            if (fbUser != null && fbUser.isEmailVerified) {
-                Log.d("oke", "oke")
-                Timber.d(" Verify")
-            } else {
-                Log.d("oke333", "oke")
-
-                Timber.d("Not Verify")
+        authenViewModel.userModelLiveData.observe(viewLifecycleOwner) { it?.let { user ->
+                if (user.isEmailVerified) {
+                    if (binding.cbAccount.isChecked) {
+                        context?.let {ctx -> PrefUtil.getInstance(ctx).putValue(PREF_USER, GsonExt.convertObjetToGson(user))
+                        }
+                    findNavController().navigateWithAnim(R.id.homeFragment, bundle = null)
+                } else {
+                    authenViewModel.verifyEmail(user) {
+                       // activity?.getAlertDialog(R.string.verifyEmailLabel)
+                    }
+                    activity.showCustomToast(getString(R.string.verifyEmailLabel))
+                }
             }
         }
     }
