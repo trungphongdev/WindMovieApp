@@ -31,8 +31,9 @@
     <string name="fastestMovieNotifiLabel">Get the fastest notifications from new movies</string>
     <string name="signInFailLabel">Sign In Unsuccessfully</string>
     <string name="signInSuccessLabel">Sign In Successfully</string>
-    <string name="signUpFailLabel">Sign Up Unsuccessfully</string>
+    <string name="signUpFailLabel">Sign Up Unsuccessfully </string>
     <string name="signUpSuccessLabel">Sign Up Successfully</string>
     <string name="emailPasswordFailLabel">Sorry, the email address or password is incorrect</string>
     <string name="verifyEmailLabel">Please, Verify your email into gmail app</string>
+    <string name="windMovieLabel">WindMovie</string>
 </resources>

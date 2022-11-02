@@ -79,17 +79,17 @@ object FireBaseService {
         return listUser
     }
 
-    fun signUpWithEmailAndPassword(
-        email: String,
-        password: String,
-        onSuccess: ((FirebaseUser?) -> Unit)? = null,
-        onFailure: (() -> Unit)? = null
-    ) {
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Timber.tag(TAG).d("createUserWithEmail:success")
-                onSuccess?.invoke(auth.currentUser)
-            } else {
+   suspend fun signUpWithEmailAndPassword(
+       email: String,
+       password: String,
+       onSuccess: ((FirebaseUser?) -> Unit)? = null,
+       onFailure: (() -> Unit)? = null
+   ) {
+       auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+           if (task.isSuccessful) {
+               Timber.tag(TAG).d("createUserWithEmail:success")
+               onSuccess?.invoke(auth.currentUser)
+           } else {
                 // If sign in fails, display a message to the user.
                 Timber.tag(TAG).d("createUserWithEmail :failure" + task.exception)
                 onFailure?.invoke()

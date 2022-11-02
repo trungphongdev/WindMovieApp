@@ -38,7 +38,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): FragmentHomeBinding {
-        TODO("Not yet implemented")
+        return FragmentHomeBinding.inflate(inflater, container, false)
     }
 
     override fun onViewInitialized(
@@ -46,6 +46,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         savedInstanceState: Bundle?,
         isViewCreated: Boolean
     ) {
-        TODO("Not yet implemented")
+
     }
 }

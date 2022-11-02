@@ -7,7 +7,15 @@
     tools:context=".ui.fragment.LoginFragment"
     android:padding="16dp"
     android:background="@color/black">
-
+<!--    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone">
+        <
+    </androidx.appcompat.widget.LinearLayoutCompat>-->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/glLogo"
         android:layout_width="wrap_content"

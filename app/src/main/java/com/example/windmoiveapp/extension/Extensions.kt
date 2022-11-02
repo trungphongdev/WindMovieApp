@@ -637,7 +637,7 @@ fun Context.getAlertDialog(
     mess: String,
     buttonText: String? = null,
     isShowNegativeBtn: Boolean = false,
-    title: String? = getString(R.string.priceAlertTitleLabel),
+    title: String? = getString(R.string.windMovieLabel),
     buttonNegativeText: String? = null,
     isCancelable: Boolean = true,
     cancelListener: (() -> Unit)? = null,

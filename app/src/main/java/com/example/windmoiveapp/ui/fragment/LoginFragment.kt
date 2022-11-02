@@ -12,22 +12,21 @@ import com.example.windmoiveapp.databinding.FragmentLoginBinding
 import com.example.windmoiveapp.extension.*
 import com.example.windmoiveapp.model.UserModel
 import com.example.windmoiveapp.model.UserModel.Companion.PREF_USER
+import com.example.windmoiveapp.model.convertToUserModel
 import com.example.windmoiveapp.util.PrefUtil
 import com.example.windmoiveapp.viewmodels.AuthViewModel
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseUser
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     private val authenViewModel by lazy { AuthViewModel(activity?.application as Application) }
+    private val pref by lazy { PrefUtil.getInstance(activity?.application as Application) }
 
     companion object {
         const val RC_SIGN_IN_CODE_SUCCESS = 1
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     private fun navigateToHomeFragment() {
@@ -94,12 +93,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun initViews() {
-     isSaveUserInfo()
+        isSaveUserInfo()
     }
 
     private fun isSaveUserInfo() {
         context?.let {
-           val userInString =  PrefUtil.getInstance(it).getValue(PREF_USER, "")
+            val userInString = PrefUtil.getInstance(it).getValue(PREF_USER, "")
             if (userInString.isBlank().not()) {
                 val userModel = GsonExt.convertGsonToObjet(userInString, UserModel::class.java)
                 binding.edtEmail.setText(userModel.email)
@@ -112,15 +111,20 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             if (invalidEmailPassword()) {
                 setEventLogin()
             } else {
-                activity?.getAlertDialog(getString(R.string.emailPasswordFailLabel))
+                context?.getAlertDialog(getString(R.string.emailPasswordFailLabel))
             }
+        }
+        binding.ggLoginBtn.setOnClickListener {
+
         }
     }
 
     private fun setEventLogin() {
         val email = binding.edtEmail.text.toString()
         val password = binding.edtPassword.text.toString()
-        authenViewModel.signUpWithEmailPassword(email, password)
+        authenViewModel.signUpWithEmailPassword(email, password, onError = {
+            context?.getAlertDialog(it)
+        })
     }
 
     private fun invalidEmailPassword(): Boolean {
@@ -137,19 +141,22 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 signInWithGoogle()
             }
         }
-        authenViewModel.userModelLiveData.observe(viewLifecycleOwner) { it?.let { user ->
-                if (user.isEmailVerified) {
-                    if (binding.cbAccount.isChecked) {
-                        context?.let {ctx -> PrefUtil.getInstance(ctx).putValue(PREF_USER, GsonExt.convertObjetToGson(user))
-                        }
-                    findNavController().navigateWithAnim(R.id.homeFragment, bundle = null)
-                } else {
-                    authenViewModel.verifyEmail(user) {
-                       // activity?.getAlertDialog(R.string.verifyEmailLabel)
-                    }
-                    activity.showCustomToast(getString(R.string.verifyEmailLabel))
-                }
+        authenViewModel.userModelLiveData.observe(viewLifecycleOwner) { user ->
+            setUpInfoUserSignUp(user)
+        }
+    }
+
+    private fun setUpInfoUserSignUp(user: FirebaseUser?) {
+        if (user != null) {
+            if (binding.cbAccount.isChecked) {
+                val userModel = user.convertToUserModel()
+                pref.putValue(PREF_USER, GsonExt.convertObjetToGson(userModel))
+            } else {
+                pref.removeKey(PREF_USER)
             }
+            findNavController().navigateWithAnim(R.id.homeFragment)
+        } else {
+            activity.showCustomToast(getString(R.string.verifyEmailLabel))
         }
     }
 }

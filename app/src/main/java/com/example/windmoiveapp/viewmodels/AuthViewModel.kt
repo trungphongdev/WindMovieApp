@@ -23,19 +23,33 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     ) {
         viewModelScope.launch {
             FireBaseService.signInWithEmailAndPassword(email, passWord, onSuccess = {
-                userModelLiveData.postValue(it)
+               // userModelLiveData.postValue(it)
             }, onFailure = {
                 onError?.invoke(getApplication<Application>().getString(R.string.signInFailLabel))
             })
         }
     }
 
-    fun signUpWithEmailPassword(email: String, passWord: String) {
+    fun signUpWithEmailPassword(
+        email: String,
+        passWord: String,
+        onError: ((String) -> Unit)? = null
+    ) {
         viewModelScope.launch {
             FireBaseService.signUpWithEmailAndPassword(email, passWord, onSuccess = {
-                userModelLiveData.postValue(it)
+                if (it != null && it.isEmailVerified) {
+                    userModelLiveData.postValue(it)
+                } else {
+                    verifyEmail(it ?: return@signUpWithEmailAndPassword) { isVerify ->
+                        if (isVerify) {
+                            userModelLiveData.postValue(it)
+                        } else {
+                            userModelLiveData.postValue(null)
+                        }
+                    }
+                }
             }, onFailure = {
-                getApplication<Application>().getString(R.string.signUpFailLabel)
+                onError?.invoke(getApplication<Application>().getString(R.string.signUpFailLabel))
             })
         }
     }

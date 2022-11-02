@@ -1,13 +1,11 @@
 package com.example.windmoiveapp.firebase
 
 import android.content.Context
-import androidx.lifecycle.viewModelScope
 import com.example.windmoiveapp.R
 import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
-import kotlinx.coroutines.launch
 
 object FacebookService {
     fun LoginButton.loginWithAccountFb(
@@ -25,7 +23,7 @@ object FacebookService {
                     }
 
                     override fun onSuccess(result: LoginResult) {
-                        handleAccessToken(result.accessToken)
+                        //handleAccessToken(result.accessToken)
 
                     }
                 })

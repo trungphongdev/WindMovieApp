@@ -74,6 +74,10 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         finish()
     }
 
+/*    protected fun showProgressDialog() {
+        activity?.
+    }*/
+
     override fun onStart() {
         super.onStart()
         Timber.tag(TAG).d("onStart: ")
