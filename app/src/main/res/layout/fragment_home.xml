@@ -5,13 +5,49 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.HomeFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/black">
 
     <com.example.windmoiveapp.common.HeaderBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:isShowLogo="true"
         app:isShowSearch="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/dp16">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/tvShowsLabel"
+            android:textColor="@color/white"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/moviesLabel"
+            android:textColor="@color/white"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/categoriesLabel"
+            android:textColor="@color/white"
+            android:gravity="center"
+            app:drawableEndCompat="@drawable/ic_arrow_drop_down"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp16"/>
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

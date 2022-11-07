@@ -36,4 +36,7 @@
     <string name="emailPasswordFailLabel">Sorry, the email address or password is incorrect</string>
     <string name="verifyEmailLabel">Please, Verify your email into gmail app</string>
     <string name="windMovieLabel">WindMovie</string>
+    <string name="tvShowsLabel">TV Shows</string>
+    <string name="moviesLabel">Movies</string>
+    <string name="categoriesLabel">Categories</string>
 </resources>
