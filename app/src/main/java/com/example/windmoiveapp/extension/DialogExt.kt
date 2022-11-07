@@ -11,6 +11,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentManager
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.ui.fragment.CommonDialogFragment
+import timber.log.Timber
 
 const val DIALOG_TAG = "DIALOG"
 fun showCommonDialogFragment(
@@ -67,3 +68,41 @@ fun Context.showDialogCommonTwoOption(
     }
     dialog.show()
 }*/
+
+class ProgressDialogApiRequest {
+    companion object {
+        private var countApi = 0
+        private var singleTonDialog: Dialog? = null
+
+        fun showProgressDialog(context: Context) {
+            countApi++
+            singleTonDialog ?: Dialog(context).apply {
+                setContentView(R.layout.fragment_progress_dialog)
+                window?.setBackgroundDrawableResource(android.R.color.transparent)
+                setCancelable(false)
+                singleTonDialog = this
+            }
+            if (singleTonDialog?.isShowing == true) return
+            (context as? Activity)?.apply {
+                runOnUiThread {
+                    singleTonDialog?.show()
+                }
+            }
+        }
+
+        fun dismissProgressDialog() {
+            countApi--
+            if (countApi <= 0) {
+                if (singleTonDialog?.isShowing == true) {
+                    try {
+                        singleTonDialog?.dismiss()
+                    } catch (e: Exception) {
+                        Timber.e(e)
+                    }
+                }
+                singleTonDialog = null
+            }
+        }
+    }
+}
+

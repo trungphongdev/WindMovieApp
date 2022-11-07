@@ -1,5 +1,6 @@
 package com.example.windmoiveapp.ui.fragment
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -9,11 +10,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
+import com.example.windmoiveapp.R
+import com.example.windmoiveapp.extension.ProgressDialogApiRequest
 import com.example.windmoiveapp.extension.hideKeyboard
+import com.example.windmoiveapp.model.BaseResource
+import com.example.windmoiveapp.model.ErrorMessage
+import com.example.windmoiveapp.model.Status
 import com.example.windmoiveapp.ui.MainActivity
+import com.example.windmoiveapp.util.ErrorCode
+import com.example.windmoiveapp.util.HttpStatusCode
 import com.example.windmoiveapp.util.PERMISSION_REQUEST_CODE
+import kotlinx.coroutines.delay
 import timber.log.Timber
 
 abstract class BaseFragment<VB : ViewBinding> : Fragment() {
@@ -25,6 +35,11 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     protected val binding get() = _binding!!
 
     private var isViewCreated: Boolean = false
+
+    protected var listPermission: ArrayList<String> = arrayListOf(
+        Manifest.permission.CAMERA,
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    )
 
 /*    @get: LayoutRes
     abstract val layoutId: Int*/
@@ -144,31 +159,95 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
             activity?.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
         }
 
-    protected fun requestMultiPermission(list: Array<out String>, requestCode: Int) {
-        if (hasPermissions(*list).not()) {
-            activity?.requestPermissions(list, requestCode)
-        } else {
+    private fun getListPermissionDenied(): Array<String> {
+        return listPermission.filter { activity?.checkSelfPermission(it) == PackageManager.PERMISSION_DENIED }.toTypedArray()
+    }
 
+    protected fun requestMultiPermission(): Boolean {
+        return hasPermissions(*getListPermissionDenied())
+    }
+
+    fun <T> BaseResource<T>.handleResult(
+        onSuccess: ((data: T?, message: String?) -> Unit)? = null,
+        onHandleError: (ErrorMessage?) -> Boolean = { false },
+        onRetry: (() -> Unit)? = null
+    ) {
+        when (this.status) {
+             Status.SUCCESS -> {
+                 dismissProgressRequest()
+                 onSuccess?.invoke(this.data, this.message)
+            }
+            Status.ERROR -> {
+                dismissProgressRequest()
+                onSuccess?.invoke(this.data, this.message)
+            }
+            Status.LOADING -> {
+                showProgressRequest()
+                showErrorDialog(errorMessage = this.errorMessage, onRetry = onRetry, onHandleError = onHandleError)
+            }
+        }
+    }
+    private fun showProgressRequest() {
+        context?.let {
+            ProgressDialogApiRequest.showProgressDialog(it)
         }
     }
 
+    private fun dismissProgressRequest() {
+      // delay(500) {
+            ProgressDialogApiRequest.dismissProgressDialog()
+       // }
+    }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+    private fun showErrorDialog(
+        errorMessage: ErrorMessage?,
+        onRetry: (() -> Unit)? = null,
+        onHandleError: ((ErrorMessage?) -> Boolean) = { false }
     ) {
-        when (requestCode) {
-            PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+/*        if (onHandleError(errorMessage)
+            && (errorMessage?.code != HttpStatusCode.UNAUTHENTICATED)
+        ) return
+        val fm = activity?.supportFragmentManager ?: return
 
-                } else {
-
-                }
+        val message = when (errorMessage?.code) {
+            ErrorCode.NETWORK_NOT_AVAILABLE -> {
+                getString(R.string.noInternetMess)
+            }
+            ErrorCode.SERVER_EXCEPTION -> {
+                errorMessage.message ?: getString(R.string.wrongConnectToServer)
+            }
+            HttpStatusCode.UNAUTHENTICATED -> {
+                getString(R.string.loginSessionHasExpiredLabel)
             }
             else -> {
-
+                errorMessage?.message ?: getString(R.string.wrongLabel)
             }
+        }
+
+        if (errorMessage?.code == SESSION_EXPIRED_CODE
+            || errorMessage?.code == HttpStatusCode.UNAUTHENTICATED
+        ) {
+            if (isExpied.not()) {
+                isExpied = true
+                context?.showAlertDialog(message, isCancelable = false) {
+                    isExpied = false
+                    (context as Activity).restartApp()
+                }
+            }
+        } else if (onRetry != null) {
+            showRetryDialog(fm, message = message, onRetry)
+        } else {
+            showCommonDialogFragment(fm, message = message)
+        }*/
+    }
+
+    protected fun moveToDashBoard() {
+        if (!this.isResumed) return
+        context?.let { ct ->
+            Navigation.findNavController(
+                ct as Activity,
+                R.id.navHostFragment
+            ).setGraph(R.navigation.navigation)
         }
     }
 

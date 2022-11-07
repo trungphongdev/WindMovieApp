@@ -1,35 +1,23 @@
 package com.example.windmoiveapp.ui.fragment
 
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.windmoiveapp.databinding.FragmentHomeBinding
+import com.example.windmoiveapp.extension.showCustomToast
+import com.example.windmoiveapp.util.AppApplication
+import com.example.windmoiveapp.util.PERMISSION_REQUEST_CODE
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        if (requestMultiPermission()) {
+            activity?.requestPermissions(list, PERMISSION_REQUEST_CODE)
         }
     }
 
@@ -46,6 +34,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         savedInstanceState: Bundle?,
         isViewCreated: Boolean
     ) {
+    }
 
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            PERMISSION_REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Log.d("PermissionAAA", "acp all")
+                } else {
+                    Log.d("PermissionAAA", "deny all")
+                }
+            } else -> {
+                Log.d("PermissionAAA", "deny all")
+            }
+        }
     }
 }

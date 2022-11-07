@@ -30,7 +30,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun navigateToHomeFragment() {
-
+        findNavController().navigateWithAnim(R.id.homeFragment)
     }
 
     override fun onDestroyView() {
@@ -51,7 +51,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             listOf("email")
         )
     }
-
 
     private fun signInWithGoogle() {
         val gso =
@@ -108,8 +107,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private fun initListener() {
         binding.btnLogin.setOnClickListener {
+            navigateToHomeFragment()
             if (invalidEmailPassword()) {
-                setEventLogin()
+                //setEventLogin()
             } else {
                 context?.getAlertDialog(getString(R.string.emailPasswordFailLabel))
             }

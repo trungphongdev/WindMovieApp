@@ -20,7 +20,7 @@ class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
 
     private val listFragment by lazy {
         arrayListOf(
-            HomeFragment.newInstance("", "") as Fragment,
+            HomeFragment() as Fragment,
             NewsFragment.newInstance("", "") as Fragment,
             DownloadingFragment.newInstance("", "") as Fragment
         )
