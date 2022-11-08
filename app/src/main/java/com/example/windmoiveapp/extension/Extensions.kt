@@ -633,6 +633,53 @@ fun ImageView.isShowPassword(
     }
 }
 
+fun Context.showAlertDialog(
+    mess: String,
+    buttonText: String? = null,
+    isShowNegativeBtn: Boolean = false,
+    title: String? = null,
+    buttonNegativeText: String? = null,
+    isCancelable: Boolean = true,
+    cancelListener: (() -> Unit)? = null,
+    onDismiss: (() -> Unit)? = null,
+    callBack: (() -> Unit?)? = null
+) {
+    val dialog = Dialog(this)
+    val binding = DialogAlertBinding.inflate((this as Activity).layoutInflater)
+    binding.apply {
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.setCanceledOnTouchOutside(isCancelable)
+        dialog.setCancelable(isCancelable)
+        dialog.setOnDismissListener {
+            onDismiss?.invoke()
+        }
+        title?.let {
+            tvTitleAlert.text = it
+        }
+        tvMessageAlert.text = mess
+        buttonText?.let {
+            btnOkDialog.text = it
+        }
+        buttonNegativeText?.let {
+            btnCancelDialog.text = it
+        }
+        btnOkDialog.setOnClickListener {
+            dialog.dismiss()
+            callBack?.invoke()
+        }
+        if (isShowNegativeBtn) {
+            btnCancelDialog.setOnClickListener {
+                dialog.dismiss()
+                cancelListener?.invoke()
+            }
+            btnCancelDialog.visibility = View.VISIBLE
+        }
+        dialog.setContentView(binding.root)
+    }
+    dialog.show()
+}
+
+
 fun Context.getAlertDialog(
     mess: String,
     buttonText: String? = null,

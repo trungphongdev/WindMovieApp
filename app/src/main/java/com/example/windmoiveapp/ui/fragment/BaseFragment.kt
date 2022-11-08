@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -20,10 +21,6 @@ import com.example.windmoiveapp.model.BaseResource
 import com.example.windmoiveapp.model.ErrorMessage
 import com.example.windmoiveapp.model.Status
 import com.example.windmoiveapp.ui.MainActivity
-import com.example.windmoiveapp.util.ErrorCode
-import com.example.windmoiveapp.util.HttpStatusCode
-import com.example.windmoiveapp.util.PERMISSION_REQUEST_CODE
-import kotlinx.coroutines.delay
 import timber.log.Timber
 
 abstract class BaseFragment<VB : ViewBinding> : Fragment() {
@@ -38,7 +35,8 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     protected var listPermission: ArrayList<String> = arrayListOf(
         Manifest.permission.CAMERA,
-        Manifest.permission.READ_EXTERNAL_STORAGE
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.CALL_PHONE,
     )
 
 /*    @get: LayoutRes
@@ -164,7 +162,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     }
 
     protected fun requestMultiPermission(): Boolean {
-        return hasPermissions(*getListPermissionDenied())
+        return hasPermissions(*listPermission.toTypedArray())
     }
 
     fun <T> BaseResource<T>.handleResult(

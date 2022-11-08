@@ -39,4 +39,7 @@
     <string name="tvShowsLabel">TV Shows</string>
     <string name="moviesLabel">Movies</string>
     <string name="categoriesLabel">Categories</string>
+    <string name="permissionDeniedLabel">Permissions Denied</string>
+    <string name="permissionGrantedLabel">Permissions Granted</string>
+
 </resources>
