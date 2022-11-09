@@ -1,32 +1,44 @@
 package com.example.windmoiveapp.ui.fragment
 
+import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.databinding.FragmentLoginBinding
 import com.example.windmoiveapp.extension.*
+import com.example.windmoiveapp.firebase.FireBaseService
+import com.example.windmoiveapp.firebase.GoogleService
 import com.example.windmoiveapp.model.UserModel
 import com.example.windmoiveapp.model.UserModel.Companion.PREF_USER
 import com.example.windmoiveapp.model.convertToUserModel
 import com.example.windmoiveapp.util.PrefUtil
 import com.example.windmoiveapp.viewmodels.AuthViewModel
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
 import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseUser
+import com.google.android.gms.tasks.Task
+
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     private val authenViewModel by lazy { AuthViewModel(activity?.application as Application) }
     private val pref by lazy { PrefUtil.getInstance(activity?.application as Application) }
+    private val listUser by lazy { FireBaseService.getInfoAllUser() }
 
     companion object {
         const val RC_SIGN_IN_CODE_SUCCESS = 1
+        const val RC_SIGN_IN = 1
     }
 
     private fun navigateToHomeFragment() {
@@ -35,14 +47,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-    }
 
-    private fun signInWithFbAcc() {
-        // authenViewModel.loginWithAccountGg()
-    }
-
-    private fun signedInWithGoogleAcc() {
-        //authenViewModel.isLoggedInGg(context ?: return)
     }
 
     fun getUserInfo() {
@@ -116,16 +121,37 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             }
         }
         binding.ggLoginBtn.setOnClickListener {
-
+            invalidSignInGG()
         }
+        binding.fbLoginBtn.registerCallback(
+            CallbackManager.Factory.create(),
+            object : FacebookCallback<LoginResult> {
+                override fun onCancel() {
+                    activity?.getAlertDialog(context?.getString(R.string.errorMessageLabel) ?: "")
+                }
+
+                override fun onError(error: FacebookException) {
+                    activity?.getAlertDialog(error.message.toString())
+                }
+
+                override fun onSuccess(result: LoginResult) {
+                    //handleAccessToken(result.accessToken)
+                    navigateToHomeFragment()
+                }
+            })
     }
 
     private fun setEventLogin() {
         val email = binding.edtEmail.text.toString()
         val password = binding.edtPassword.text.toString()
-        authenViewModel.signUpWithEmailPassword(email, password, onError = {
-            context?.getAlertDialog(it)
-            dismissProgress()
+        authenViewModel.signInWithEmailPassword(email, password, onResult = {
+            if (it) {
+                navigateToHomeFragment()
+            } else {
+                context?.showAlertDialog(getString(R.string.signInFailLabel))
+                dismissProgress()
+            }
+
         })
     }
 
@@ -136,24 +162,24 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun initObserver() {
-        authenViewModel.accessTokenGoogleLiveData.observe(viewLifecycleOwner) {
-            if (it != null) {
-                navigateToHomeFragment()
-            } else {
-                signInWithGoogle()
+        authenViewModel.googleSignInLiveData.observe(viewLifecycleOwner) { ggSignIn ->
+            val user = listUser.firstOrNull { it.uid == ggSignIn?.id }
+            if (user == null) {
+                FireBaseService.addInfoUser(ggSignIn?.convertToUserModel() ?: return@observe)
             }
+            navigateToHomeFragment()
         }
+
         authenViewModel.userModelLiveData.observe(viewLifecycleOwner) { user ->
+            setUpInfoUserSignIn(user)
             dismissProgress()
-            setUpInfoUserSignUp(user)
         }
     }
 
-    private fun setUpInfoUserSignUp(user: FirebaseUser?) {
+    private fun setUpInfoUserSignIn(user: UserModel?) {
         if (user != null) {
             if (binding.cbAccount.isChecked) {
-                val userModel = user.convertToUserModel()
-                pref.putValue(PREF_USER, GsonExt.convertObjetToGson(userModel))
+                pref.putValue(PREF_USER, GsonExt.convertObjetToGson(user))
             } else {
                 pref.removeKey(PREF_USER)
             }
@@ -162,4 +188,36 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             activity.showCustomToast(getString(R.string.verifyEmailLabel))
         }
     }
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultActivity ->
+            if (resultActivity.resultCode == Activity.RESULT_OK && resultActivity.data != null) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(resultActivity.data)
+                handleSignInResult(task)
+            } else {
+                activity?.getAlertDialog(getString(R.string.signInFailLabel))
+            }
+        }
+
+    private fun invalidSignInGG() {
+//        val googleSignInAccount = GoogleService.isLoggedInGg(context ?: requireContext())
+//        if (googleSignInAccount != null) {
+//            googleSignInAccount.convertToUserModel()
+//            navigateToHomeFragment()
+//        } else {
+        val signInIntent = GoogleService.loginWithAccountGg(activity ?: return).signInIntent
+        startForResult.launch(signInIntent)
+        //}
+    }
+
+    private fun handleSignInResult(task: Task<GoogleSignInAccount>) {
+        try {
+            val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
+            authenViewModel.setValueGoogleSignInAccount(account)
+        } catch (e: ApiException) {
+            activity?.getAlertDialog(e.message ?: "")
+        }
+    }
+
+
 }

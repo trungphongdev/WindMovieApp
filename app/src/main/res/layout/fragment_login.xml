@@ -153,26 +153,36 @@
         android:textSize="16sp"
         android:textColor="@color/white" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
+    <com.facebook.login.widget.LoginButton
         android:id="@+id/fbLoginBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/icon_fb"
-        android:layout_marginStart="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/ggLoginBtn"
-        app:layout_constraintTop_toTopOf="@id/ggLoginBtn"
-        app:layout_constraintBottom_toBottomOf="@id/ggLoginBtn"/>
+        app:background="@drawable/icon_fb"
+        android:layout_marginTop="@dimen/dp10"
+        app:layout_constraintEnd_toEndOf="@+id/ggLoginBtn"
+        app:layout_constraintStart_toStartOf="@+id/ggLoginBtn"
+        app:layout_constraintTop_toBottomOf="@id/ggLoginBtn" />
+
+    <!--    <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/fbLoginBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/icon_fb"
+            android:layout_marginStart="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ggLoginBtn"
+            app:layout_constraintTop_toTopOf="@id/ggLoginBtn"
+            app:layout_constraintBottom_toBottomOf="@id/ggLoginBtn"/>-->
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/ggLoginBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="10dp"
         android:background="@drawable/icon_google"
-        app:layout_constraintEnd_toStartOf="@id/fbLoginBtn"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvOr"

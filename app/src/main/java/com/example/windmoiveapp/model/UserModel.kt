@@ -1,5 +1,6 @@
 package com.example.windmoiveapp.model
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseUser
 
 data class UserModel(
@@ -24,5 +25,14 @@ fun FirebaseUser.convertToUserModel(): UserModel {
         email = this.email,
         phone = this.phoneNumber,
         photoUrl = this.photoUrl.toString()
+    )
+}
+
+fun GoogleSignInAccount.convertToUserModel(): UserModel {
+    return UserModel(
+        uid = this.id,
+        name = this.displayName,
+        email = this.email,
+        photoUrl = this.photoUrl.toString(),
     )
 }
