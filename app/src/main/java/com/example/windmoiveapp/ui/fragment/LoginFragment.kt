@@ -107,11 +107,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private fun initListener() {
         binding.btnLogin.setOnClickListener {
-            navigateToHomeFragment()
             if (invalidEmailPassword()) {
-                //setEventLogin()
+                showProgress()
+                setEventLogin()
             } else {
                 context?.getAlertDialog(getString(R.string.emailPasswordFailLabel))
+                dismissProgress()
             }
         }
         binding.ggLoginBtn.setOnClickListener {
@@ -124,6 +125,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         val password = binding.edtPassword.text.toString()
         authenViewModel.signUpWithEmailPassword(email, password, onError = {
             context?.getAlertDialog(it)
+            dismissProgress()
         })
     }
 
@@ -142,6 +144,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             }
         }
         authenViewModel.userModelLiveData.observe(viewLifecycleOwner) { user ->
+            dismissProgress()
             setUpInfoUserSignUp(user)
         }
     }

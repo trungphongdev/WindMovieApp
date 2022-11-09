@@ -41,5 +41,11 @@
     <string name="categoriesLabel">Categories</string>
     <string name="permissionDeniedLabel">Permissions Denied</string>
     <string name="permissionGrantedLabel">Permissions Granted</string>
+    <string name="noInternetMess">Seems like there is no internet connection. Please connect and try again.</string>
+    <string name="textExitAppContent">Do you want exit from the application?</string>
+    <string name="rateLabel">Rate</string>
+    <string name="moreLikeThisLabel">More Like This</string>
+    <string name="trailerAndMoreLabel"><![CDATA[Trailer & More]]></string>
+
 
 </resources>

@@ -20,6 +20,7 @@ import com.example.windmoiveapp.extension.hideKeyboard
 import com.example.windmoiveapp.model.BaseResource
 import com.example.windmoiveapp.model.ErrorMessage
 import com.example.windmoiveapp.model.Status
+import com.example.windmoiveapp.network.NetWork.isNetWorkAvailable
 import com.example.windmoiveapp.ui.MainActivity
 import timber.log.Timber
 
@@ -33,10 +34,15 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     private var isViewCreated: Boolean = false
 
+    private var isReloadData = true
+
+    protected var mainActivity: MainActivity? = null
+
     protected var listPermission: ArrayList<String> = arrayListOf(
         Manifest.permission.CAMERA,
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.CALL_PHONE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
     )
 
 /*    @get: LayoutRes
@@ -51,6 +57,9 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.tag(TAG).d("onAttach: ")
+        if (activity is MainActivity) {
+            mainActivity = activity as MainActivity
+        }
     }
 
     override fun onCreateView(
@@ -98,6 +107,15 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        context?.let {
+            if (it.isNetWorkAvailable().not()) {
+                mainActivity?.showNoInternetDialog()
+                return
+            }
+        }
+        if (isReloadData.not()) return
+        isReloadData = false
+        loadData()
         Timber.tag(TAG).d("onResume: ")
     }
 
@@ -124,6 +142,22 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     fun onClearViewModelInScopeActivity() {
         activity?.viewModelStore?.clear()
+    }
+
+    open fun loadData() {
+
+    }
+
+    protected fun showProgress() {
+        (activity as? MainActivity)?.showProgress()
+    }
+
+    protected fun dismissProgress(throwable: Throwable? = null) {
+        (activity as? MainActivity)?.dismissProgress()
+    }
+
+    override fun startActivity(intent: Intent?) {
+        mainActivity?.startActivity(intent)
     }
 
     protected fun onBackFragment() {
