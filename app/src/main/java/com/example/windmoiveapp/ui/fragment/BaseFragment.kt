@@ -45,8 +45,12 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
     )
 
-/*    @get: LayoutRes
-    abstract val layoutId: Int*/
+    protected var mOnBackPressFragment
+        get() = mainActivity?.mOnBackPressListener
+        set(value) {
+            mainActivity?.mOnBackPressListener = value
+        }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -282,5 +286,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
             ).setGraph(R.navigation.navigation)
         }
     }
+
+    open fun disableBackPressed(): Boolean = false
 
 }

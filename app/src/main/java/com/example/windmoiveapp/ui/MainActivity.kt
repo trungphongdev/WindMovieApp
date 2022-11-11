@@ -4,14 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.databinding.ActivityMainBinding
 import com.example.windmoiveapp.extension.getAlertDialog
 import com.example.windmoiveapp.extension.showAlertDialog
+import com.example.windmoiveapp.ui.fragment.BaseFragment
 import com.example.windmoiveapp.ui.fragment.ProgressDialogFragment
 
 class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null
+    var mOnBackPressListener: (() -> Unit)? = null
     private val noInternetDialog by lazy {
         getAlertDialog(getString(R.string.noInternetMess))
     }
@@ -60,6 +64,79 @@ class MainActivity : AppCompatActivity() {
     private fun showDialogBackPress() {
         showAlertDialog(mess = getString(R.string.textExitAppContent), isShowNegativeBtn = true) {
             super.onBackPressed()
+        }
+    }
+
+    override fun onBackPressed() {
+        if (isDisableBackButton()) return
+        if (mOnBackPressListener == null) {
+            //old logic
+            handleOldBackPressed()
+        } else {
+            mOnBackPressListener?.invoke()
+        }
+    }
+
+    private fun isDisableBackButton(): Boolean {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.navHostFragment) as? NavHostFragment?
+
+        navHostFragment?.let { navFragment ->
+            navFragment.childFragmentManager.primaryNavigationFragment?.let { fragment ->
+
+                if (fragment is BaseFragment<*> && fragment.disableBackPressed()) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    private fun handleOldBackPressed() {
+        val currentFrg = getCurrentFragment()
+
+        if (currentFrg is PoemsTokenScreen
+            || currentFrg is PoemsDigitalTokenIntroScreen
+            || currentFrg is SetupProcessTokenScreen
+        ) {
+            if (mIsFromSettingScreen) {
+                super.onBackPressed()
+            } else {
+                Navigation.findNavController(this, R.id.nav_host_fragment)
+                    .setGraph(R.navigation.nav_graph_home)
+            }
+        } else if (currentFrg is DashBoardScreen
+            || currentFrg is StartPageScreen
+        ) {
+            showDialogBackPress()
+        } else {
+            (currentFrg as? ResetPasswordScreen)?.let {
+                it.backToLoginScreen()
+                return
+            }
+
+            (currentFrg as? AuthOtpScreen)?.let {
+                val isBackToLoginScreen = it.checkBackToLoginScreen()
+                if (!isBackToLoginScreen) {
+                    super.onBackPressed()
+                }
+                return
+            }
+
+            (currentFrg as? StartAccountSetupDetailScreen)?.let {
+                it.handleBackPressed()
+                return
+            }
+
+            (currentFrg as? ResetPwCodeScreen)?.let {
+                it.backToLoginScreen()
+                return
+            }
+            val isBackPressedEnable =
+                KeyBackPressUtils.onBackPressed?.setOnBackPressedListener() ?: true
+            if (isBackPressedEnable) {
+                super.onBackPressed()
+            }
         }
     }
 }
