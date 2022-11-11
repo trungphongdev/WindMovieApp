@@ -9,4 +9,7 @@ object BuildDaoDatabase {
     fun getMovieDao(application: AppApplication) =
         application.appDatabase.getMovieDao()
 
+    fun getNotificationDao(application: AppApplication) =
+        application.appDatabase.getNotificationDao()
+
 }

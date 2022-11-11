@@ -18,10 +18,12 @@
         tools:textColor="@color/black"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvMovies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         android:orientation="horizontal"
-        tools:listitem="@layout/item_movie_normal"/>
+        tools:listitem="@layout/item_movie_normal"
+        android:layout_marginTop="@dimen/dp10"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

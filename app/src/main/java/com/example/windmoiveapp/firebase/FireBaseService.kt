@@ -1,5 +1,6 @@
 package com.example.windmoiveapp.firebase
 
+import com.example.windmoiveapp.model.MovieModel
 import com.example.windmoiveapp.model.UserModel
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -10,6 +11,7 @@ import timber.log.Timber
 
 object FireBaseService {
     private const val USERS = "users"
+    private const val MOVIES = "movies"
     private val db = Firebase.firestore
     private val auth = Firebase.auth
     private const val TAG = "Firebase"
@@ -141,6 +143,18 @@ object FireBaseService {
         }.addOnFailureListener {
             onResult?.invoke(false)
         }
+    }
+
+    suspend fun getMovieList(): List<MovieModel> {
+        val listMovie = arrayListOf<MovieModel>()
+        db.collection(MOVIES).get().addOnSuccessListener { documents ->
+            for (movies in documents) {
+                listMovie.add(movies.toObject())
+            }
+        }.addOnFailureListener {
+            listMovie.clear()
+        }
+        return listMovie
     }
 
 }

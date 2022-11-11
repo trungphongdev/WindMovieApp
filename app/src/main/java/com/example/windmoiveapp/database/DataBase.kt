@@ -18,6 +18,7 @@ const val WINDMOVIE_DB = "WINDMOVIE_DB"
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getMovieDao(): MovieDao
+    abstract fun getNotificationDao(): NotificationDao
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null

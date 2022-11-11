@@ -1,7 +1,10 @@
 package com.example.windmoiveapp.ui.fragment
 
 import android.app.Service
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.media.MediaPlayer
 import android.os.Binder
 import android.os.Bundle
@@ -13,20 +16,33 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.databinding.FragmentMovieDetailBinding
+import timber.log.Timber
 
 
 class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private lateinit var mService: MovieService
+    private var mBound: Boolean = false
+
+    private val connection = object : ServiceConnection {
+
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            val binder = service as MovieService.MovieBinder
+            mService = binder.getMovieService()
+            mBound = true
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            mBound = false
+        }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movie_detail, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Intent(context, MovieService::class.java).also { intent ->
+            mService.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
     }
 
     companion object {
@@ -51,23 +67,29 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
     ) {
 
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mService.unbindService(connection)
+        mBound = false
+    }
 }
 
 private const val ACTION_PLAY: String = "com.example.action.PLAY"
 
-class MovieService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener {
+class MovieService: Service() {
     private  val TAG = "MovieService"
 
     private var mMediaPlayer: MediaPlayer? = null
 
-    private var binder: MyBinder = MyBinder()
+    private var binder: MovieBinder = MovieBinder()
 
-    class MyBinder() : Binder() {
-        fun getMovieBoundService(): MovieService {
-            return MovieService()
+    inner class MovieBinder() : Binder() {
+        fun getMovieService(): MovieService {
+            return this@MovieService
         }
     }
-
+/*
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         when(intent.action) {
             ACTION_PLAY -> {
@@ -81,33 +103,28 @@ class MovieService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErr
 
             }
         }
+        return START_STICKY
+    }*/
+
+    override fun onCreate() {
+        super.onCreate()
+        mMediaPlayer = MediaPlayer()
     }
 
-
+    fun onStartMediaPlayer(url: String) {
+        mMediaPlayer?.setDataSource(url)
+        mMediaPlayer?.prepareAsync()
+        mMediaPlayer?.start()
+    }
 
     override fun onBind(intent: Intent?): IBinder? {
-        Log.e(TAG, "onBind: ", )
+        Timber.tag(TAG).e("onBind: ")
         return binder
-    }
-
-    override fun onPrepared(mediaPlayer: MediaPlayer) {
-        mediaPlayer.start()
-    }
-
-    fun initMediaPlayer() {
-        // ...initialize the MediaPlayer here...
-        mMediaPlayer?.setOnErrorListener(this)
-    }
-
-    override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
-        // ... react appropriately ...
-        // The MediaPlayer has moved to the Error state, must be reset!
-        return false
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.e(TAG, "onDestroy: ", )
+        Timber.tag(TAG).e("onDestroy: ")
         mMediaPlayer?.release()
     }
 }

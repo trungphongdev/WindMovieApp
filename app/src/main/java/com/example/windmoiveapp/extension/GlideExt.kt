@@ -32,3 +32,14 @@ fun ImageView.loadCircleImage(
         .circleCrop()
         .into(this)
 }
+
+fun ImageView.loadImage(
+    urlImage: String,
+    @DrawableRes defaultDrawableId: Int = R.drawable.logohome
+) {
+    Glide.with(this)
+        .load(urlImage)
+        .placeholder(defaultDrawableId)
+        .error(defaultDrawableId)
+        .into(this)
+}

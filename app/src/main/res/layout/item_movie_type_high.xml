@@ -2,8 +2,8 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/dp100"
-    android:layout_height="@dimen/dp120"
+    android:layout_width="@dimen/dp160"
+    android:layout_height="@dimen/dp200"
     app:cardCornerRadius="@dimen/dp6">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -14,24 +14,11 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgMovie"
-            android:layout_width="@dimen/dp100"
-            android:layout_height="@dimen/dp100"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:scaleType="fitXY"
             tools:src="@drawable/logohome"/>
 
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            tools:text="bbbdfb"
-            android:fontFamily="@font/roboto_medium"
-            android:textSize="@dimen/sp16"
-            android:gravity="center"
-            android:layout_gravity="center"
-            />
-
     </androidx.appcompat.widget.LinearLayoutCompat>
-
 
 </androidx.cardview.widget.CardView>
