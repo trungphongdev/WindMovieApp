@@ -7,7 +7,8 @@
     android:orientation="vertical">
 
     <TextView
-        android:layout_marginTop="@dimen/dp6"
+        android:layout_marginTop="@dimen/dp18"
+        android:layout_marginStart="@dimen/dp12"
         android:id="@+id/tvCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,7 +16,7 @@
         android:fontFamily="@font/roboto_bold"
         android:textSize="@dimen/sp22"
         tools:text="@string/passwordLabel"
-        tools:textColor="@color/black"/>
+        tools:textColor="@color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvMovies"

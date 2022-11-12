@@ -17,12 +17,25 @@ enum class Categories(val type: String) {
 
     companion object {
         fun getCategoryByType(type: String): Categories {
-            return values().find { type ==  it.type } ?: UNKNOWN
+            return values().find { type == it.type } ?: UNKNOWN
         }
 
-        fun getListTypeCategories() : ArrayList<String> {
+        fun getCategoryByName(nameList: List<String>): String {
+            val list = ArrayList<String>()
+            for (name in nameList) {
+                for (category in values()) {
+                    if (category.name == name) {
+                        list.add(category.type)
+                    }
+                }
+            }
+            return list.joinToString(separator = "  ", prefix = "", postfix = "")
+        }
+
+
+        fun getListTypeCategories(): ArrayList<String> {
             val listType = arrayListOf<String>()
-             Categories.values().forEach {
+            Categories.values().forEach {
                 listType.add(it.type)
             }
             return listType

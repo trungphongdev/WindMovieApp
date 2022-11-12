@@ -51,12 +51,14 @@
         </activity>
 
         <service
-            android:name="com.example.windmoiveapp.service.FirebaseMessagingService"
+            android:name="com.example.windmoiveapp.service.FirebaseMessageService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <service android:name=".service.MovieService" />
     </application>
     <queries>
         <package android:name="com.facebook.katana" />

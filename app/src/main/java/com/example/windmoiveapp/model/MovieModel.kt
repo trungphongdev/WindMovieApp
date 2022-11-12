@@ -1,10 +1,13 @@
 package com.example.windmoiveapp.model
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.google.gson.Gson
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity
 data class MovieModel(
     @PrimaryKey
@@ -16,8 +19,13 @@ data class MovieModel(
     val yearOfRelease: String? = "",
     val likeNum: Int? = 0,
     val dislikeNum: Int? = 0,
+    val duration: String? = "",
+    val image: String? = "",
     val categories: List<String> = listOf()
-)
+) : Parcelable {
+/*    var isLike: Boolean = false
+    var isAdd: Boolean = false*/
+}
 
 class Converters {
     @TypeConverter

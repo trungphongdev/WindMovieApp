@@ -7,15 +7,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.windmoiveapp.databinding.LayoutItemListMovieBinding
 import com.example.windmoiveapp.model.MovieCategoryModel
+import com.example.windmoiveapp.model.MovieModel
 
 class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
-    inner class MovieViewHolder(var binding: LayoutItemListMovieBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class MovieViewHolder(var binding: LayoutItemListMovieBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     private var listMovie: ArrayList<MovieCategoryModel> = arrayListOf()
 
+    var onItemClickMovie: ((MovieModel) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val itemBinding = LayoutItemListMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val itemBinding =
+            LayoutItemListMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MovieViewHolder(itemBinding)
     }
 
@@ -28,6 +33,9 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
         holder.binding.rcvMovies.apply {
             adapter = itemMovieHzAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        }
+        itemMovieHzAdapter.onItemClickMovieItem = {
+            onItemClickMovie?.invoke(it)
         }
     }
 

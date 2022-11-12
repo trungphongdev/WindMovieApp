@@ -46,6 +46,7 @@
     <string name="rateLabel">Rate</string>
     <string name="moreLikeThisLabel">More Like This</string>
     <string name="trailerAndMoreLabel"><![CDATA[Trailer & More]]></string>
+    <string name="movieDetailLabel">Movie Detail</string>
 
 
 </resources>

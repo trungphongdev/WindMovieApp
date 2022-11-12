@@ -2,7 +2,7 @@ package com.example.windmoiveapp.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.windmoiveapp.service.FirebaseMessagingService.Companion.MESSAGE
+import com.example.windmoiveapp.service.FirebaseMessageService.Companion.MESSAGE
 import com.google.firebase.messaging.RemoteMessage
 
 @Entity

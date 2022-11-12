@@ -15,15 +15,23 @@
         android:name="com.example.windmoiveapp.ui.fragment.LoginFragment"
         tools:layout="@layout/fragment_login"/>
 
-    <fragment android:id="@+id/signUpFragment"
+    <fragment
+        android:id="@+id/signUpFragment"
         android:label="@string/homeLabel"
         android:name="com.example.windmoiveapp.ui.fragment.SignUpFragment"
-        tools:layout="@layout/fragment_sign_up"/>
+        tools:layout="@layout/fragment_sign_up" />
 
-    <fragment android:id="@+id/startPageFragment"
+    <fragment
+        android:id="@+id/startPageFragment"
         android:label="@string/homeLabel"
         android:name="com.example.windmoiveapp.ui.fragment.StartPageFragment"
-        tools:layout="@layout/fragment_start_page"/>
+        tools:layout="@layout/fragment_start_page" />
+
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:label="@string/movieDetailLabel"
+        android:name="com.example.windmoiveapp.ui.fragment.MovieDetailFragment"
+        tools:layout="@layout/fragment_movie_detail" />
 
 
 </navigation>

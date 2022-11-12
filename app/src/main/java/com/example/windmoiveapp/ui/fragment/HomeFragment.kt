@@ -18,6 +18,8 @@ import com.example.windmoiveapp.adapter.MovieAdapter
 import com.example.windmoiveapp.constant.Categories
 import com.example.windmoiveapp.databinding.FragmentHomeBinding
 import com.example.windmoiveapp.extension.click
+import com.example.windmoiveapp.model.MovieCategoryModel
+import com.example.windmoiveapp.model.MovieModel
 import com.example.windmoiveapp.util.PERMISSION_REQUEST_CODE
 import com.example.windmoiveapp.viewmodels.MovieViewModel
 
@@ -45,7 +47,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         savedInstanceState: Bundle?,
         isViewCreated: Boolean
     ) {
-        movieViewModels.getMovieList()
+        //movieViewModels.getMovieList()
         initViews()
         initListener()
         initObserver()
@@ -54,27 +56,41 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun initListener() {
         binding.tvCategories.click {
             binding.rcvCategories.isVisible = true
+            binding.imvCloseCategory.isVisible = true
         }
         binding.imvCloseCategory.click {
             binding.rcvCategories.isGone = true
+            binding.imvCloseCategory.isGone = true
         }
 
         categoryAdapter.setOnItemClickCategory {
             binding.rcvCategories.isGone = true
+            binding.imvCloseCategory.isGone = true
+            binding.tvCategories.text = it.type
             if (it.name == Categories.HOME.name) {
                 binding.tvCategories.text = getString(R.string.categoriesLabel)
             }
-            binding.tvCategories.text = it.type
         }
+
+        categoryMovieAdapter.onItemClickMovie = {
+            showBottomSheetMovieDetail(it)
+        }
+    }
+
+    private fun showBottomSheetMovieDetail(movieModel: MovieModel) {
+        MovieDetailBottomSheet.newInstance(movieModel)
+            .show(childFragmentManager, MovieDetailBottomSheet.TAG)
     }
 
     private fun initObserver() {
         movieViewModels.listMovie.observe(viewLifecycleOwner) {
+            dismissProgress()
             movieViewModels.convertToListMovieByCategory(it)
-            Log.d("listOfMovie1", it.toString())
+            Log.d("listOfMovie1", "" + it.size)
         }
         movieViewModels.listMovieByCategories.observe(viewLifecycleOwner) {
-            Log.d("listOfMovie2", it.toString())
+            Log.d("listOfMovie2", "" + it.size)
+            setDataForAdapterListMovieCategory(it ?: emptyList())
         }
     }
 
@@ -87,6 +103,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.apply {
             rcvMovies.adapter = categoryMovieAdapter
             rcvMovies.itemAnimator = DefaultItemAnimator()
+            rcvMovies.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
         }
     }
 
@@ -117,25 +136,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
             }
         } else {
-            Toast.makeText(context ?: return, getString(R.string.permissionDeniedLabel), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context ?: return,
+                getString(R.string.permissionDeniedLabel),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
     override fun loadData() {
         super.loadData()
+        showProgress()
         movieViewModels.getMovieList()
     }
 
-/*    private fun transformToListMovieCategory(movies: List<MovieModel>): ArrayList<MovieCategoryModel> {
-        val listMoviesCate = arrayListOf<MovieCategoryModel>()
-        Categories.values().drop(1).dropLast(1).forEach { category ->
-            listMoviesCate.add(
-                MovieCategoryModel(
-                    category.type, movies.filter { it.categories?.any { category.name == it } ?: false }
-                )
-            )
-        }
-        return listMoviesCate
-    }*/
+    private fun setDataForAdapterListMovieCategory(it: List<MovieCategoryModel>) {
+        categoryMovieAdapter.setList(it)
+    }
+
 
 }

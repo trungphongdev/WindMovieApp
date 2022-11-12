@@ -9,19 +9,28 @@
     android:orientation="vertical">
 
     <com.example.windmoiveapp.common.HeaderBar
+        android:id="@+id/headerBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:isShowButtonBack="true"
-        app:isShowSearch="true"/>
+        app:isShowSearch="true" />
+
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:paddingHorizontal="@dimen/dp16" />
 
     <TextView
+        android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/sp28"
         tools:text="The Sea Beast"
         android:textColor="@color/white"
         android:fontFamily="@font/roboto_medium"
-        android:layout_marginStart="@dimen/dp6"/>
+        android:layout_marginStart="@dimen/dp6"
+        android:layout_marginTop="@dimen/dp12" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
@@ -29,6 +38,7 @@
         android:layout_marginTop="@dimen/dp10">
 
         <TextView
+            android:id="@+id/tvYearRelease"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="2022"
@@ -37,6 +47,7 @@
             android:layout_marginStart="@dimen/dp6"/>
 
         <TextView
+            android:id="@+id/tvDuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="2022"
@@ -45,6 +56,7 @@
             android:layout_marginStart="@dimen/dp10"/>
 
         <TextView
+            android:id="@+id/tvCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="2022"
@@ -63,6 +75,7 @@
         android:layout_marginHorizontal="@dimen/dp8">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/llPlayMovie"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingVertical="@dimen/dp8">
@@ -151,7 +164,7 @@
         android:textSize="@dimen/sp16"
         tools:text="kdsfjsdkfjasldkfj"
         android:layout_marginTop="@dimen/dp12"
-        android:minHeight="@dimen/dp60"/>
+        android:minHeight="@dimen/dp60" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -208,8 +221,8 @@
         android:layout_height="wrap_content"
         android:background="@color/black"
         app:tabIndicator="@drawable/ic_tab_indicator"
-        app:tabIndicatorColor="@color/white"
-        app:tabIndicatorHeight="@dimen/dp20"
+        app:tabIndicatorColor="@color/redB11313"
+        app:tabIndicatorHeight="@dimen/dp40"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/redB11313"
         app:tabTextColor="@color/white">
@@ -228,7 +241,7 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vpMovie"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="@dimen/dp200" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
 

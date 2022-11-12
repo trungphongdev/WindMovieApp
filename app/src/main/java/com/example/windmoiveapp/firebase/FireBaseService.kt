@@ -1,5 +1,6 @@
 package com.example.windmoiveapp.firebase
 
+import android.util.Log
 import com.example.windmoiveapp.model.MovieModel
 import com.example.windmoiveapp.model.UserModel
 import com.google.firebase.auth.FirebaseUser
@@ -142,16 +143,17 @@ object FireBaseService {
         }
     }
 
-    fun getMovieList(): List<MovieModel> {
-        val listMovie = ArrayList<MovieModel>()
+    suspend fun getMovieList(list: ((List<MovieModel>) -> Unit)) {
         db.collection(MOVIES).get().addOnSuccessListener { result ->
+            val listMovie = ArrayList<MovieModel>()
             for (movie in result.toObjects(MovieModel::class.java)) {
                 listMovie.add(movie)
+                Log.d("movies", "size" + listMovie.size)
             }
+            list.invoke(listMovie)
         }.addOnFailureListener {
-            listMovie.clear()
+            list.invoke(emptyList())
         }
-        return listMovie
     }
 
 }

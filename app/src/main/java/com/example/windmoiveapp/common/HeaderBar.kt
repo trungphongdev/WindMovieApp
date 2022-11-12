@@ -62,6 +62,10 @@ class HeaderBar(context: Context, attrs: AttributeSet) : ConstraintLayout(contex
         }
     }
 
+    fun setEventBackListener(callback: (() -> Unit)) {
+        eventBackCallback = callback
+    }
+
     private fun checkShowIconBack(showButtonBack: Boolean) {
         imgBack.isVisible = showButtonBack
     }
