@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.databinding.ActivityMainBinding
@@ -52,9 +51,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    override fun onBackPressed() {
+/*    override fun onBackPressed() {
         showDialogBackPress()
-    }
+    }*/
 
     private fun getCurrentFragment(): Fragment? {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment)
@@ -71,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         if (isDisableBackButton()) return
         if (mOnBackPressListener == null) {
             //old logic
-            handleOldBackPressed()
+            //handleOldBackPressed()
         } else {
             mOnBackPressListener?.invoke()
         }
@@ -92,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
-    private fun handleOldBackPressed() {
+/*    private fun handleOldBackPressed() {
         val currentFrg = getCurrentFragment()
 
         if (currentFrg is PoemsTokenScreen
@@ -138,5 +137,5 @@ class MainActivity : AppCompatActivity() {
                 super.onBackPressed()
             }
         }
-    }
+    }*/
 }

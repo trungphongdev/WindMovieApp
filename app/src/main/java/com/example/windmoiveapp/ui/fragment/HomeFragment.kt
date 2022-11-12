@@ -1,38 +1,35 @@
 package com.example.windmoiveapp.ui.fragment
 
+import android.app.Application
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.adapter.CategoryAdapter
 import com.example.windmoiveapp.adapter.MovieAdapter
 import com.example.windmoiveapp.constant.Categories
 import com.example.windmoiveapp.databinding.FragmentHomeBinding
 import com.example.windmoiveapp.extension.click
-import com.example.windmoiveapp.model.MovieCategoryModel
-import com.example.windmoiveapp.model.MovieModel
 import com.example.windmoiveapp.util.PERMISSION_REQUEST_CODE
 import com.example.windmoiveapp.viewmodels.MovieViewModel
 
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
-
-    private var categoryAdapter: CategoryAdapter? = null
-    private var categoryMovieAdapter: MovieAdapter? = null
-    private val movieViewModels: MovieViewModel by viewModels()
+    private val categoryAdapter: CategoryAdapter by lazy { CategoryAdapter() }
+    private val categoryMovieAdapter: MovieAdapter by lazy { MovieAdapter() }
+    private val movieViewModels: MovieViewModel by lazy { MovieViewModel(activity?.application as Application) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestPermission()
-        categoryAdapter = CategoryAdapter()
-        categoryMovieAdapter = MovieAdapter()
     }
 
     override fun onCreateViewBinding(
@@ -48,6 +45,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         savedInstanceState: Bundle?,
         isViewCreated: Boolean
     ) {
+        movieViewModels.getMovieList()
         initViews()
         initListener()
         initObserver()
@@ -61,15 +59,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             binding.rcvCategories.isGone = true
         }
 
-        categoryAdapter?.setOnItemClickCategory {
+        categoryAdapter.setOnItemClickCategory {
             binding.rcvCategories.isGone = true
-
+            if (it.name == Categories.HOME.name) {
+                binding.tvCategories.text = getString(R.string.categoriesLabel)
+            }
+            binding.tvCategories.text = it.type
         }
     }
 
     private fun initObserver() {
-        movieViewModels.listMovieCategory.observe(viewLifecycleOwner) {
-            categoryMovieAdapter?.setList(it)
+        movieViewModels.listMovie.observe(viewLifecycleOwner) {
+            movieViewModels.convertToListMovieByCategory(it)
+            Log.d("listOfMovie1", it.toString())
+        }
+        movieViewModels.listMovieByCategories.observe(viewLifecycleOwner) {
+            Log.d("listOfMovie2", it.toString())
         }
     }
 
@@ -86,10 +91,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setUpRecyclerViewCategory() {
-        categoryAdapter?.setList(Categories.values().toList())
         binding.apply {
+            categoryAdapter.setList(Categories.values().toList())
             rcvCategories.adapter = categoryAdapter
-            rcvCategories.itemAnimator = DefaultItemAnimator()
+            rcvCategories.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
     }
 

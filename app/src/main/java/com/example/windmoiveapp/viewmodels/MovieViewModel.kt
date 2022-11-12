@@ -1,39 +1,41 @@
 package com.example.windmoiveapp.viewmodels
 
+import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import com.example.windmoiveapp.constant.Categories
 import com.example.windmoiveapp.firebase.FireBaseService
 import com.example.windmoiveapp.model.MovieCategoryModel
 import com.example.windmoiveapp.model.MovieModel
-import com.example.windmoiveapp.util.AppApplication
 import kotlinx.coroutines.launch
 
-class MovieViewModel(application: AppApplication) : AndroidViewModel(application) {
+class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
     var listMovie: MutableLiveData<List<MovieModel>> = MutableLiveData()
+    var listMovieByCategories: MutableLiveData<List<MovieCategoryModel>> = MutableLiveData()
 
-    var listMovieCategory: LiveData<List<MovieCategoryModel>> = Transformations.map(listMovie) {
+
+    fun convertToListMovieByCategory(listMovie: List<MovieModel>) {
         val listMovieCate = arrayListOf<MovieCategoryModel>()
-        Categories.values().drop(1).dropLast(1).forEach { category ->
-            listMovieCate.add(
-                MovieCategoryModel(
-                    category.type, it.filter { it.categories?.any { category.name == it } ?: false }
-                )
-            )
+        listMovie.forEachIndexed { index, movieModel ->
+            Categories.values().forEach { category ->
+                if (movieModel.categories.contains(category.name)) {
+                    listMovieCate.add(
+                        MovieCategoryModel(
+                            category = category.type,
+                            movies = listMovie.filter { it.categories.any { it == category.name } }
+                        )
+                    )
+                }
+            }
         }
-        listMovieCate
+        listMovieByCategories.postValue(listMovieCate)
     }
 
     fun getMovieList() {
         viewModelScope.launch {
-            listMovie.value = FireBaseService.getMovieList()
+            listMovie.postValue(FireBaseService.getMovieList())
         }
     }
-
-
-
 }

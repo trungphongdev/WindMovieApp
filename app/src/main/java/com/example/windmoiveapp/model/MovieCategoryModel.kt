@@ -1,6 +1,6 @@
 package com.example.windmoiveapp.model
 
-class MovieCategoryModel(
+data class MovieCategoryModel(
     val category: String? = null,
     val movies: List<MovieModel>? = null,
     var viewType: Int = TYPE_NORMAL

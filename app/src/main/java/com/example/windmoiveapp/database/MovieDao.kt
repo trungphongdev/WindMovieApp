@@ -1,6 +1,5 @@
 package com.example.windmoiveapp.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -16,5 +15,5 @@ interface MovieDao {
     suspend fun deleteMovie(id: String)
 
     @Query("SELECT * FROM MovieModel")
-    suspend fun getAllMovie(): LiveData<List<MovieModel>>
+    suspend fun getAllMovie(): List<MovieModel>
 }

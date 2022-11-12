@@ -146,6 +146,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         val password = binding.edtPassword.text.toString()
         authenViewModel.signInWithEmailPassword(email, password, onResult = {
             if (it) {
+                dismissProgress()
                 navigateToHomeFragment()
             } else {
                 context?.showAlertDialog(getString(R.string.signInFailLabel))

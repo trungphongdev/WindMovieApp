@@ -12,7 +12,7 @@ import timber.log.Timber
 object FireBaseService {
     private const val USERS = "users"
     private const val MOVIES = "movies"
-    private val db = Firebase.firestore
+    val db = Firebase.firestore
     private val auth = Firebase.auth
     private const val TAG = "Firebase"
 
@@ -117,11 +117,8 @@ object FireBaseService {
                 if (task.isSuccessful) {
                     Timber.tag(TAG).d("signInWithEmail:success")
                     onSuccess?.invoke(auth.currentUser)
-                    //updateUI(user)
                 } else {
-                    // If sign in fails, display a message to the user.
                     Timber.tag(TAG).w(task.exception, "signInWithEmail:failure")
-                    //updateUI(null)
                     onFailure?.invoke()
                 }
             }.addOnFailureListener {
@@ -145,11 +142,11 @@ object FireBaseService {
         }
     }
 
-    suspend fun getMovieList(): List<MovieModel> {
-        val listMovie = arrayListOf<MovieModel>()
-        db.collection(MOVIES).get().addOnSuccessListener { documents ->
-            for (movies in documents) {
-                listMovie.add(movies.toObject())
+    fun getMovieList(): List<MovieModel> {
+        val listMovie = ArrayList<MovieModel>()
+        db.collection(MOVIES).get().addOnSuccessListener { result ->
+            for (movie in result.toObjects(MovieModel::class.java)) {
+                listMovie.add(movie)
             }
         }.addOnFailureListener {
             listMovie.clear()

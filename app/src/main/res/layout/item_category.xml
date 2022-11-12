@@ -6,15 +6,15 @@
     android:alpha="0.7"
     android:background="@color/black">
 
-    <TextView
-        android:id="@+id/tvCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/sp16"
-        android:textColor="@color/white"
-        tools:text="@string/moreLikeThisLabel"
-        android:paddingVertical="@dimen/dp20"
-        android:gravity="center"
-        android:fontFamily="@font/roboto_regular"/>
+     <TextView
+         android:id="@+id/tvCategory"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:textSize="@dimen/sp16"
+         android:textColor="@color/white"
+         tools:text="@string/moreLikeThisLabel"
+         android:paddingVertical="@dimen/dp20"
+         android:gravity="center"
+         android:fontFamily="@font/roboto_regular" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

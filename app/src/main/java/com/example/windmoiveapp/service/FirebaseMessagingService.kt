@@ -15,7 +15,6 @@ import com.example.windmoiveapp.database.BuildDaoDatabase
 import com.example.windmoiveapp.model.convertToNotificationModel
 import com.example.windmoiveapp.ui.MainActivity
 import com.example.windmoiveapp.util.AppApplication
-import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,7 +43,7 @@ class FirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private val notificationManager =
-        applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        AppApplication.instance.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     private val uri: Uri = RingtoneManager.getDefaultUri(
         RingtoneManager.TYPE_NOTIFICATION
