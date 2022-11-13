@@ -1,45 +1,28 @@
 package com.example.windmoiveapp.ui.fragment
 
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.app.Application
 import android.net.Uri
 import android.os.Bundle
-import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.windmoiveapp.R
+import com.example.windmoiveapp.adapter.ViewPagerAdapter
 import com.example.windmoiveapp.constant.Categories
 import com.example.windmoiveapp.databinding.FragmentMovieDetailBinding
+import com.example.windmoiveapp.extension.navigateWithAnim
+import com.example.windmoiveapp.extension.setFixedAdapter
 import com.example.windmoiveapp.model.MovieModel
-import com.example.windmoiveapp.service.MovieService
+import com.example.windmoiveapp.viewmodels.MovieViewModel
+import com.google.android.material.tabs.TabLayoutMediator
 
 class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
-    private var mService: MovieService? = null
-    private var mBound: Boolean = false
+    private val movieViewModels: MovieViewModel by lazy { MovieViewModel(activity?.application as Application) }
     private var movieModel: MovieModel? = null
-
-    private val connection = object : ServiceConnection {
-        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            val binder = service as MovieService.MovieBinder
-            mService = binder.getMovieService()
-            mBound = true
-        }
-
-        override fun onServiceDisconnected(arg0: ComponentName) {
-            mBound = false
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Intent(context, MovieService::class.java).also { intent ->
-            activity?.bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        }
-    }
+    private var isAdd: Boolean = false
 
     companion object {
         const val BUNDLE_CONTENT_MOVIE = "BUNDLE_CONTENT_MOVIE"
@@ -61,6 +44,19 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
         getDataFromBundle()
         initViews()
         initListeners()
+        initObserver()
+    }
+
+    private fun initObserver() {
+        movieViewModels.movieRoomLiveData.observe(viewLifecycleOwner) {
+            if (it == null) {
+                isAdd = false
+                binding.imvMyList.setImageResource(R.drawable.ic_add)
+            } else {
+                isAdd = true
+                binding.imvMyList.setImageResource(R.drawable.ic_baseline_check_circle_24)
+            }
+        }
     }
 
     private fun getDataFromBundle() {
@@ -76,8 +72,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             tvCategory.text = Categories.getCategoryByName(movieModel?.categories ?: emptyList())
         }
         setUpVideoView()
-
-        //mService?.onStartMediaPlayer(movieModel?.trailerUrl ?: return)
+        setUpViewPager()
     }
 
     private fun setUpVideoView(url: String = movieModel?.trailerUrl ?: "") {
@@ -99,17 +94,57 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             llPlayMovie.setOnClickListener {
                 setUpVideoView(movieModel?.movieUrl ?: return@setOnClickListener)
             }
-
-
+            imvMyRate.setOnClickListener {
+                findNavController().navigateWithAnim(R.id.myListFragment)
+            }
+            imvMyList.setOnClickListener {
+                isAdd = !isAdd
+                if (isAdd) {
+                    binding.imvMyList.setImageResource(R.drawable.ic_add)
+                    movieViewModels.removeMovieById(movieModel ?: return@setOnClickListener)
+                } else {
+                    binding.imvMyList.setImageResource(R.drawable.ic_baseline_check_circle_24)
+                    movieViewModels.addMovieToRoom(movieModel ?: return@setOnClickListener)
+                }
+            }
+            headerBar.setEventBackListener {
+                moveToDashBoard()
+            }
+            headerBar.setEventSearchListener {
+                findNavController().navigateWithAnim(R.id.searchFragment)
+            }
         }
 
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        activity?.unbindService(connection)
-        mBound = false
     }
+
+    private fun setUpViewPager() {
+        val listFragment = arrayListOf<Fragment>(
+            TrailerMovieFragment(),
+            MoreAndLikeThisFragment()
+        )
+        val listTitle = arrayListOf(
+            getString(R.string.trailerAndMoreLabel),
+            getString(R.string.moreLikeThisLabel)
+        )
+        binding.vpMovie.adapter = ViewPagerAdapter(this@MovieDetailFragment).apply {
+            setListFragment(listFragment)
+            binding.vpMovie.setFixedAdapter(this)
+        }
+
+        TabLayoutMediator(binding.tabLayoutOptions, binding.vpMovie) { tab, position ->
+            tab.text = listTitle[position]
+        }.attach()
+    }
+
+    override fun loadData() {
+        super.loadData()
+        movieViewModels.getMovieById(movieModel)
+    }
+
 }
 
 

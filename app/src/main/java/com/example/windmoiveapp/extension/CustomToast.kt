@@ -11,7 +11,7 @@ import com.example.windmoiveapp.R
 fun Toast.showCustomToast(message: String, activity: Activity, isShowToastError: Boolean = false) {
     val layout = activity.layoutInflater.inflate(
         R.layout.layout_toast_screen,
-        activity.findViewById(R.id.toastContainer) as (ViewGroup)
+        activity.findViewById(R.id.toastContainer) as? (ViewGroup)
     )
 
     // set the text of the TextView of the message
@@ -24,7 +24,7 @@ fun Toast.showCustomToast(message: String, activity: Activity, isShowToastError:
 
     // use the application extension function
     this.apply {
-        setGravity(Gravity.CENTER_VERTICAL, 0, 40)
+        setGravity(Gravity.BOTTOM, 0, 40)
         duration = Toast.LENGTH_LONG
         view = layout
         show()
@@ -32,4 +32,4 @@ fun Toast.showCustomToast(message: String, activity: Activity, isShowToastError:
 }
 
 fun Activity?.showCustomToast(message: String, isShowToastError: Boolean = false) =
-    this?.run { Toast(this).showCustomToast(message, this, isShowToastError) }
+    this?.let { Toast(this).showCustomToast(message, this, isShowToastError) }

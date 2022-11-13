@@ -11,13 +11,10 @@ import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.DrawableRes
-import androidx.core.content.ContextCompat
-import com.example.windmoiveapp.R
 import com.example.windmoiveapp.util.PASSWORD_CHAR_STYLE_DOT
 import com.example.windmoiveapp.util.PASSWORD_HIDE_7_CHAR
+import java.util.regex.Pattern
 
 const val TIME_SEARCH_DEFAULT  = 500L
 fun EditText.onSearch(onSearch: (String) -> Unit) {
@@ -49,6 +46,7 @@ fun EditText.afterTextChange(onTextChanged: (CharSequence) -> Unit) {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
         }
+
         override fun afterTextChanged(editable: Editable?) {
             onTextChanged.invoke(editable.toString())
         }
@@ -57,6 +55,10 @@ fun EditText.afterTextChange(onTextChanged: (CharSequence) -> Unit) {
 
 fun EditText.isValidEmail() =
     this.text.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(this.text.toString()).matches()
+
+fun EditText.isValidString() =
+    this.text.isNotEmpty() && Pattern.compile("[a-zA-Z0-9]+").matcher(this.text.toString())
+        .matches()
 
 fun EditText.hideKeyBoardOnTouch(context: Context) {
     this.setOnFocusChangeListener { view, focus ->

@@ -4,14 +4,15 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.windmoiveapp.databinding.ItemMovieTrailerBinding
+import com.example.windmoiveapp.databinding.ItemTopSearchBinding
 import com.example.windmoiveapp.extension.click
-import com.example.windmoiveapp.extension.loadImage
+import com.example.windmoiveapp.extension.loadCircleImage
 import com.example.windmoiveapp.model.MovieModel
 
-class MovieTrailerAdapter : RecyclerView.Adapter<MovieTrailerAdapter.MovieItemNormalViewHolder>() {
+class TopSearchAdapter :
+    RecyclerView.Adapter<TopSearchAdapter.MovieItemNormalViewHolder>() {
 
-    inner class MovieItemNormalViewHolder(var binding: ItemMovieTrailerBinding) :
+    inner class MovieItemNormalViewHolder(var binding: ItemTopSearchBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     private var listMovie: ArrayList<MovieModel> = arrayListOf()
@@ -20,7 +21,7 @@ class MovieTrailerAdapter : RecyclerView.Adapter<MovieTrailerAdapter.MovieItemNo
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemNormalViewHolder {
         return MovieItemNormalViewHolder(
-            ItemMovieTrailerBinding.inflate(
+            ItemTopSearchBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -30,7 +31,7 @@ class MovieTrailerAdapter : RecyclerView.Adapter<MovieTrailerAdapter.MovieItemNo
 
     override fun onBindViewHolder(holder: MovieItemNormalViewHolder, position: Int) {
         val itemData = listMovie[position]
-        holder.binding.imgMovie.loadImage(itemData.image ?: "")
+        holder.binding.imgMovie.loadCircleImage(itemData.image ?: "")
         holder.binding.tvName.text = itemData.name
         holder.binding.root.click {
             onItemClickMovieItem?.invoke(itemData)

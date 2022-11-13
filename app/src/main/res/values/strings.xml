@@ -47,6 +47,10 @@
     <string name="moreLikeThisLabel">More Like This</string>
     <string name="trailerAndMoreLabel"><![CDATA[Trailer & More]]></string>
     <string name="movieDetailLabel">Movie Detail</string>
+    <string name="removeMovieLabel">Do you want to remove the movie \nname: %s</string>
+    <string name="emptyDataLabel">It is empty to here</string>
+    <string name="thankLabel">Thanks, for love</string>
+    <string name="searchForLabel">Search for a character, show or more....</string>
 
 
 </resources>

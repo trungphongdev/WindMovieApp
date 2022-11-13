@@ -2,22 +2,23 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/dp160"
-    android:layout_height="@dimen/dp200"
-    app:cardCornerRadius="@dimen/dp6">
+    android:layout_width="@dimen/dp250"
+    android:layout_height="@dimen/dp250"
+    app:cardCornerRadius="@dimen/dp6"
+    app:cardBackgroundColor="@android:color/transparent">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginEnd="@dimen/dp4">
+        android:layout_marginEnd="@dimen/dp50">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgMovie"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            tools:src="@drawable/logohome"/>
+            tools:src="@drawable/logohome" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

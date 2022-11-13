@@ -21,7 +21,7 @@ class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
     private val listFragment by lazy {
         arrayListOf(
             HomeFragment() as Fragment,
-            NewsFragment.newInstance("", "") as Fragment,
+            NewAndHotFragment() as Fragment,
             DownloadingFragment.newInstance("", "") as Fragment
         )
     }
@@ -47,11 +47,9 @@ class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
     }
 
     private fun initObserver() {
-        TODO("Not yet implemented")
     }
 
     private fun initListener() {
-        TODO("Not yet implemented")
     }
 
     private fun initView() {

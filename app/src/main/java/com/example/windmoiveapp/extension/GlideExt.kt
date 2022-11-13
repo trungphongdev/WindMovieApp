@@ -22,11 +22,11 @@ fun ImageView.loadRoundedImage(
 }
 
 fun ImageView.loadCircleImage(
-    image: Int?, @DimenRes radiusId: Int = R.dimen.dp4,
+    urlImage: String?, @DimenRes radiusId: Int = R.dimen.dp4,
     @DrawableRes defaultDrawableId: Int? = null
 ) {
     Glide.with(this)
-        .load(image)
+        .load(urlImage)
         .placeholder(defaultDrawableId ?: R.drawable.ic_user)
         .error(defaultDrawableId ?: R.drawable.ic_baseline_error_24)
         .circleCrop()
@@ -35,11 +35,14 @@ fun ImageView.loadCircleImage(
 
 fun ImageView.loadImage(
     urlImage: String,
-    @DrawableRes defaultDrawableId: Int = R.drawable.logohome
+    @DrawableRes defaultDrawableId: Int = R.drawable.logohome,
+    @DimenRes radiusId: Int = R.dimen.dp4
 ) {
     Glide.with(this)
         .load(urlImage)
         .placeholder(defaultDrawableId)
+        .transform(RoundedCorners(context.resources.getDimensionPixelSize(radiusId)))
+        .transition(DrawableTransitionOptions.withCrossFade())
         .error(defaultDrawableId)
         .into(this)
 }

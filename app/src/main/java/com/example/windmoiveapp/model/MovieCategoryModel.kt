@@ -1,5 +1,7 @@
 package com.example.windmoiveapp.model
 
+import com.example.windmoiveapp.constant.Categories
+
 data class MovieCategoryModel(
     val category: String? = null,
     val movies: List<MovieModel>? = null,
@@ -10,4 +12,21 @@ data class MovieCategoryModel(
         const val TYPE_CIRCLE = 2
         const val TYPE_HIGH = 3
     }
+}
+
+fun List<MovieCategoryModel>.setListMovieByType(): List<MovieCategoryModel> {
+    this.forEachIndexed { index, movie ->
+        when {
+            (movie.category == Categories.ANIMALS.type) -> {
+                this[index].viewType = MovieCategoryModel.TYPE_CIRCLE
+            }
+            (movie.category == Categories.FANTASY.type) -> {
+                this[index].viewType = MovieCategoryModel.TYPE_HIGH
+            }
+            else -> {
+                this[index].viewType = MovieCategoryModel.TYPE_NORMAL
+            }
+        }
+    }
+    return this
 }

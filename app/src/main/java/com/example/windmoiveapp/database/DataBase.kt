@@ -9,7 +9,7 @@ import com.example.windmoiveapp.model.Converters
 import com.example.windmoiveapp.model.MovieModel
 import com.example.windmoiveapp.model.NotificationModel
 
-const val VERSION = 2
+const val VERSION = 3
 const val EXPORT_SCHEMA = false
 const val WINDMOVIE_DB = "WINDMOVIE_DB"
 

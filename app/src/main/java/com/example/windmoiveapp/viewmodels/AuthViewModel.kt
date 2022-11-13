@@ -20,13 +20,12 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     fun signInWithEmailPassword(
         email: String,
         passWord: String,
-        onResult: ((Boolean) -> Unit)? = null
     ) {
         viewModelScope.launch {
             FireBaseService.signInWithEmailAndPassword(email, passWord, onSuccess = {
-                onResult?.invoke(true)
+                userModelLiveData.postValue(it?.convertToUserModel())
             }, onFailure = {
-                onResult?.invoke(false)
+                userModelLiveData.postValue(null)
             })
         }
     }

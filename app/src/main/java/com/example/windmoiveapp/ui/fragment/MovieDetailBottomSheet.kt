@@ -53,13 +53,13 @@ class MovieDetailBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun initObserver() {
-        movieViewModels.movieRoomLiveData.observe(viewLifecycleOwner) { it ->
+        movieViewModels.movieRoomLiveData.observe(viewLifecycleOwner) {
             if (it == null) {
                 isAdd = false
                 binding?.imgAdd?.setImageResource(R.drawable.ic_add)
             } else {
                 isAdd = true
-                binding?.imgAdd?.setImageResource(R.drawable.ic_done_circle)
+                binding?.imgAdd?.setImageResource(R.drawable.ic_baseline_check_circle_24)
             }
         }
     }
@@ -101,7 +101,7 @@ class MovieDetailBottomSheet : BottomSheetDialogFragment() {
                     binding?.imgAdd?.setImageResource(R.drawable.ic_add)
                     movieViewModels.removeMovieById(movieModel ?: return@setOnClickListener)
                 } else {
-                    binding?.imgAdd?.setImageResource(R.drawable.ic_done_circle)
+                    binding?.imgAdd?.setImageResource(R.drawable.ic_baseline_check_circle_24)
                     movieViewModels.addMovieToRoom(movieModel ?: return@setOnClickListener)
                 }
             }

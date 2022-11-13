@@ -36,9 +36,11 @@ import com.example.windmoiveapp.ui.MainActivity
 import com.google.android.material.tabs.TabLayout
 import org.json.JSONObject
 import java.math.BigDecimal
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import kotlin.math.roundToInt
 
 
 /*fun TextView.setIsSelected(isIsSelected: Boolean) {
@@ -748,4 +750,20 @@ fun JSONObject.getStringValue(key: String): String? {
     } catch (e: Exception) {
         null
     }
+}
+
+fun getDateRandom(): String {
+    val sfd = SimpleDateFormat("dd/MMM", Locale.getDefault())
+    val day = randomDayBetween(1, 30)
+    val month = randomDayBetween(1, 11)
+    val calendar = Calendar.getInstance()
+    calendar.set(Calendar.DAY_OF_MONTH, day)
+    calendar.set(Calendar.MONTH, month)
+    return sfd.format(calendar.time)
+
+}
+
+fun randomDayBetween(start: Int, end: Int): Int {
+    return start + (Math.random() * (end - start)).roundToInt()
+
 }

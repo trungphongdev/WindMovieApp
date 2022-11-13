@@ -42,7 +42,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun navigateToHomeFragment() {
-        findNavController().navigateWithAnim(R.id.homeFragment)
+        findNavController().navigateWithAnim(R.id.dashBroadScreen)
     }
 
     override fun onDestroyView() {
@@ -94,6 +94,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         initViews()
         initListener()
         initObserver()
+        validateEnableButtonLogin()
     }
 
     private fun initViews() {
@@ -127,11 +128,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             CallbackManager.Factory.create(),
             object : FacebookCallback<LoginResult> {
                 override fun onCancel() {
-                    activity?.getAlertDialog(context?.getString(R.string.errorMessageLabel) ?: "")
+                    activity?.showAlertDialog(context?.getString(R.string.errorMessageLabel) ?: "")
                 }
 
                 override fun onError(error: FacebookException) {
-                    activity?.getAlertDialog(error.message.toString())
+                    activity?.showAlertDialog(error.message.toString())
                 }
 
                 override fun onSuccess(result: LoginResult) {
@@ -139,26 +140,28 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                     navigateToHomeFragment()
                 }
             })
+
+        binding.edtPassword.afterTextChange {
+            validateEnableButtonLogin()
+        }
+    }
+
+    private fun validateEnableButtonLogin() {
+        binding.btnLogin.apply {
+            isEnabled = binding.edtEmail.text.isNotBlank() && binding.edtPassword.text.isNotBlank()
+            alpha = if (isEnabled) 1.0f else 0.6f
+        }
     }
 
     private fun setEventLogin() {
         val email = binding.edtEmail.text.toString()
         val password = binding.edtPassword.text.toString()
-        authenViewModel.signInWithEmailPassword(email, password, onResult = {
-            if (it) {
-                dismissProgress()
-                navigateToHomeFragment()
-            } else {
-                context?.showAlertDialog(getString(R.string.signInFailLabel))
-                dismissProgress()
-            }
-
-        })
+        authenViewModel.signInWithEmailPassword(email, password)
     }
 
     private fun invalidEmailPassword(): Boolean {
         val emailIsValid = binding.edtEmail.isValidEmail()
-        val passwordIsValid = binding.edtPassword.text.isNullOrBlank().not()
+        val passwordIsValid = binding.edtPassword.isValidString()
         return emailIsValid && passwordIsValid
     }
 
@@ -172,22 +175,23 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         }
 
         authenViewModel.userModelLiveData.observe(viewLifecycleOwner) { user ->
-            setUpInfoUserSignIn(user)
             dismissProgress()
+            if (user != null) {
+                navigateToHomeFragment()
+                setUpInfoUserSignIn(user)
+            } else {
+                context?.showAlertDialog(getString(R.string.signInFailLabel))
+            }
         }
     }
 
-    private fun setUpInfoUserSignIn(user: UserModel?) {
-        if (user != null) {
-            if (binding.cbAccount.isChecked) {
-                pref.putValue(PREF_USER, GsonExt.convertObjetToGson(user))
-            } else {
-                pref.removeKey(PREF_USER)
-            }
-            findNavController().navigateWithAnim(R.id.homeFragment)
+    private fun setUpInfoUserSignIn(user: UserModel) {
+        if (binding.cbAccount.isChecked) {
+            pref.putValue(PREF_USER, GsonExt.convertObjetToGson(user))
         } else {
-            activity.showCustomToast(getString(R.string.verifyEmailLabel))
+            pref.removeKey(PREF_USER)
         }
+        findNavController().navigateWithAnim(R.id.homeFragment)
     }
 
     private val startForResult =

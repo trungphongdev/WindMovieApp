@@ -8,6 +8,7 @@ import com.example.windmoiveapp.databinding.ItemMovieNormalBinding
 import com.example.windmoiveapp.databinding.ItemMovieTypeCircleBinding
 import com.example.windmoiveapp.databinding.ItemMovieTypeHighBinding
 import com.example.windmoiveapp.extension.click
+import com.example.windmoiveapp.extension.loadCircleImage
 import com.example.windmoiveapp.extension.loadImage
 import com.example.windmoiveapp.model.MovieCategoryModel
 import com.example.windmoiveapp.model.MovieModel
@@ -67,7 +68,7 @@ class MovieItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
 
             is MovieItemCircleViewHolder -> {
-                holder.binding.imgMovie.loadImage(itemData.image ?: "")
+                holder.binding.imgMovie.loadCircleImage(itemData.image ?: "")
                 holder.binding.tvName.text = itemData.name
                 holder.binding.root.click {
                     onItemClickMovieItem?.invoke(itemData)

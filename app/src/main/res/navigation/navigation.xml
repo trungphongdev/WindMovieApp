@@ -33,5 +33,35 @@
         android:name="com.example.windmoiveapp.ui.fragment.MovieDetailFragment"
         tools:layout="@layout/fragment_movie_detail" />
 
+    <fragment
+        android:id="@+id/moreAndLikeThisFragment"
+        android:label="@string/movieDetailLabel"
+        android:name="com.example.windmoiveapp.ui.fragment.MoreAndLikeThisFragment"
+        tools:layout="@layout/fragment_more_like_this_movie" />
+
+    <fragment
+        android:id="@+id/movieTrailerFragment"
+        android:label="@string/movieDetailLabel"
+        android:name="com.example.windmoiveapp.ui.fragment.TrailerMovieFragment"
+        tools:layout="@layout/fragment_more_like_this_movie" />
+
+    <fragment
+        android:id="@+id/myListFragment"
+        android:label="@string/movieDetailLabel"
+        android:name="com.example.windmoiveapp.ui.fragment.MyListFragment"
+        tools:layout="@layout/fragment_my_list_movie" />
+
+
+    <fragment
+        android:id="@+id/dashBroadScreen"
+        android:label="@string/movieDetailLabel"
+        android:name="com.example.windmoiveapp.ui.fragment.DashBoardScreen"
+        tools:layout="@layout/dash_board_screen" />
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:label="Search"
+        android:name="com.example.windmoiveapp.ui.fragment.SearchMovieFragment" />
+
 
 </navigation>

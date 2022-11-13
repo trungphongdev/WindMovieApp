@@ -16,9 +16,12 @@ import kotlinx.coroutines.launch
 class MovieViewModel(application: Application) : AndroidViewModel(application) {
     val dao = AppDatabase.getDatabase(getApplication<Application>().applicationContext)
     var listMovie: MutableLiveData<List<MovieModel>> = MutableLiveData()
+    var listMovieByName: MutableLiveData<List<MovieModel>> = MutableLiveData()
     var listMovieByCategories: MutableLiveData<List<MovieCategoryModel>> = MutableLiveData()
     var listMovieRoom: MutableLiveData<List<MovieModel>> = MutableLiveData()
     var movieRoomLiveData: MutableLiveData<MovieModel?> = MutableLiveData()
+    var likePostLiveData: MutableLiveData<Boolean> = MutableLiveData()
+
     fun convertToListMovieByCategory(listMovie: List<MovieModel>) {
         viewModelScope.launch {
             val listMovieCate = arrayListOf<MovieCategoryModel>()
@@ -45,6 +48,27 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun getMovieListByCategory(categories: Categories) {
+        viewModelScope.launch {
+            FireBaseService.getMovieByCategory(categories) {
+                listMovie.postValue(it)
+            }
+        }
+    }
+
+    fun getMovieListByName(name: String) {
+        viewModelScope.launch {
+            if (listMovie.value.isNullOrEmpty().not()) {
+                listMovieByName.postValue(
+                    listMovie.value?.filter { it.name?.contains(name) ?: false }
+                )
+            }
+            /*        FireBaseService.getMovieByName(name) {
+                        listMovieByName.postValue(it)
+                    }*/
+        }
+    }
+
     fun getListMovieRoom() {
         viewModelScope.launch {
             val listMovie = BuildDaoDatabase.getMovieDao(AppApplication()).getAllMovie()
@@ -68,6 +92,14 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     fun removeMovieById(movieModel: MovieModel?) {
         viewModelScope.launch {
             val movie = dao.getMovieDao().deleteMovie(movieModel?.id ?: return@launch)
+        }
+    }
+
+    fun invalidLikePost(isLike: Boolean = false, movieModel: MovieModel) {
+        viewModelScope.launch {
+            FireBaseService.likePostMovie(isLike, movieModel) {
+                likePostLiveData.postValue(it)
+            }
         }
     }
 }

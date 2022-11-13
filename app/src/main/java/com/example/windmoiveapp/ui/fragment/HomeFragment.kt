@@ -3,13 +3,12 @@ package com.example.windmoiveapp.ui.fragment
 import android.app.Application
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.windmoiveapp.R
@@ -18,8 +17,10 @@ import com.example.windmoiveapp.adapter.MovieAdapter
 import com.example.windmoiveapp.constant.Categories
 import com.example.windmoiveapp.databinding.FragmentHomeBinding
 import com.example.windmoiveapp.extension.click
+import com.example.windmoiveapp.extension.navigateWithAnim
 import com.example.windmoiveapp.model.MovieCategoryModel
 import com.example.windmoiveapp.model.MovieModel
+import com.example.windmoiveapp.model.setListMovieByType
 import com.example.windmoiveapp.util.PERMISSION_REQUEST_CODE
 import com.example.windmoiveapp.viewmodels.MovieViewModel
 
@@ -47,7 +48,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         savedInstanceState: Bundle?,
         isViewCreated: Boolean
     ) {
-        //movieViewModels.getMovieList()
         initViews()
         initListener()
         initObserver()
@@ -55,25 +55,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun initListener() {
         binding.tvCategories.click {
-            binding.rcvCategories.isVisible = true
-            binding.imvCloseCategory.isVisible = true
+            binding.llCategories.isVisible = true
         }
         binding.imvCloseCategory.click {
-            binding.rcvCategories.isGone = true
-            binding.imvCloseCategory.isGone = true
+            binding.llCategories.isVisible = false
         }
 
         categoryAdapter.setOnItemClickCategory {
-            binding.rcvCategories.isGone = true
-            binding.imvCloseCategory.isGone = true
+            binding.llCategories.isVisible = false
             binding.tvCategories.text = it.type
             if (it.name == Categories.HOME.name) {
                 binding.tvCategories.text = getString(R.string.categoriesLabel)
             }
+            callDataListMovieByCategory(it)
         }
 
         categoryMovieAdapter.onItemClickMovie = {
             showBottomSheetMovieDetail(it)
+        }
+        binding.headerBar.setEventSearchListener {
+            findNavController().navigateWithAnim(R.id.searchFragment)
         }
     }
 
@@ -86,10 +87,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         movieViewModels.listMovie.observe(viewLifecycleOwner) {
             dismissProgress()
             movieViewModels.convertToListMovieByCategory(it)
-            Log.d("listOfMovie1", "" + it.size)
         }
         movieViewModels.listMovieByCategories.observe(viewLifecycleOwner) {
-            Log.d("listOfMovie2", "" + it.size)
             setDataForAdapterListMovieCategory(it ?: emptyList())
         }
     }
@@ -150,8 +149,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         movieViewModels.getMovieList()
     }
 
+    private fun callDataListMovieByCategory(it: Categories) {
+        showProgress()
+        if (it.name == Categories.HOME.name) {
+            movieViewModels.getMovieList()
+        } else {
+            movieViewModels.getMovieListByCategory(it)
+        }
+    }
+
     private fun setDataForAdapterListMovieCategory(it: List<MovieCategoryModel>) {
-        categoryMovieAdapter.setList(it)
+        categoryMovieAdapter.setList(it.setListMovieByType())
     }
 
 

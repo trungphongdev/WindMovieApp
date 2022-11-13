@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/black">
+
+    <TextView
+        android:id="@+id/tvTimeRelease"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:fontFamily="@font/roboto_bold"
+        tools:text="movie"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imvMovie"
+        android:layout_width="0dp"
+        android:layout_height="160dp"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imvReel"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintStart_toStartOf="@id/imvMovie"
+        app:layout_constraintTop_toBottomOf="@id/imvMovie"
+        android:layout_marginTop="12dp"
+        app:srcCompat="@drawable/icon_reel" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imvInfo"
+        android:layout_width="@dimen/dp40"
+        android:layout_height="@dimen/dp40"
+        android:padding="@dimen/dp4"
+        app:layout_constraintBottom_toBottomOf="@+id/imvReel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imvReel"
+        app:srcCompat="@drawable/ic_info" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imvLove"
+        android:layout_width="@dimen/dp40"
+        android:layout_height="@dimen/dp40"
+        android:padding="@dimen/dp4"
+        app:srcCompat="@drawable/ic_not_love"
+        app:layout_constraintEnd_toStartOf="@id/imvInfo"
+        android:layout_marginEnd="@dimen/dp18"
+        app:layout_constraintTop_toTopOf="@id/imvInfo"
+        app:layout_constraintBottom_toBottomOf="@id/imvInfo" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvNumberLike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp6"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp12"
+        app:layout_constraintEnd_toEndOf="@id/imvLove"
+        app:layout_constraintStart_toStartOf="@id/imvLove"
+        app:layout_constraintTop_toBottomOf="@id/imvLove"
+        tools:text="kdsfjsdkfjasldkfj" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvNameMovie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp12"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textColor="@color/white"
+        android:fontFamily="@font/roboto_medium"
+        android:textSize="@dimen/sp22"
+        tools:text="kdsfjsdkfjasldkfj"
+        app:layout_constraintStart_toStartOf="@id/imvReel"
+        app:layout_constraintTop_toBottomOf="@id/imvReel" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp6"
+        android:alpha="0.6"
+        android:drawablePadding="10dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp16"
+        app:drawableEndCompat="@drawable/ic_drop_up"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tvNameMovie"
+        app:layout_constraintTop_toBottomOf="@id/tvNameMovie"
+        tools:text="kdsfjsdkfjasldkfj" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

@@ -43,6 +43,7 @@ class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>
                 ResourcesCompat.getFont(context, R.font.roboto_regular)
             holder.binding.tvCategory.textSize = 16f
         }
+
     }
 
     override fun getItemCount() = listCategory.size

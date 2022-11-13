@@ -1,249 +1,244 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragment.MovieDetailFragment"
     android:background="@color/black"
-    android:orientation="vertical">
-
-    <com.example.windmoiveapp.common.HeaderBar
-        android:id="@+id/headerBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:isShowButtonBack="true"
-        app:isShowSearch="true" />
-
-    <VideoView
-        android:id="@+id/videoView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:paddingHorizontal="@dimen/dp16" />
-
-    <TextView
-        android:id="@+id/tvName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/sp28"
-        tools:text="The Sea Beast"
-        android:textColor="@color/white"
-        android:fontFamily="@font/roboto_medium"
-        android:layout_marginStart="@dimen/dp6"
-        android:layout_marginTop="@dimen/dp12" />
+    android:orientation="vertical"
+    tools:context=".ui.fragment.MovieDetailFragment">
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp10">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:orientation="vertical"
+        tools:context=".ui.fragment.MovieDetailFragment">
+
+        <com.example.windmoiveapp.common.HeaderBar
+            android:id="@+id/headerBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:isShowButtonBack="true"
+            app:isShowSearch="true" />
+
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:paddingHorizontal="@dimen/dp16" />
 
         <TextView
-            android:id="@+id/tvYearRelease"
+            android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="2022"
-            android:textColor="@color/white"
+            android:layout_marginStart="@dimen/dp6"
+            android:layout_marginTop="@dimen/dp12"
             android:fontFamily="@font/roboto_medium"
-            android:layout_marginStart="@dimen/dp6"/>
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp28"
+            tools:text="The Sea Beast" />
 
-        <TextView
-            android:id="@+id/tvDuration"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="2022"
-            android:textColor="@color/white"
-            android:fontFamily="@font/roboto_medium"
-            android:layout_marginStart="@dimen/dp10"/>
+            android:layout_marginTop="@dimen/dp10">
 
-        <TextView
-            android:id="@+id/tvCategory"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tvYearRelease"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp6"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/white"
+                tools:text="2022" />
+
+            <TextView
+                android:id="@+id/tvDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp10"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/white"
+                tools:text="2022" />
+
+            <TextView
+                android:id="@+id/tvCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp10"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/white"
+                tools:text="2022" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="2022"
+            android:layout_marginHorizontal="@dimen/dp8"
+            android:layout_marginTop="@dimen/dp12"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/dp4">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llPlayMovie"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingVertical="@dimen/dp8">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPlay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@string/playLabel"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp22"
+                    app:layout_constraintBottom_toBottomOf="@id/imvPlay"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/imvPlay"
+                    app:layout_constraintTop_toTopOf="@id/imvPlay" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imvPlay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dp8"
+                    android:tint="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvPlay"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_play" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp8"
+            android:layout_marginTop="@dimen/dp4"
+            app:cardCornerRadius="@dimen/dp4">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/grey5E5E5E"
+                android:paddingVertical="@dimen/dp8">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDownload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@string/downloadLabel"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp22"
+                    app:layout_constraintBottom_toBottomOf="@id/imvDownload"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/imvDownload"
+                    app:layout_constraintTop_toTopOf="@id/imvDownload" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imvDownload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dp8"
+                    android:tint="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvDownload"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_download" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp8"
+            android:layout_marginTop="@dimen/dp12"
+            android:maxLines="6"
+            android:minHeight="@dimen/dp60"
             android:textColor="@color/white"
-            android:fontFamily="@font/roboto_medium"
-            android:layout_marginStart="@dimen/dp10"/>
+            android:textSize="@dimen/sp16"
+            tools:text="kdsfjsdkfjasldkfj" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp12"
+            android:paddingHorizontal="@dimen/dp40">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imvMyList"
+                android:layout_width="@dimen/dp40"
+                android:layout_height="@dimen/dp40"
+                android:padding="@dimen/dp4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_add" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/myListLabel"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="@id/imvMyList"
+                app:layout_constraintStart_toStartOf="@id/imvMyList"
+                app:layout_constraintTop_toBottomOf="@id/imvMyList" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imvMyRate"
+                android:layout_width="@dimen/dp40"
+                android:layout_height="@dimen/dp40"
+                android:layout_marginStart="@dimen/dp40"
+                android:padding="@dimen/dp4"
+                app:layout_constraintStart_toEndOf="@id/imvMyList"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/icon_like_round" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/rateLabel"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="@id/imvMyRate"
+                app:layout_constraintStart_toStartOf="@id/imvMyRate"
+                app:layout_constraintTop_toBottomOf="@id/imvMyRate" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayoutOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            app:tabIndicator="@drawable/ic_tab_indicator"
+            app:tabIndicatorColor="@color/redB11313"
+            app:tabIndicatorHeight="@dimen/dp20"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/redB11313"
+            app:tabTextColor="@color/white"></com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vpMovie"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp400" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="@dimen/dp4"
-        android:layout_marginTop="@dimen/dp12"
-        android:layout_marginHorizontal="@dimen/dp8">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/llPlayMovie"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingVertical="@dimen/dp8">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvPlay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/playLabel"
-                android:fontFamily="@font/roboto_medium"
-                android:textSize="@dimen/sp22"
-                android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imvPlay"
-                app:layout_constraintTop_toTopOf="@id/imvPlay"
-                app:layout_constraintBottom_toBottomOf="@id/imvPlay"
-                />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imvPlay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_play"
-                android:tint="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tvPlay"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                android:layout_marginEnd="@dimen/dp8"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/dp4"
-        android:layout_marginTop="@dimen/dp4"
-        android:layout_marginHorizontal="@dimen/dp8">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingVertical="@dimen/dp8"
-            android:background="@color/grey5E5E5E">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvDownload"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/downloadLabel"
-                android:fontFamily="@font/roboto_medium"
-                android:textSize="@dimen/sp22"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imvDownload"
-                app:layout_constraintTop_toTopOf="@id/imvDownload"
-                app:layout_constraintBottom_toBottomOf="@id/imvDownload"
-                />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imvDownload"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_download"
-                android:tint="@color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tvDownload"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                android:layout_marginEnd="@dimen/dp8"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="6"
-        android:layout_marginHorizontal="@dimen/dp8"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp16"
-        tools:text="kdsfjsdkfjasldkfj"
-        android:layout_marginTop="@dimen/dp12"
-        android:minHeight="@dimen/dp60" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/dp40"
-        android:layout_marginTop="@dimen/dp12">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imvMyList"
-            android:layout_width="@dimen/dp40"
-            android:layout_height="@dimen/dp40"
-            android:padding="@dimen/dp4"
-            app:srcCompat="@drawable/ic_add"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/myListLabel"
-            android:textColor="@color/white"
-            android:fontFamily="@font/roboto_medium"
-            app:layout_constraintStart_toStartOf="@id/imvMyList"
-            app:layout_constraintEnd_toEndOf="@id/imvMyList"
-            app:layout_constraintTop_toBottomOf="@id/imvMyList"/>
-
-
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imvMyRate"
-            android:layout_width="@dimen/dp40"
-            android:layout_height="@dimen/dp40"
-            android:padding="@dimen/dp4"
-            app:srcCompat="@drawable/icon_like_round"
-            app:layout_constraintStart_toEndOf="@id/imvMyList"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="@dimen/dp40"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/rateLabel"
-            android:textColor="@color/white"
-            android:fontFamily="@font/roboto_medium"
-            app:layout_constraintStart_toStartOf="@id/imvMyRate"
-            app:layout_constraintEnd_toEndOf="@id/imvMyRate"
-            app:layout_constraintTop_toBottomOf="@id/imvMyRate"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayoutOptions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/black"
-        app:tabIndicator="@drawable/ic_tab_indicator"
-        app:tabIndicatorColor="@color/redB11313"
-        app:tabIndicatorHeight="@dimen/dp40"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/redB11313"
-        app:tabTextColor="@color/white">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/moreLikeThisLabel" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/trailerAndMoreLabel" />
-    </com.google.android.material.tabs.TabLayout>
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vpMovie"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp200" />
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.core.widget.NestedScrollView>
 
 
 

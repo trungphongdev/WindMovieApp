@@ -1,6 +1,7 @@
 package com.example.windmoiveapp.firebase
 
 import android.util.Log
+import com.example.windmoiveapp.constant.Categories
 import com.example.windmoiveapp.model.MovieModel
 import com.example.windmoiveapp.model.UserModel
 import com.google.firebase.auth.FirebaseUser
@@ -13,6 +14,9 @@ import timber.log.Timber
 object FireBaseService {
     private const val USERS = "users"
     private const val MOVIES = "movies"
+    private const val CATEGORIES = "categories"
+    private const val DISLIKE_NUM = "dislikeNum"
+    private const val LIKE_NUM = "likeNum"
     val db = Firebase.firestore
     private val auth = Firebase.auth
     private const val TAG = "Firebase"
@@ -156,4 +160,58 @@ object FireBaseService {
         }
     }
 
+    suspend fun likePostMovie(
+        isLike: Boolean = false,
+        movieModel: MovieModel,
+        onResult: ((Boolean) -> Unit)?
+    ) {
+        val movie = db.collection(MOVIES).document(movieModel.id)
+        if (isLike) {
+            movie.update(LIKE_NUM, ((movieModel.likeNum ?: 0) + 1))
+                .addOnCompleteListener { onResult?.invoke(true) }
+                .addOnFailureListener { onResult?.invoke(false) }
+        } else {
+            movie.update(DISLIKE_NUM, ((movieModel.dislikeNum ?: 0) + 1))
+                .addOnCompleteListener { onResult?.invoke(true) }
+                .addOnFailureListener { onResult?.invoke(false) }
+        }
+    }
+
+    suspend fun getMovieByCategory(category: Categories, list: ((List<MovieModel>) -> Unit)) {
+        val listMovie = ArrayList<MovieModel>()
+        db.collection(MOVIES)
+            .whereArrayContains(CATEGORIES, category.name)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (movie in documents.toObjects(MovieModel::class.java)) {
+                    listMovie.add(movie)
+                    Timber.tag("moviesbycate").d("size" + listMovie.size)
+                }
+                list.invoke(listMovie)
+            }
+            .addOnFailureListener { exception ->
+                Timber.tag(TAG).w(exception, "Error getting documents: ")
+                list.invoke(emptyList())
+            }
+    }
+
+/*    suspend fun getMovieByName(name: String, list: ((List<MovieModel>) -> Unit)) {
+        val listMovie = ArrayList<MovieModel>()
+        db.collection(MOVIES)
+            .whereLessThan("name", name)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (movie in documents.toObjects(MovieModel::class.java)) {
+                    listMovie.add(movie)
+                    Timber.tag("moviesbycate").d("size" + listMovie.size)
+                }
+                list.invoke(listMovie)
+            }
+            .addOnFailureListener { exception ->
+                Timber.tag(TAG).w(exception, "Error getting documents: ")
+                list.invoke(emptyList())
+            }
+    }*/
+
 }
+

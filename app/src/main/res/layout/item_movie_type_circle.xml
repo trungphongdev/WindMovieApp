@@ -2,22 +2,23 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/dp100"
-    android:layout_height="@dimen/dp120"
+    android:layout_width="@dimen/dp200"
+    android:layout_height="@dimen/dp200"
+    app:cardBackgroundColor="@android:color/transparent"
     app:cardCornerRadius="@dimen/dp6">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginEnd="@dimen/dp4">
+        android:layout_marginEnd="@dimen/dp60">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgMovie"
-            android:layout_width="@dimen/dp100"
-            android:layout_height="@dimen/dp100"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp160"
             android:scaleType="fitXY"
-            tools:src="@drawable/logohome"/>
+            tools:src="@drawable/logohome" />
 
         <TextView
             android:id="@+id/tvName"

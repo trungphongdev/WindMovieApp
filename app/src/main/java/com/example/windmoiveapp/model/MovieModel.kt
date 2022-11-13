@@ -23,8 +23,8 @@ data class MovieModel(
     val image: String? = "",
     val categories: List<String> = listOf()
 ) : Parcelable {
-/*    var isLike: Boolean = false
-    var isAdd: Boolean = false*/
+    var isLike: Boolean = false
+    var isAdd: Boolean = false
 }
 
 class Converters {
