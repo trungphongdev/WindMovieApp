@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -99,6 +100,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private fun initViews() {
         isSaveUserInfo()
+        binding.edtPassword.apply {
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            setSwitchPasswordDialog()
+        }
     }
 
     private fun isSaveUserInfo() {
@@ -144,11 +149,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         binding.edtPassword.afterTextChange {
             validateEnableButtonLogin()
         }
+
+        binding.imgBack.setOnClickListener {
+            onBackFragment()
+        }
     }
 
     private fun validateEnableButtonLogin() {
         binding.btnLogin.apply {
-            isEnabled = binding.edtEmail.text.isNotBlank() && binding.edtPassword.text.isNotBlank()
+            isEnabled = binding.edtEmail.isValidEmail() && binding.edtPassword.isValidString()
             alpha = if (isEnabled) 1.0f else 0.6f
         }
     }
@@ -191,7 +200,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         } else {
             pref.removeKey(PREF_USER)
         }
-        findNavController().navigateWithAnim(R.id.homeFragment)
+        moveToDashBoard()
     }
 
     private val startForResult =
@@ -222,6 +231,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         } catch (e: ApiException) {
             activity?.getAlertDialog(e.message ?: "")
         }
+    }
+
+    override fun loadData() {
+        super.loadData()
     }
 
 

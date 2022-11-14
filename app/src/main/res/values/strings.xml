@@ -51,6 +51,7 @@
     <string name="emptyDataLabel">It is empty to here</string>
     <string name="thankLabel">Thanks, for love</string>
     <string name="searchForLabel">Search for a character, show or more....</string>
+    <string name="adUnitID">ca-app-pub-3292279140391234/1127228964</string>
 
 
 </resources>

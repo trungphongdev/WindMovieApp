@@ -2,16 +2,14 @@ package com.example.windmoiveapp.ui.fragment
 
 import android.app.Application
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.databinding.FragmentSignUpBinding
-import com.example.windmoiveapp.extension.click
-import com.example.windmoiveapp.extension.isValidEmail
-import com.example.windmoiveapp.extension.navigateWithAnim
-import com.example.windmoiveapp.extension.showAlertDialog
+import com.example.windmoiveapp.extension.*
 import com.example.windmoiveapp.viewmodels.AuthViewModel
 
 class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
@@ -37,6 +35,14 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
     ) {
         initObserver()
         initListener()
+        initViews()
+    }
+
+    private fun initViews() {
+        binding.edtPassword.apply {
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            setSwitchPasswordDialog()
+        }
     }
 
     private fun initObserver() {
@@ -55,11 +61,19 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
             }
         }
 
+        binding.edtPassword.afterTextChange {
+            validateEnableButtonLogin()
+        }
+
+        binding.imgBack.setOnClickListener {
+            onBackFragment()
+        }
+
     }
 
     private fun invalidEmailPassword(): Boolean {
         val emailIsValid = binding.edtEmail.isValidEmail()
-        val passwordIsValid = binding.edtPassword.text.isNullOrBlank().not()
+        val passwordIsValid = binding.edtPassword.isValidString()
         return emailIsValid && passwordIsValid
     }
 
@@ -77,6 +91,15 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
     }
 
     private fun navigateToHomeScreen() {
-        findNavController().navigateWithAnim(R.id.homeFragment)
+        findNavController().navigateWithAnim(R.id.dashBroadScreen)
     }
+
+    private fun validateEnableButtonLogin() {
+        binding.btnSignUp.apply {
+            isEnabled = binding.edtEmail.isValidEmail() && binding.edtPassword.isValidString()
+            alpha = if (isEnabled) 1.0f else 0.6f
+        }
+    }
+
+
 }

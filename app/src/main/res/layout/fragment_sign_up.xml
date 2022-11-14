@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.SignUpFragment"
-    android:paddingHorizontal="@dimen/dp16"
+    android:padding="@dimen/dp16"
     android:background="@color/black">
 
     <androidx.constraintlayout.widget.Guideline
@@ -14,6 +14,14 @@
         android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.1"
         android:orientation="horizontal" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imgLogo"
@@ -93,7 +101,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:paddingVertical="10dp"
-        android:paddingHorizontal="16dp" />
+        android:paddingHorizontal="16dp"
+        android:inputType="textPassword"
+        android:drawableEnd="@drawable/ic_hide_eye"/>
 
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/cbAccount"

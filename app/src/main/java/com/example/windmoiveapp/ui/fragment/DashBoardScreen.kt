@@ -4,19 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.adapter.ViewPagerAdapter
 import com.example.windmoiveapp.databinding.DashBoardScreenBinding
 import com.example.windmoiveapp.extension.setFixedAdapter
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
-
-    private var param1: String? = null
-    private var param2: String? = null
 
     private val listFragment by lazy {
         arrayListOf(
@@ -24,6 +24,11 @@ class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
             NewAndHotFragment() as Fragment,
             DownloadingFragment.newInstance("", "") as Fragment
         )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        MobileAds.initialize(requireContext()) {}
     }
 
     override fun onCreateViewBinding(
@@ -43,6 +48,8 @@ class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
             initView()
             initListener()
             initObserver()
+            val adRequest = AdRequest.Builder().build()
+            binding.adView.loadAd(adRequest)
         }
     }
 
@@ -50,6 +57,34 @@ class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
     }
 
     private fun initListener() {
+
+        binding.adView.adListener = object : AdListener() {
+            override fun onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            override fun onAdClosed() {
+                binding.adView.isVisible = false
+            }
+
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                // Code to be executed when an ad request fails.
+            }
+
+            override fun onAdImpression() {
+                // Code to be executed when an impression is recorded
+                // for an ad.
+            }
+
+            override fun onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            override fun onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+            }
+        }
     }
 
     private fun initView() {

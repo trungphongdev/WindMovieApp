@@ -32,18 +32,19 @@
             android:id="@+id/edtSearch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/imvSearch"
             android:layout_marginStart="@dimen/dp12"
-            app:layout_constraintEnd_toStartOf="@id/imvRemoveSearch"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:hint="@string/searchForLabel"
-            android:textColorHint="#80FFFFFF"
             android:background="@null"
-            android:singleLine="true"
             android:ellipsize="end"
-
-            />
+            android:hint="@string/searchForLabel"
+            android:singleLine="true"
+            android:textColorHint="#80FFFFFF"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imvRemoveSearch"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/imvSearch"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.478" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imvRemoveSearch"

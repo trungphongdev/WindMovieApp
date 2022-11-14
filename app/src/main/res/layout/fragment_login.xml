@@ -16,6 +16,15 @@
         android:visibility="gone">
         <
     </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/glLogo"
         android:layout_width="wrap_content"
@@ -100,7 +109,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:paddingVertical="10dp"
-        android:paddingHorizontal="16dp"/>
+        android:paddingHorizontal="16dp"
+        android:inputType="textPassword"
+        android:drawableEnd="@drawable/ic_hide_eye"/>
 
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/cbAccount"

@@ -5,12 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.adapter.IntroPagerAdapter
 import com.example.windmoiveapp.databinding.FragmentStartPageBinding
 import com.example.windmoiveapp.extension.click
 import com.example.windmoiveapp.extension.navigateWithAnim
+import com.example.windmoiveapp.network.NetWork.isNetWorkAvailable
+import com.example.windmoiveapp.ui.MainActivity
 
 class StartPageFragment : BaseFragment<FragmentStartPageBinding>() {
     private var param1: String? = null
@@ -31,10 +34,7 @@ class StartPageFragment : BaseFragment<FragmentStartPageBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateViewBinding(
@@ -50,8 +50,21 @@ class StartPageFragment : BaseFragment<FragmentStartPageBinding>() {
         savedInstanceState: Bundle?,
         isViewCreated: Boolean
     ) {
+        internetIsAvailable()
         initListener()
         initViewPager()
+    }
+
+    private fun internetIsAvailable() {
+        context?.let {
+            if (!it.isNetWorkAvailable()) {
+                (activity as? MainActivity)?.showNoInternetDialog()
+                binding.btnLogin.isEnabled = false
+                binding.btnLogin.alpha = 0.6f
+                binding.btnSignUp.isEnabled = false
+                binding.btnSignUp.alpha = 0.6f
+            }
+        }
     }
 
     private fun initViewPager() {

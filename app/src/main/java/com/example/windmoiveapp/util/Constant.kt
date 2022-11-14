@@ -2,6 +2,7 @@ package com.example.windmoiveapp.util
 
 const val BASE_URL_YOUTUBE = "https://www.googleapis.com/youtube/v3"
 const val API_KEY_GG_HIEPDINH = "AIzaSyDYAJAWiUDmNvVqMsF4KqwCZGKFxEGRLzE"
+const val ADS_UNIT = "ca-app-pub-3292279140391234/1127228964"
 const val TIME_OUT = 30000L
 const val PASSWORD_CHAR_STYLE_DOT: Char = '.'
 const val PASSWORD_HIDE_7_CHAR: String = "0000000"
