@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/black">
+
+    <com.example.windmoiveapp.common.HeaderBar
+        android:id="@+id/headerBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:isShowButtonBack="true"
+        app:isShowTitle="true"
+        app:title="@string/addMovieLabel" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="@dimen/dp16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerBar">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlMovieId"
+            style="@style/StyleTextInputLayoutGroupField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp10"
+            android:clickable="false"
+            android:hint="@string/movieIdLabel"
+            android:textSize="@dimen/sp14">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtMovieId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_bottom_line"
+                android:fontFamily="@font/roboto_medium"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:paddingVertical="@dimen/dp8"
+                android:textColor="@color/colorRegular"
+                android:textSize="@dimen/sp16" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlMovieName"
+            style="@style/StyleTextInputLayoutGroupField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp10"
+            android:clickable="false"
+            android:hint="@string/movieNameLabel"
+            android:textSize="@dimen/sp14">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtMovieName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_bottom_line"
+                android:fontFamily="@font/roboto_medium"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:paddingVertical="@dimen/dp8"
+                android:textColor="@color/colorRegular"
+                android:textSize="@dimen/sp16" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlMovieDesc"
+            style="@style/StyleTextInputLayoutGroupField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp10"
+            android:clickable="false"
+            android:hint="@string/movieDescLabel"
+            android:textSize="@dimen/sp14">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtMovieDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_bottom_line"
+                android:fontFamily="@font/roboto_medium"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:paddingVertical="@dimen/dp8"
+                android:textColor="@color/colorRegular"
+                android:textSize="@dimen/sp16" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp20"
+            android:layout_marginTop="@dimen/dp10"
+            android:background="@color/whiteEBEBEB"
+            android:minWidth="@dimen/dp120"
+            android:popupBackground="@drawable/bg_popup_spinner"
+            android:popupElevation="@dimen/dp6" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlDuration"
+            style="@style/StyleTextInputLayoutGroupField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp10"
+            android:clickable="false"
+            android:hint="@string/movieDurationLabel"
+            android:textSize="@dimen/sp14">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtDuration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_bottom_line"
+                android:fontFamily="@font/roboto_medium"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:paddingVertical="@dimen/dp8"
+                android:textColor="@color/colorRegular"
+                android:textSize="@dimen/sp16" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlYearOfRelease"
+            style="@style/StyleTextInputLayoutGroupField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp10"
+            android:clickable="false"
+            android:hint="@string/movieYearOfReleaseLabel"
+            android:textSize="@dimen/sp14">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtYearOfRelease"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_bottom_line"
+                android:fontFamily="@font/roboto_medium"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:paddingVertical="@dimen/dp8"
+                android:textColor="@color/colorRegular"
+                android:textSize="@dimen/sp16" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlTrailerUrl"
+            style="@style/StyleTextInputLayoutGroupField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp10"
+            android:clickable="false"
+            android:hint="@string/movieTrailerLabel"
+            android:textSize="@dimen/sp14">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtTrailerUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_bottom_line"
+                android:fontFamily="@font/roboto_medium"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:paddingVertical="@dimen/dp8"
+                android:textColor="@color/colorRegular"
+                android:textSize="@dimen/sp16" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlMovieUrl"
+            style="@style/StyleTextInputLayoutGroupField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp10"
+            android:clickable="false"
+            android:hint="@string/movieLabel"
+            android:textSize="@dimen/sp14">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtMovieUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_bottom_line"
+                android:fontFamily="@font/roboto_medium"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:paddingVertical="@dimen/dp8"
+                android:textColor="@color/colorRegular"
+                android:textSize="@dimen/sp16" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp10"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/imageLabel"
+            android:textColor="@color/colorSubText"
+            android:textSize="@dimen/sp16" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imvMovieImage"
+            android:layout_width="@dimen/dp200"
+            android:layout_height="@dimen/dp100"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp12"
+            app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24"/>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
+        android:id="@+id/tvOption"
+        style="@style/AppThemeButton"
+        android:layout_marginTop="@dimen/dp16"
+        tools:text="@string/addMovieLabel"
+        android:textAllCaps="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="@dimen/dp16"
+        tools:visibility="visible"
+        android:visibility="gone"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

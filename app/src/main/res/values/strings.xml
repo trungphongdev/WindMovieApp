@@ -52,6 +52,31 @@
     <string name="thankLabel">Thanks, for love</string>
     <string name="searchForLabel">Search for a character, show or more....</string>
     <string name="adUnitID">ca-app-pub-3292279140391234/1127228964</string>
+    <string name="addMovieLabel">Add Movie</string>
+    <string name="movieIdLabel">Movie ID</string>
+    <string name="movieNameLabel">Movie Name</string>
+    <string name="movieDescLabel">Description</string>
+    <string name="movieYearOfReleaseLabel">Year Of Release</string>
+    <string name="movieDurationLabel">Duration</string>
+    <string name="movieTrailerLabel">Trailer Uri</string>
+    <string name="movieLabel">Movie Uri</string>
+    <string name="imageLabel">Movie Image</string>
+    <string name="profileLabel">Profile</string>
+    <string name="changeAvtLabel">Change Avatar</string>
+    <string name="usernameLabel">Username</string>
+    <string name="emailLabel">Email</string>
+    <string name="phoneLabel">Phone</string>
+    <string name="accountType">Account Type</string>
+    <string name="idLabel">ID</string>
+    <string name="updateLabel">Update</string>
+    <string name="maleLabel">Male</string>
+    <string name="femaleLabel">Female</string>
+    <string name="genderLabel">Gender</string>
+    <string name="arrangeByLabel">Arrange By:</string>
+    <string name="nothingLabel">Nothing</string>
+    <string name="writeCmtLabel">Write Comment...</string>
+    <string name="commentLabel">Comments</string>
+    <string name="commentLabel">Comments</string>
 
 
 </resources>

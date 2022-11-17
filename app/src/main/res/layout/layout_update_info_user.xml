@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <com.example.windmoiveapp.common.HeaderBar
+        android:id="@+id/headerBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:isShowButtonBack="true"
+        app:isShowTitle="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/profileLabel" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="@dimen/dp16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerBar">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/llChangeAvt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="@dimen/dp100"
+                android:layout_height="@dimen/dp100"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp12"
+                android:src="@drawable/ic_round_account"
+                app:civ_border_color="@android:color/holo_red_light"
+                app:civ_border_width="@dimen/dp3" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp6"
+                android:text="@string/changeAvtLabel"
+                android:textColor="@color/white" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlUserId"
+            style="@style/StyleTextInputLayoutGroupField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp10"
+            android:clickable="false"
+            android:hint="@string/idLabel"
+            android:textSize="@dimen/sp14">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_bottom_line"
+                android:enabled="false"
+                android:fontFamily="@font/roboto_medium"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:paddingVertical="@dimen/dp8"
+                android:textColor="@color/colorRegular"
+                android:textSize="@dimen/sp16" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlUserName"
+            style="@style/StyleTextInputLayoutGroupField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp10"
+            android:clickable="false"
+            android:hint="@string/usernameLabel"
+            android:textSize="@dimen/sp14">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_bottom_line"
+                android:fontFamily="@font/roboto_medium"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:paddingVertical="@dimen/dp8"
+                android:textColor="@color/colorRegular"
+                android:textSize="@dimen/sp16" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+       <!-- <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/llGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/dp10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/genderLabel"
+                android:textColor="@color/colorSubText"
+                android:textSize="@dimen/sp16" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp6"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/redB11313"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@string/maleLabel"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp16"
+                    android:buttonTint="@color/redB11313"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@string/femaleLabel"
+                    android:textColor="@color/white" />
+            </RadioGroup>
+        </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlEmail"
+            style="@style/StyleTextInputLayoutGroupField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp10"
+            android:clickable="false"
+            android:hint="@string/emailLabel"
+            android:textSize="@dimen/sp14">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_bottom_line"
+                android:fontFamily="@font/roboto_medium"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:paddingVertical="@dimen/dp8"
+                android:textColor="@color/colorRegular"
+                android:textSize="@dimen/sp16" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlPhone"
+            style="@style/StyleTextInputLayoutGroupField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp10"
+            android:clickable="false"
+            android:hint="@string/phoneLabel"
+            android:textSize="@dimen/sp14">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_bottom_line"
+                android:fontFamily="@font/roboto_medium"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:paddingVertical="@dimen/dp8"
+                android:textColor="@color/colorRegular"
+                android:textSize="@dimen/sp16" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlAccountType"
+            style="@style/StyleTextInputLayoutGroupField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp10"
+            android:clickable="false"
+            android:hint="@string/accountType"
+            android:textSize="@dimen/sp14">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtAccountType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_bottom_line"
+                android:fontFamily="@font/roboto_medium"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:paddingVertical="@dimen/dp8"
+                android:textColor="@color/colorRegular"
+                android:textSize="@dimen/sp16" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
+        android:id="@+id/tvOption"
+        style="@style/AppThemeButton"
+        android:layout_margin="@dimen/dp16"
+        android:layout_marginTop="@dimen/dp22"
+        android:text="@string/updateLabel"
+        android:textAllCaps="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

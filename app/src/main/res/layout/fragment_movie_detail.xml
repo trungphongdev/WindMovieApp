@@ -169,19 +169,21 @@
             android:minHeight="@dimen/dp60"
             android:textColor="@color/white"
             android:textSize="@dimen/sp16"
-            tools:text="kdsfjsdkfjasldkfj" />
+            tools:text="@string/movieDescLabel"
+            android:lineSpacingMultiplier="1.2"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp12"
-            android:paddingHorizontal="@dimen/dp40">
+            android:layout_marginHorizontal="@dimen/dp12"
+            android:layout_marginTop="@dimen/dp12">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imvMyList"
                 android:layout_width="@dimen/dp40"
                 android:layout_height="@dimen/dp40"
-                android:padding="@dimen/dp4"
+                app:layout_constraintEnd_toStartOf="@+id/imvLike"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_add" />
@@ -198,12 +200,14 @@
 
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imvMyRate"
+                android:id="@+id/imvLike"
                 android:layout_width="@dimen/dp40"
                 android:layout_height="@dimen/dp40"
                 android:layout_marginStart="@dimen/dp40"
                 android:padding="@dimen/dp4"
-                app:layout_constraintStart_toEndOf="@id/imvMyList"
+                app:layout_constraintEnd_toStartOf="@+id/imvDislike"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imvMyList"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/icon_like_round" />
 
@@ -211,13 +215,68 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
-                android:text="@string/rateLabel"
                 android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="@id/imvMyRate"
-                app:layout_constraintStart_toStartOf="@id/imvMyRate"
-                app:layout_constraintTop_toBottomOf="@id/imvMyRate" />
+                app:layout_constraintEnd_toEndOf="@id/imvLike"
+                app:layout_constraintStart_toStartOf="@id/imvLike"
+                app:layout_constraintTop_toBottomOf="@id/imvLike"
+                tools:text="12" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imvDislike"
+                android:layout_width="@dimen/dp40"
+                android:layout_height="@dimen/dp40"
+                android:layout_marginStart="@dimen/dp40"
+                android:padding="@dimen/dp4"
+                app:layout_constraintEnd_toStartOf="@+id/imvComment"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imvLike"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/dislike" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="@id/imvDislike"
+                app:layout_constraintStart_toStartOf="@id/imvDislike"
+                app:layout_constraintTop_toBottomOf="@id/imvDislike"
+                tools:text="11" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imvComment"
+                android:layout_width="@dimen/dp40"
+                android:layout_height="@dimen/dp40"
+                android:layout_marginStart="@dimen/dp40"
+                android:padding="@dimen/dp4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imvDislike"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_comment_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/commentLabel"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="@id/imvComment"
+                app:layout_constraintStart_toStartOf="@id/imvComment"
+                app:layout_constraintTop_toBottomOf="@id/imvComment" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/llComment"
+            layout="@layout/layout_comment_movie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp6"
+            android:layout_marginTop="@dimen/dp12"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayoutOptions"
@@ -229,7 +288,8 @@
             app:tabIndicatorHeight="@dimen/dp20"
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/redB11313"
-            app:tabTextColor="@color/white"></com.google.android.material.tabs.TabLayout>
+            app:tabTextColor="@color/white"
+            android:layout_marginTop="@dimen/dp6"/>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vpMovie"

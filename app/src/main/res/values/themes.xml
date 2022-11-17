@@ -23,4 +23,32 @@
         <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
         <item name="fullscreenTextColor">@color/light_blue_A200</item>
     </style>
+
+    <style name="StyleTextInputLayoutGroupField" parent="Widget.Design.TextInputLayout">
+        <item name="android:textColorHint">@color/colorSubText</item>
+        <item name="hintTextColor">@color/colorSubText</item>
+        <item name="theme">@style/ThemeTextInputLayoutGroupField</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="ThemeTextInputLayoutGroupField">
+        <item name="colorPrimary">@color/colorSubText</item>
+        <item name="colorControlActivated">@color/colorRegular</item>
+        <item name="colorSecondary">@color/colorSubText</item>
+    </style>
+
+
+    <style name="AppThemeButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">@dimen/sp18</item>
+        <item name="android:background">@drawable/bg_button</item>
+        <item name="android:paddingTop">@dimen/dp8</item>
+        <item name="android:paddingBottom">@dimen/dp8</item>
+        <item name="minHeight">@dimen/dp50</item>
+        <item name="android:gravity">center</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
 </resources>

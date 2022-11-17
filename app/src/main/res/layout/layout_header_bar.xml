@@ -40,7 +40,7 @@
         tools:text="@string/homeLabel"
         android:textColor="@color/white"
         android:textSize="@dimen/sp26"
-        android:fontFamily="@font/roboto_bold"
+        android:fontFamily="@font/roboto_medium"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/imgBack"
