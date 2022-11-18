@@ -76,6 +76,7 @@
     <string name="nothingLabel">Nothing</string>
     <string name="writeCmtLabel">Write Comment…</string>
     <string name="commentLabel">Comments</string>
+    <string name="default_notification_channel_id">channelID</string>
 
 
 </resources>
