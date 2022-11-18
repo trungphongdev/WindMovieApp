@@ -10,6 +10,7 @@ import com.example.windmoiveapp.database.BuildDaoDatabase
 import com.example.windmoiveapp.firebase.FireBaseService
 import com.example.windmoiveapp.model.MovieCategoryModel
 import com.example.windmoiveapp.model.MovieModel
+import com.example.windmoiveapp.model.UserModel
 import com.example.windmoiveapp.util.AppApplication
 import kotlinx.coroutines.launch
 
@@ -21,6 +22,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     var listMovieRoom: MutableLiveData<List<MovieModel>> = MutableLiveData()
     var movieRoomLiveData: MutableLiveData<MovieModel?> = MutableLiveData()
     var likePostLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    var listAllUser: MutableLiveData<List<UserModel>> = MutableLiveData()
 
     fun convertToListMovieByCategory(listMovie: List<MovieModel>) {
         viewModelScope.launch {
@@ -100,6 +102,12 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
             FireBaseService.likePostMovie(isLike, movieModel) {
                 likePostLiveData.postValue(it)
             }
+        }
+    }
+
+    fun getAllUser() {
+        FireBaseService.getInfoAllUser {
+            listAllUser.postValue(it)
         }
     }
 }

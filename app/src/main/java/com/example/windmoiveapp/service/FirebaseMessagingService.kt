@@ -20,6 +20,7 @@ import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class FirebaseMessageService : FirebaseMessagingService() {
     companion object {
@@ -29,12 +30,16 @@ class FirebaseMessageService : FirebaseMessagingService() {
         private const val NOTIFICATION_ID = 0
     }
 
+    private val TAG = "FirebaseMessagingService"
+
     override fun onNewToken(token: String) {
         super.onNewToken(token)
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
+        Timber.tag(TAG).d("From: %s", message.from)
+        Throwable("co notify")
         if (message.data.isNotEmpty()) {
             showNotification(message)
             CoroutineScope(Dispatchers.IO).launch {
@@ -60,20 +65,15 @@ class FirebaseMessageService : FirebaseMessagingService() {
         createNotificationChanel()
         val notificationBuilder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
             .setContentTitle(applicationContext.getString(R.string.app_name))
-            .setSmallIcon( R.drawable.logohome)
+            .setSmallIcon(R.drawable.logohome)
             .setSound(uri)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
             .setDefaults(Notification.DEFAULT_ALL)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setStyle(
-                NotificationCompat.BigTextStyle()
-                    .bigText(remoteMessage.data[MESSAGE])
-            )
+            .setStyle(NotificationCompat.BigTextStyle().bigText(remoteMessage.data[MESSAGE]))
             .setContentIntent(pendingIntent)
-
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
-
     }
 
     private fun createNotificationChanel() {

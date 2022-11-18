@@ -20,6 +20,7 @@ import com.example.windmoiveapp.model.UserModel.Companion.PREF_USER
 import com.example.windmoiveapp.model.convertToUserModel
 import com.example.windmoiveapp.util.PrefUtil
 import com.example.windmoiveapp.viewmodels.AuthViewModel
+import com.example.windmoiveapp.viewmodels.MovieViewModel
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -35,7 +36,8 @@ import com.google.android.gms.tasks.Task
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     private val authenViewModel by lazy { AuthViewModel(activity?.application as Application) }
     private val pref by lazy { PrefUtil.getInstance(activity?.application as Application) }
-    private val listUser by lazy { FireBaseService.getInfoAllUser() }
+    private val movieViewModel by lazy { MovieViewModel(activity?.application as Application) }
+    //private val listUser by lazy { FireBaseService.getInfoAllUser() }
 
     companion object {
         const val RC_SIGN_IN_CODE_SUCCESS = 1
@@ -175,8 +177,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun initObserver() {
+        movieViewModel.listAllUser.observe(viewLifecycleOwner) {
+
+        }
         authenViewModel.googleSignInLiveData.observe(viewLifecycleOwner) { ggSignIn ->
-            val user = listUser.firstOrNull { it.uid == ggSignIn?.id }
+            val user = movieViewModel.listAllUser.value?.firstOrNull { it.uid == ggSignIn?.id }
             if (user == null) {
                 FireBaseService.addInfoUser(ggSignIn?.convertToUserModel() ?: return@observe)
             }
@@ -235,6 +240,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     override fun loadData() {
         super.loadData()
+        movieViewModel.getAllUser()
     }
 
 

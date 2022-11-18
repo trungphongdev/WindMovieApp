@@ -94,7 +94,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             llPlayMovie.setOnClickListener {
                 setUpVideoView(movieModel?.movieUrl ?: return@setOnClickListener)
             }
-            imvMyRate.setOnClickListener {
+            imvLike.setOnClickListener {
                 findNavController().navigateWithAnim(R.id.myListFragment)
             }
             imvMyList.setOnClickListener {
