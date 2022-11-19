@@ -42,6 +42,23 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun getListMovieByCategory(category: Categories) {
+        viewModelScope.launch {
+            val list = ArrayList<MovieCategoryModel>()
+            val listMovieModel = ArrayList<MovieModel>()
+            if (listMovie.value.isNullOrEmpty().not()) {
+                for (movie in listMovie.value!!) {
+                    if (movie.categories.any { it == category.name }) {
+                        listMovieModel.add(movie)
+                    }
+                }
+                list.add(MovieCategoryModel(category = category.type, listMovieModel))
+                listMovieByCategories.postValue(list.filter { it.movies.isNullOrEmpty().not() })
+            }
+        }
+    }
+
+
     fun getMovieList() {
         viewModelScope.launch {
             FireBaseService.getMovieList {

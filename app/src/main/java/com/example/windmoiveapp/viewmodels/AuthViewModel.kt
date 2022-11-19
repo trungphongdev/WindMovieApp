@@ -41,29 +41,32 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     fun signUpWithEmailPassword(
         email: String,
         passWord: String,
-        onResult: ((Boolean) -> Unit)? = null
+        onResult: ((UserModel?) -> Unit)? = null
     ) {
         viewModelScope.launch {
-            FireBaseService.signUpWithEmailAndPassword(email, passWord, onSuccess = {
-                if (it != null /*&& it.isEmailVerified*/) {
-                    userModelLiveData.postValue(it.convertToUserModel())
-                    FireBaseService.addInfoUser(it.convertToUserModel())
-                    onResult?.invoke(true)/*
-                } else {
-                    verifyEmail(it ?: return@signUpWithEmailAndPassword) { isVerify ->
-                        if (isVerify) {
-                            userModelLiveData.postValue(it.convertToUserModel())
-                            FireBaseService.addInfoUser(it.convertToUserModel())
-                            onResult?.invoke(true)
-                        } else {
-                            onResult?.invoke(false)
-                            userModelLiveData.postValue(null)
+            FireBaseService.signUpWithEmailAndPassword(
+                email,
+                passWord,
+                onSuccess = { firebaseUser ->
+                    if (firebaseUser != null /*&& it.isEmailVerified*/) {
+                        FireBaseService.addInfoUser(firebaseUser.convertToUserModel()) {
+                            if (it) {
+                                updateInfoUser(
+                                    user = firebaseUser.convertToUserModel(),
+                                    fieldUser = arrayOf(Pair("password", passWord))
+                                )
+                                onResult?.invoke(firebaseUser.convertToUserModel())
+                            } else {
+                                onResult?.invoke(null)
+                            }
                         }
-                    }*/
-                }
-            }, onFailure = {
-                onResult?.invoke(false)
-            })
+                    } else {
+                        onResult?.invoke(null)
+                    }
+                },
+                onFailure = {
+                    onResult?.invoke(null)
+                })
         }
     }
 
@@ -72,6 +75,16 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
             FireBaseService.verifyEmail(firebaseUser, onResult = {
                 onResultCallback.invoke(it)
             })
+        }
+    }
+
+    fun updateInfoUser(user: UserModel, vararg fieldUser: Pair<String, Any>) {
+        FireBaseService.updateInfoUser(user.uid ?: "", *fieldUser) {
+            if (it) {
+                userModelLiveData.postValue(user)
+            } else {
+                userModelLiveData.postValue(null)
+            }
         }
     }
 

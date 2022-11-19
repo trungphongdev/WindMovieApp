@@ -42,3 +42,13 @@ enum class Categories(val type: String) {
         }
     }
 }
+
+enum class AccountPermission(val type: Int) {
+    NORMAL(0),
+    VIP(1)
+}
+
+enum class AccountType(val type: Int) {
+    USER(0),
+    ADMIN(1)
+}

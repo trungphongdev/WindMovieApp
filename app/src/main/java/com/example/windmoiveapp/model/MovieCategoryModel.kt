@@ -30,3 +30,18 @@ fun List<MovieCategoryModel>.setListMovieByType(): List<MovieCategoryModel> {
     }
     return this
 }
+
+fun List<MovieModel>.getListByCategory(categories: Categories): List<MovieCategoryModel> {
+    val list = ArrayList<MovieCategoryModel>()
+    for (movie in this) {
+        if (movie.categories.any { it == categories.name }) {
+            list.add(
+                MovieCategoryModel(
+                    category = categories.type,
+                    movies = this.filter { it.categories.any { it == categories.name } }.shuffled()
+                )
+            )
+        }
+    }
+    return list
+}

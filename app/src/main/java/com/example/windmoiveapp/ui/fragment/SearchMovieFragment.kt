@@ -123,6 +123,9 @@ class SearchMovieFragment : BaseFragment<FragmentSearchMovieBinding>() {
             binding.rcvTopSearch.isVisible = true
             binding.rcvSearch.isVisible = false
         }
+        binding.headerBarSearch.setEventBackListener {
+            onBackFragment()
+        }
 
     }
 

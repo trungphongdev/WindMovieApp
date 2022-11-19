@@ -44,13 +44,11 @@ class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
         savedInstanceState: Bundle?,
         isViewCreated: Boolean
     ) {
-        if (!isViewCreated) {
             initView()
             initListener()
             initObserver()
             val adRequest = AdRequest.Builder().build()
             binding.adView.loadAd(adRequest)
-        }
     }
 
     private fun initObserver() {

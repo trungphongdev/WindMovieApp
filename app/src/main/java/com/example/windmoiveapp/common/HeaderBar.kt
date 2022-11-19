@@ -35,11 +35,13 @@ class HeaderBar(context: Context, attrs: AttributeSet) : ConstraintLayout(contex
                 val isShowLogo = getBoolean(R.styleable.HeaderBar_isShowLogo, false)
                 val isShowSearch = getBoolean(R.styleable.HeaderBar_isShowSearch, false)
                 val isShowNotification = getBoolean(R.styleable.HeaderBar_isShowNotification, false)
+                val isShowAccount = getBoolean(R.styleable.HeaderBar_isShowAccount, true)
                 checkShowIconSearch(isShowSearch)
                 checkShowTitle(isShowTitle, title)
                 checkShowLogo(isShowLogo)
                 checkShowIconNotification(isShowNotification)
                 checkShowIconBack(isShowButtonBack)
+                checkShowIconAccount(isShowAccount)
             } finally {
                 recycle()
             }
@@ -70,6 +72,10 @@ class HeaderBar(context: Context, attrs: AttributeSet) : ConstraintLayout(contex
         eventSearchCallback = callback
     }
 
+    fun setEventAccountListener(callback: (() -> Unit)) {
+        eventAccountCallback = callback
+    }
+
     private fun checkShowIconBack(showButtonBack: Boolean) {
         imgBack.isVisible = showButtonBack
     }
@@ -80,6 +86,10 @@ class HeaderBar(context: Context, attrs: AttributeSet) : ConstraintLayout(contex
 
     private fun checkShowIconSearch(showSearch: Boolean) {
         imgSearch.isVisible = showSearch
+    }
+
+    private fun checkShowIconAccount(showAccount: Boolean) {
+        imgUserAccount.isVisible = showAccount
     }
 
     private fun checkShowTitle(showTitle: Boolean, title: String?) {

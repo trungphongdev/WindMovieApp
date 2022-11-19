@@ -73,8 +73,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         categoryMovieAdapter.onItemClickMovie = {
             showBottomSheetMovieDetail(it)
         }
-        binding.headerBar.setEventSearchListener {
-            findNavController().navigateWithAnim(R.id.searchFragment)
+        binding.headerBar.apply {
+            setEventSearchListener {
+                findNavController().navigateWithAnim(R.id.searchFragment)
+            }
+            setEventAccountListener {
+                findNavController().navigateWithAnim(R.id.accountFragment)
+            }
+            setEventBackListener {
+                mainActivity?.showDialogBackPress()
+            }
         }
     }
 
@@ -89,6 +97,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             movieViewModels.convertToListMovieByCategory(it)
         }
         movieViewModels.listMovieByCategories.observe(viewLifecycleOwner) {
+            dismissProgress()
             setDataForAdapterListMovieCategory(it ?: emptyList())
         }
     }
@@ -154,13 +163,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         if (it.name == Categories.HOME.name) {
             movieViewModels.getMovieList()
         } else {
-            movieViewModels.getMovieListByCategory(it)
+            // movieViewModels.getMovieListByCategory(it)
+            movieViewModels.getListMovieByCategory(it)
         }
     }
 
     private fun setDataForAdapterListMovieCategory(it: List<MovieCategoryModel>) {
         categoryMovieAdapter.setList(it.setListMovieByType())
     }
-
 
 }

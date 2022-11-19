@@ -76,6 +76,14 @@
     <string name="nothingLabel">Nothing</string>
     <string name="writeCmtLabel">Write Comment…</string>
     <string name="commentLabel">Comments</string>
+    <string name="userManagementLabel">User Management</string>
+    <string name="movieManagementLabel">Movie Management</string>
+    <string name="feedbackManagementLabel">Feedback Management</string>
+    <string name="statisticLabel">Statistic and Report</string>
+    <string name="updateInfo">Update User Info</string>
+    <string name="myMovieListLabel">My Movie List</string>
+    <string name="logOutLabel">Logout</string>
+    <string name="meLabel">Me</string>
 
 
 </resources>

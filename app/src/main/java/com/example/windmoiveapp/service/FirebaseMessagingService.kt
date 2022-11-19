@@ -40,10 +40,11 @@ class FirebaseMessageService : FirebaseMessagingService() {
         super.onMessageReceived(message)
         Timber.tag(TAG).d("From: %s", message.from)
         Throwable("co notify")
-        if (message.data.isNotEmpty()) {
+        if (message.notification != null) {
             showNotification(message)
             CoroutineScope(Dispatchers.IO).launch {
-                BuildDaoDatabase.getNotificationDao(application = AppApplication()).insertNotification(message.convertToNotificationModel())
+                BuildDaoDatabase.getNotificationDao(application = AppApplication())
+                    .insertNotification(message.convertToNotificationModel())
             }
         }
     }
@@ -55,23 +56,25 @@ class FirebaseMessageService : FirebaseMessagingService() {
         RingtoneManager.TYPE_NOTIFICATION
     )
 
-    val intent = Intent(this, MainActivity::class.java).apply {
-        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-    }
-    private val pendingIntent: PendingIntent =
-        PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-
     private fun showNotification(remoteMessage: RemoteMessage) {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent =
+            PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         createNotificationChanel()
         val notificationBuilder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
-            .setContentTitle(applicationContext.getString(R.string.app_name))
+            .setContentTitle(/*applicationContext.getString(R.string.app_name)*/remoteMessage.notification?.title)
             .setSmallIcon(R.drawable.logohome)
             .setSound(uri)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
             .setDefaults(Notification.DEFAULT_ALL)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(remoteMessage.data[MESSAGE]))
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(/*remoteMessage.data[MESSAGE])*/remoteMessage.notification?.body)
+            )
             .setContentIntent(pendingIntent)
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
     }
