@@ -17,8 +17,8 @@ import com.example.windmoiveapp.ui.MainActivity
 import com.example.windmoiveapp.util.AppApplication
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -28,21 +28,22 @@ class FirebaseMessageService : FirebaseMessagingService() {
         private const val CHANNEL_NAME = "channelName"
         const val MESSAGE = "message"
         private const val NOTIFICATION_ID = 0
+        private const val FCM_TAG = "NotificationFCM"
+
     }
 
-    private val TAG = "FirebaseMessagingService"
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        Timber.tag(TAG).d("From: %s", message.from)
-        Throwable("co notify")
+        Timber.tag(FCM_TAG).d("From: %s", message.from)
         if (message.notification != null) {
             showNotification(message)
-            CoroutineScope(Dispatchers.IO).launch {
+            GlobalScope.launch {
                 BuildDaoDatabase.getNotificationDao(application = AppApplication())
                     .insertNotification(message.convertToNotificationModel())
             }
@@ -64,16 +65,17 @@ class FirebaseMessageService : FirebaseMessagingService() {
             PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         createNotificationChanel()
         val notificationBuilder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
-            .setContentTitle(/*applicationContext.getString(R.string.app_name)*/remoteMessage.notification?.title)
+            .setContentTitle(applicationContext.getString(R.string.app_name))
             .setSmallIcon(R.drawable.logohome)
             .setSound(uri)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
             .setDefaults(Notification.DEFAULT_ALL)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setContentText(remoteMessage.notification?.body)
             .setStyle(
                 NotificationCompat.BigTextStyle()
-                    .bigText(/*remoteMessage.data[MESSAGE])*/remoteMessage.notification?.body)
+                    .bigText(remoteMessage.notification?.body)
             )
             .setContentIntent(pendingIntent)
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())

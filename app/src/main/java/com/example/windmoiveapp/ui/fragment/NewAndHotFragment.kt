@@ -52,6 +52,9 @@ class NewAndHotFragment : BaseFragment<FragmentNewAndHotMovieBinding>() {
             setEventBackListener {
                 moveToDashBoard()
             }
+            setEventNotificationListener {
+                findNavController().navigateWithAnim(R.id.notifyFragment)
+            }
         }
         adapter.onItemClickFavouriteItem = { isLike, movie ->
             movieViewModels.invalidLikePost(isLike, movie)

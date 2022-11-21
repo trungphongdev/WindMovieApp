@@ -230,7 +230,7 @@ object FireBaseService {
     }*/
 
 
-    // <===========================================================================RATINGS=====================================================================>
+    // <==========================RATINGS=====================================================================>
 
     suspend fun addRating(rating: RatingModel, onResult: ((Boolean) -> Unit)?) {
         db.collection(RATINGS).document(rating.id ?: "").set(rating)

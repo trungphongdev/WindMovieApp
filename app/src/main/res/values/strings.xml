@@ -84,6 +84,8 @@
     <string name="myMovieListLabel">My Movie List</string>
     <string name="logOutLabel">Logout</string>
     <string name="meLabel">Me</string>
+    <string name="notificationLabel">Notifications</string>
+    <string name="removeNotifyLabel">Remove this notification</string>
 
 
 </resources>
