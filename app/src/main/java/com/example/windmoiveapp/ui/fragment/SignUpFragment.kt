@@ -82,7 +82,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
         val password = binding.edtPassword.text.toString()
         authenViewModel.signUpWithEmailPassword(email, password, onResult = {
             dismissProgress()
-            if (it) {
+            if (it != null) {
                 navigateToHomeScreen()
             } else {
                 activity?.showAlertDialog(getString(R.string.signUpFailLabel))

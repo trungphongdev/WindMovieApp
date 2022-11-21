@@ -10,6 +10,7 @@
         <attr name="isShowSearch" format="boolean" />
         <attr name="isShowNotification" format="boolean" />
         <attr name="isShowTitle" format="boolean" />
+        <attr name="isShowAccount" format="boolean" />
         <attr name="title" format="string" />
     </declare-styleable>
 </resources>

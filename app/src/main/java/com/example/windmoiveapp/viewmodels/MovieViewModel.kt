@@ -10,12 +10,13 @@ import com.example.windmoiveapp.database.BuildDaoDatabase
 import com.example.windmoiveapp.firebase.FireBaseService
 import com.example.windmoiveapp.model.MovieCategoryModel
 import com.example.windmoiveapp.model.MovieModel
+import com.example.windmoiveapp.model.NotificationModel
 import com.example.windmoiveapp.model.UserModel
 import com.example.windmoiveapp.util.AppApplication
 import kotlinx.coroutines.launch
 
 class MovieViewModel(application: Application) : AndroidViewModel(application) {
-    val dao = AppDatabase.getDatabase(getApplication<Application>().applicationContext)
+    private val dao = AppDatabase.getDatabase(getApplication<Application>().baseContext)
     var listMovie: MutableLiveData<List<MovieModel>> = MutableLiveData()
     var listMovieByName: MutableLiveData<List<MovieModel>> = MutableLiveData()
     var listMovieByCategories: MutableLiveData<List<MovieCategoryModel>> = MutableLiveData()
@@ -23,6 +24,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     var movieRoomLiveData: MutableLiveData<MovieModel?> = MutableLiveData()
     var likePostLiveData: MutableLiveData<Boolean> = MutableLiveData()
     var listAllUser: MutableLiveData<List<UserModel>> = MutableLiveData()
+    var listNotification: MutableLiveData<List<NotificationModel>> = MutableLiveData()
 
     fun convertToListMovieByCategory(listMovie: List<MovieModel>) {
         viewModelScope.launch {
@@ -41,6 +43,23 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
             listMovieByCategories.postValue(listMovieCate)
         }
     }
+
+    fun getListMovieByCategory(category: Categories) {
+        viewModelScope.launch {
+            val list = ArrayList<MovieCategoryModel>()
+            val listMovieModel = ArrayList<MovieModel>()
+            if (listMovie.value.isNullOrEmpty().not()) {
+                for (movie in listMovie.value!!) {
+                    if (movie.categories.any { it == category.name }) {
+                        listMovieModel.add(movie)
+                    }
+                }
+                list.add(MovieCategoryModel(category = category.type, listMovieModel))
+                listMovieByCategories.postValue(list.filter { it.movies.isNullOrEmpty().not() })
+            }
+        }
+    }
+
 
     fun getMovieList() {
         viewModelScope.launch {
@@ -110,4 +129,18 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
             listAllUser.postValue(it)
         }
     }
+
+    fun getListNotification() {
+        viewModelScope.launch {
+            val notify = dao.getNotificationDao().getAllNotification()
+            listNotification.postValue(notify)
+        }
+    }
+
+    fun removeNotification(id: String) {
+        viewModelScope.launch {
+            val notify = dao.getNotificationDao().deleteNotification(id)
+        }
+    }
+
 }

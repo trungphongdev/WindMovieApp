@@ -60,11 +60,12 @@ class MainActivity : AppCompatActivity() {
         return navHostFragment?.childFragmentManager?.fragments?.get(0)
     }
 
-    private fun showDialogBackPress() {
-        showAlertDialog(mess = getString(R.string.textExitAppContent), isShowNegativeBtn = true) {
-            super.onBackPressed()
-        }
-    }
+     fun showDialogBackPress() {
+         showAlertDialog(mess = getString(R.string.textExitAppContent), isShowNegativeBtn = true) {
+             super.onBackPressed()
+             this.finish()
+         }
+     }
 
     override fun onBackPressed() {
         if (isDisableBackButton()) return

@@ -36,15 +36,15 @@ object FireBaseService {
     }
 
     fun updateInfoUser(
-        user: UserModel,
+        uid: String,
         vararg fieldUser: Pair<String, Any>,
-        onResult: ((Boolean) -> Unit)? = null
+        onResult: ((Boolean) -> Unit)
     ) {
-        db.collection(USERS).document(user.uid ?: "").update(fieldUser.toMap())
+        db.collection(USERS).document(uid).update(fieldUser.toMap())
             .addOnCompleteListener {
-                onResult?.invoke(true)
+                onResult.invoke(true)
             }.addOnFailureListener {
-                onResult?.invoke(false)
+                onResult.invoke(false)
             }
     }
 
@@ -230,7 +230,7 @@ object FireBaseService {
     }*/
 
 
-    // <===========================================================================RATINGS=====================================================================>
+    // <==========================RATINGS=====================================================================>
 
     suspend fun addRating(rating: RatingModel, onResult: ((Boolean) -> Unit)?) {
         db.collection(RATINGS).document(rating.id ?: "").set(rating)

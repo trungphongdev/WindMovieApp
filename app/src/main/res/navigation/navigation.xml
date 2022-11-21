@@ -63,5 +63,15 @@
         android:label="Search"
         android:name="com.example.windmoiveapp.ui.fragment.SearchMovieFragment" />
 
+    <fragment
+        android:id="@+id/accountFragment"
+        android:label="Account"
+        android:name="com.example.windmoiveapp.ui.fragment.AccountInfoFragment" />
+
+    <fragment
+        android:id="@+id/notifyFragment"
+        android:label="Account"
+        android:name="com.example.windmoiveapp.ui.fragment.NotificationFragment" />
+
 
 </navigation>
