@@ -7,13 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.windmoiveapp.constant.Categories
 import com.example.windmoiveapp.database.AppDatabase
 import com.example.windmoiveapp.database.BuildDaoDatabase
+import com.example.windmoiveapp.extension.GsonExt
 import com.example.windmoiveapp.firebase.FireBaseService
-import com.example.windmoiveapp.model.MovieCategoryModel
-import com.example.windmoiveapp.model.MovieModel
-import com.example.windmoiveapp.model.NotificationModel
-import com.example.windmoiveapp.model.UserModel
+import com.example.windmoiveapp.model.*
 import com.example.windmoiveapp.util.AppApplication
+import com.example.windmoiveapp.util.PrefUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MovieViewModel(application: Application) : AndroidViewModel(application) {
     private val dao = AppDatabase.getDatabase(getApplication<Application>().baseContext)
@@ -25,6 +27,10 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     var likePostLiveData: MutableLiveData<Boolean> = MutableLiveData()
     var listAllUser: MutableLiveData<List<UserModel>> = MutableLiveData()
     var listNotification: MutableLiveData<List<NotificationModel>> = MutableLiveData()
+    var listRating: MutableLiveData<List<RatingModel>> = MutableLiveData()
+    var listRatingUser: MutableLiveData<List<RatingModel>> = MutableLiveData()
+    var userModelLiveData: MutableLiveData<UserModel> = MutableLiveData()
+    var postCommentSuccessLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     fun convertToListMovieByCategory(listMovie: List<MovieModel>) {
         viewModelScope.launch {
@@ -130,6 +136,14 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun getUserByID(uid: String) {
+        viewModelScope.launch {
+            FireBaseService.getInfoUser(uid) {
+
+            }
+        }
+    }
+
     fun getListNotification() {
         viewModelScope.launch {
             val notify = dao.getNotificationDao().getAllNotification()
@@ -139,7 +153,47 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
     fun removeNotification(id: String) {
         viewModelScope.launch {
-            val notify = dao.getNotificationDao().deleteNotification(id)
+             dao.getNotificationDao().deleteNotification(id)
+        }
+    }
+
+    fun getRatingsById(movieId: String) {
+        viewModelScope.launch {
+            FireBaseService.getRatingsByIdMovie(movieId) {
+                listRating.postValue(it)
+            }
+        }
+    }
+
+    fun postRating(ratingModel: HashMap<String, Any?>) {
+        viewModelScope.launch {
+            FireBaseService.addRating(ratingModel) {
+                postCommentSuccessLiveData.postValue(it)
+            }
+        }
+    }
+
+    fun getRatingsUser() {
+        viewModelScope.launch {
+            flow {
+                val ratings = listRating.value ?: emptyList()
+                ratings.forEachIndexed { index, rate ->
+                    FireBaseService.getInfoUser(rate.userId ?: "") { user ->
+                        ratings[index].userModel = user
+                    }
+                }
+                this.emit(ratings)
+            }.collect {
+                listRatingUser.postValue(it)
+            }
+        }
+    }
+
+    fun getUserInfo() {
+        viewModelScope.launch {
+            val gsonUser = PrefUtil(getApplication<Application>().baseContext).getValue(UserModel.PREF_USER, "")
+            val user = GsonExt.convertGsonToObjet(gsonUser, UserModel::class.java)
+            userModelLiveData.postValue(user)
         }
     }
 

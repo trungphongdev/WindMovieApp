@@ -87,6 +87,7 @@
     <string name="notificationLabel">Notifications</string>
     <string name="removeNotifyLabel">Remove this notification</string>
     <string name="default_notification_channel_id">channelID</string>
-
+    <string name="alertCmtEmptyLabel">Please comment before rating movie</string>
+    <string name="commentFailLabel">Comment Fail</string>
 
 </resources>

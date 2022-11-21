@@ -60,7 +60,7 @@ object FireBaseService {
         }
     }
 
-    fun getInfoUser(uid: String, onResult: ((UserModel?) -> Unit)?) {
+    suspend fun getInfoUser(uid: String, onResult: ((UserModel?) -> Unit)?) {
         db.collection(USERS).document(uid).get().addOnSuccessListener { documentSnapshot ->
             onResult?.invoke(documentSnapshot.toObject())
         }.addOnFailureListener {
@@ -232,14 +232,28 @@ object FireBaseService {
 
     // <==========================RATINGS=====================================================================>
 
-    suspend fun addRating(rating: RatingModel, onResult: ((Boolean) -> Unit)?) {
-        db.collection(RATINGS).document(rating.id ?: "").set(rating)
+    suspend fun addRating(rating: HashMap<String, Any?>, onResult: ((Boolean) -> Unit)?) {
+        db.collection(RATINGS).document().set(rating)
             .addOnSuccessListener {
                 onResult?.invoke(true)
             }.addOnFailureListener {
                 onResult?.invoke(false)
             }
 
+    }
+
+    fun getRatingsByIdMovie(movieId: String, onResult: ((List<RatingModel>) -> Unit)?) {
+        db.collection(RATINGS).whereEqualTo(RatingModel::movieId.name, movieId).get().addOnSuccessListener { collection ->
+            val ratings = ArrayList<RatingModel>()
+            for (rating in collection.documents) {
+                rating.toObject<RatingModel>()?.let {
+                    ratings.add(it)
+                }
+            }
+            onResult?.invoke(ratings)
+        }.addOnFailureListener {
+            onResult?.invoke(emptyList())
+        }
     }
 
 

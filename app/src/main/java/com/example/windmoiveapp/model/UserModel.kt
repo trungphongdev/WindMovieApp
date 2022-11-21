@@ -11,13 +11,14 @@ data class UserModel(
     var name: String? = "",
     var email: String? = "",
     var phone: String? = "",
-    var photoUrl: String? = "",
+    var photoUrl: String = DEFAULT_IMG_USER,
     var accountType: Int? = AccountType.USER.type,
     var accountPermission: Int? = AccountPermission.NORMAL.type,
     var password: String? = ""
 ) {
     companion object {
         const val PREF_USER = "PREF_USER"
+        const val DEFAULT_IMG_USER = "https://lh3.googleusercontent.com/a/ALm5wu3p26QqdgIsoCMAU_wX3gsMy24bgtSM7ajkDLd9"
     }
 
 }
@@ -29,7 +30,7 @@ fun FirebaseUser.convertToUserModel(): UserModel {
         name = this.displayName ?: getUserWithUUID(),
         email = this.email,
         phone = this.phoneNumber ?: "",
-        photoUrl = this.photoUrl?.toString() ?: "",
+        photoUrl = this.photoUrl?.toString() ?: UserModel.DEFAULT_IMG_USER,
     )
 }
 
@@ -38,7 +39,7 @@ fun GoogleSignInAccount.convertToUserModel(): UserModel {
         uid = this.id,
         name = this.displayName,
         email = this.email,
-        photoUrl = this.photoUrl.toString(),
+        photoUrl = this.photoUrl?.toString() ?: UserModel.DEFAULT_IMG_USER,
     )
 }
 

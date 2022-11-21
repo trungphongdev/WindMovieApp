@@ -11,7 +11,7 @@
         android:id="@+id/imvUser"
         android:layout_width="@dimen/dp24"
         android:layout_height="@dimen/dp24"
-        android:src="@drawable/ic_round_account"
+        android:src="@drawable/logohome"
         app:civ_border_color="@color/redB11313"
         app:civ_border_width="@dimen/dp1"
         app:layout_constraintStart_toStartOf="parent"

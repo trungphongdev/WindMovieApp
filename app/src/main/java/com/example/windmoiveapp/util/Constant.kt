@@ -6,6 +6,7 @@ const val ADS_UNIT = "ca-app-pub-3292279140391234/1127228964"
 const val TIME_OUT = 30000L
 const val PASSWORD_CHAR_STYLE_DOT: Char = '.'
 const val PASSWORD_HIDE_7_CHAR: String = "0000000"
+const val PATTERN_TIME: String = "hh:mm:ss dd/MM/yyyy"
 
 /*const val CAMERA_PERMISSION_CODE  = 1
 const val STORAGE_PERMISSION_CODE  = 1
