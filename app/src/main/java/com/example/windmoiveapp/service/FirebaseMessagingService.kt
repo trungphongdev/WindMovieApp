@@ -18,6 +18,7 @@ import com.example.windmoiveapp.util.AppApplication
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.*
+import okhttp3.Dispatcher
 import timber.log.Timber
 
 class FirebaseMessageService : FirebaseMessagingService() {
@@ -40,8 +41,8 @@ class FirebaseMessageService : FirebaseMessagingService() {
         Timber.tag(FCM_TAG).d("From: %s", message.from)
         if (message.notification != null) {
             showNotification(message)
-            CoroutineScope(Dispatchers.Default).launch {
-                BuildDaoDatabase.getNotificationDao(application = AppApplication())
+            CoroutineScope(Dispatchers.IO).launch {
+                BuildDaoDatabase.getNotificationDao(application = AppApplication.instance)
                     .insertNotification(message.convertToNotificationModel())
             }
         }

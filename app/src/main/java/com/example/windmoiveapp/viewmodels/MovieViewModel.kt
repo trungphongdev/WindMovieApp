@@ -98,7 +98,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getListMovieRoom() {
         viewModelScope.launch {
-            val listMovie = BuildDaoDatabase.getMovieDao(AppApplication()).getAllMovie()
+            val listMovie = dao.getMovieDao().getAllMovie()
             listMovieRoom.postValue(listMovie)
         }
     }

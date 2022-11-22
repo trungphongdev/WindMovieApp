@@ -19,7 +19,7 @@ import com.example.windmoiveapp.extension.showAlertDialog
 import com.example.windmoiveapp.viewmodels.MovieViewModel
 
 
-class AccountManagerFragment : BaseFragment<FragmentMyListMovieBinding>() {
+class MovieManagerFragment : BaseFragment<FragmentMyListMovieBinding>() {
     private val adapter: MyListMovieAdapter by lazy { MyListMovieAdapter() }
     private val movieViewModels: MovieViewModel by lazy { MovieViewModel(activity?.application as Application) }
 
@@ -36,69 +36,7 @@ class AccountManagerFragment : BaseFragment<FragmentMyListMovieBinding>() {
         savedInstanceState: Bundle?,
         isViewCreated: Boolean
     ) {
-        initViews()
-        initListener()
-        initObserver()
+
     }
 
-    private fun initListener() {
-        adapter.onItemClickMovieItem = {
-            findNavController().navigateWithAnim(
-                R.id.movieDetailFragment, bundleOf(
-                    MovieDetailFragment.BUNDLE_CONTENT_MOVIE to it
-                ), R.id.movieTrailerFragment
-            )
-        }
-
-        adapter.onItemClickRemoveItem = {
-            activity?.showAlertDialog(getString(R.string.removeMovieLabel, it.name),
-                isShowNegativeBtn = true,
-                cancelListener = {
-
-                },
-                callBack = {
-                    movieViewModels.removeMovieById(it)
-                    movieViewModels.getListMovieRoom()
-                })
-        }
-
-        binding.headerBar.apply {
-            setEventBackListener {
-                onBackFragment()
-            }
-        }
-    }
-
-    private fun initObserver() {
-        movieViewModels.listMovieRoom.observe(viewLifecycleOwner) {
-            dismissProgress()
-            if (it.isNullOrEmpty()) {
-                binding.llEmptyData.root.isVisible = true
-                binding.rcvMovies.isGone = true
-            } else {
-                adapter.setList(it)
-                binding.llEmptyData.root.isGone = true
-                binding.rcvMovies.isVisible = true
-            }
-        }
-    }
-
-    private fun initViews() {
-        setUpRecyclerView()
-    }
-
-    private fun setUpRecyclerView() {
-        binding.apply {
-            rcvMovies.adapter = adapter
-            rcvMovies.itemAnimator = DefaultItemAnimator()
-            rcvMovies.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        }
-    }
-
-    override fun loadData() {
-        super.loadData()
-        showProgress()
-        movieViewModels.getListMovieRoom()
-    }
 }
