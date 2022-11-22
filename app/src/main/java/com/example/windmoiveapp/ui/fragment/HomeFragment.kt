@@ -78,7 +78,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 findNavController().navigateWithAnim(R.id.searchFragment)
             }
             setEventAccountListener {
-                findNavController().navigateWithAnim(R.id.accountFragment)
+                findNavController().navigateWithAnim(R.id.tabMeFragment)
             }
             setEventBackListener {
                 mainActivity?.showDialogBackPress()

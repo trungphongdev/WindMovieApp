@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
     tools:context=".ui.fragment.HomeFragment">
 
 
@@ -16,7 +15,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_nothing" />
+        app:srcCompat="@drawable/icon_nothing"
+        android:backgroundTint="@android:color/transparent"
+        />
 
     <TextView
         android:id="@+id/tvNoData"
@@ -26,6 +27,7 @@
         android:textSize="26sp"
         android:text="@string/emptyDataLabel"
         android:fontFamily="@font/roboto_medium"
+        android:backgroundTint="@android:color/transparent"
         app:layout_constraintTop_toBottomOf="@id/imvNoData"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

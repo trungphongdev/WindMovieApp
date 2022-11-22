@@ -123,6 +123,7 @@
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/rdGenderMale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/redB11313"
@@ -131,6 +132,7 @@
                     android:textColor="@color/white" />
 
                 <RadioButton
+                    android:id="@+id/rdGenderFemale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp16"

@@ -64,9 +64,9 @@
         android:name="com.example.windmoiveapp.ui.fragment.SearchMovieFragment" />
 
     <fragment
-        android:id="@+id/accountFragment"
+        android:id="@+id/tabMeFragment"
         android:label="Account"
-        android:name="com.example.windmoiveapp.ui.fragment.AccountInfoFragment" />
+        android:name="com.example.windmoiveapp.ui.fragment.TabMeFragment" />
 
     <fragment
         android:id="@+id/notifyFragment"

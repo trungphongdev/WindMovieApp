@@ -26,6 +26,7 @@ class UpdateProfileFragment: BaseFragment<FragmentUpdateInfoUserBinding>() {
     private val getImageResult =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             userUri = uri
+            binding.imvUser.setImageURI(userUri)
         }
     private var typeGender = GenderType.NOTHING.type
 
@@ -68,11 +69,11 @@ class UpdateProfileFragment: BaseFragment<FragmentUpdateInfoUserBinding>() {
     }
 
     private fun invalidUpdateUser() {
-        val childCount = binding.root.childCount
-        for (i in 0.until(childCount)) {
-            binding.root.getChildAt(i).isEnabled = permissionUpdate
-        }
-        binding.tlUserId.isEnabled = false
+        binding.llChangeAvt.isEnabled = permissionUpdate
+        binding.edtEmail.isEnabled = permissionUpdate
+        binding.edtName.isEnabled = permissionUpdate
+        binding.llGender.isEnabled = permissionUpdate
+        binding.edtPhone.isEnabled = permissionUpdate
         binding.tvOption.isVisible = permissionUpdate
     }
 
@@ -94,6 +95,11 @@ class UpdateProfileFragment: BaseFragment<FragmentUpdateInfoUserBinding>() {
                 else -> {
                     GenderType.NOTHING.type
                 }
+            }
+        }
+        binding.headerBar.apply {
+            setEventBackListener {
+                super.onBackFragment()
             }
         }
     }
@@ -163,8 +169,10 @@ class UpdateProfileFragment: BaseFragment<FragmentUpdateInfoUserBinding>() {
             edtEmail.setText(userModel.email ?: "")
             edtPhone.setText(userModel.phone ?: "")
             edtAccountType.setText(AccountType.getAccountByType(userModel).name)
-            rdGender.check(rdGender.getChildAt(GenderType.getGenderByType(userModel).type).id)
-
+            if (userModel.gender != GenderType.NOTHING.type) {
+                rdGender.check(rdGender.getChildAt(GenderType.getGenderByType(userModel).type).id)
+            }
         }
     }
+
 }
