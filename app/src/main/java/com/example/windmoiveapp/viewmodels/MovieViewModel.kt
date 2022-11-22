@@ -6,16 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.windmoiveapp.constant.Categories
 import com.example.windmoiveapp.database.AppDatabase
-import com.example.windmoiveapp.database.BuildDaoDatabase
-import com.example.windmoiveapp.extension.GsonExt
 import com.example.windmoiveapp.firebase.FireBaseService
 import com.example.windmoiveapp.model.*
-import com.example.windmoiveapp.util.AppApplication
-import com.example.windmoiveapp.util.PrefUtil
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MovieViewModel(application: Application) : AndroidViewModel(application) {
     private val dao = AppDatabase.getDatabase(getApplication<Application>().baseContext)
@@ -31,6 +25,8 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     var listRatingUser: MutableLiveData<List<RatingModel>> = MutableLiveData()
     var userModelLiveData: MutableLiveData<UserModel> = MutableLiveData()
     var postCommentSuccessLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    var isLoveMovie: MutableLiveData<Boolean> = MutableLiveData()
+    var lovingsLiveData: MutableLiveData<List<LovingMovieModel>> = MutableLiveData()
 
     fun convertToListMovieByCategory(listMovie: List<MovieModel>) {
         viewModelScope.launch {
@@ -124,9 +120,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
     fun invalidLikePost(isLike: Boolean = false, movieModel: MovieModel) {
         viewModelScope.launch {
-            FireBaseService.likePostMovie(isLike, movieModel) {
-                likePostLiveData.postValue(it)
-            }
+
         }
     }
 
@@ -189,6 +183,39 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+
+    fun lovingMovie(lovingMovieModel: LovingMovieModel) {
+        viewModelScope.launch {
+            FireBaseService.lovingMovie(lovingMovieModel)
+        }
+    }
+
+    fun getLovingByIdUser(id: String) {
+        viewModelScope.launch {
+            FireBaseService.getLovingMoviesByIdMovie(idMovie) {
+                lovingsLiveData.postValue(it)
+            }
+        }
+    }
+
+
+    fun getLovingsByIdMovie(idMovie: String) {
+        viewModelScope.launch {
+            FireBaseService.getLovingMoviesByIdMovie(idMovie) {
+                lovingsLiveData.postValue(it)
+            }
+        }
+    }
+
+    fun getNumberLovingByMovie(): Pair<Int, Int> {
+        val lovings = lovingsLiveData.value
+        if (lovings != null && lovings.isNotEmpty()) {
+            val like = lovings.filter { it.isLike == true }.size
+            val disLike = lovings.filter { it.isLike == false }.size
+            return like to disLike
+        }
+        return 0 to 0
+    }
 
 
 }

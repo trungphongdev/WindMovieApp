@@ -3,6 +3,7 @@ package com.example.windmoiveapp.firebase
 import android.net.Uri
 import android.util.Log
 import com.example.windmoiveapp.constant.Categories
+import com.example.windmoiveapp.model.LovingMovieModel
 import com.example.windmoiveapp.model.MovieModel
 import com.example.windmoiveapp.model.RatingModel
 import com.example.windmoiveapp.model.UserModel
@@ -20,6 +21,7 @@ object FireBaseService {
     private const val USERS = "users"
     private const val MOVIES = "movies"
     private const val RATINGS = "ratings"
+    private const val LOVING = "loving_movie"
     private const val CATEGORIES = "categories"
     private const val DISLIKE_NUM = "dislikeNum"
     private const val LIKE_NUM = "likeNum"
@@ -207,7 +209,7 @@ object FireBaseService {
         }
     }
 
-    suspend fun likePostMovie(
+/*    suspend fun likePostMovie(
         isLike: Boolean = false,
         movieModel: MovieModel,
         onResult: ((Boolean) -> Unit)?
@@ -222,7 +224,7 @@ object FireBaseService {
                 .addOnCompleteListener { onResult?.invoke(true) }
                 .addOnFailureListener { onResult?.invoke(false) }
         }
-    }
+    }*/
 
     suspend fun getMovieByCategory(category: Categories, list: ((List<MovieModel>) -> Unit)) {
         val listMovie = ArrayList<MovieModel>()
@@ -300,7 +302,7 @@ object FireBaseService {
         }
     }
 
-    fun deleteRating(rating: RatingModel, onResult: ((Boolean) -> Unit)?) {
+    suspend fun deleteRating(rating: RatingModel, onResult: ((Boolean) -> Unit)?) {
         db.collection(RATINGS).document(rating.id ?: "").delete()
             .addOnSuccessListener {
                 onResult?.invoke(true)
@@ -309,8 +311,61 @@ object FireBaseService {
             }
     }
 
+    // <==========================LOVING FILM=====================================================================>
 
+    suspend fun lovingMovie(lovingMovieModel: LovingMovieModel, onResult: ((Boolean) -> Unit)?) {
+        db.collection(LOVING).document().set(lovingMovieModel).addOnSuccessListener {
+            onResult?.invoke(true)
+        }.addOnFailureListener {
+            onResult?.invoke(false)
+        }
+    }
 
+    suspend fun updateLovingStatusMovie(
+        lovingMovieModel: LovingMovieModel,
+        isLike: Boolean?,
+        onResult: ((Boolean) -> Unit)?
+    ) {
+        db.collection(LOVING).document(lovingMovieModel.id).update(
+            hashMapOf<String, Any?>(lovingMovieModel::isLike.name to isLike)
+        ).addOnSuccessListener {
+            onResult?.invoke(true)
+        }.addOnFailureListener {
+            onResult?.invoke(false)
+        }
+    }
+
+    suspend fun getLovingMoviesByIdMovie(
+        idMovie: String,
+        lovings: (List<LovingMovieModel>) -> Unit
+    ) {
+        val list = arrayListOf<LovingMovieModel>()
+        db.collection(LOVING).whereEqualTo(LovingMovieModel::idMovie.name, idMovie).get()
+            .addOnSuccessListener { _lovings ->
+                for (loving in _lovings) {
+                    list.add(loving.toObject())
+                }
+                lovings.invoke(list)
+            }.addOnFailureListener {
+                lovings.invoke(emptyList())
+            }
+    }
+
+    suspend fun getLovingMoviesByIdMovie(
+        idMovie: String,
+        lovings: (List<LovingMovieModel>) -> Unit
+    ) {
+        val list = arrayListOf<LovingMovieModel>()
+        db.collection(LOVING).whereEqualTo(LovingMovieModel::idMovie.name, idMovie).get()
+            .addOnSuccessListener { _lovings ->
+                for (loving in _lovings) {
+                    list.add(loving.toObject())
+                }
+                lovings.invoke(list)
+            }.addOnFailureListener {
+                lovings.invoke(emptyList())
+            }
+    }
 
 
 }

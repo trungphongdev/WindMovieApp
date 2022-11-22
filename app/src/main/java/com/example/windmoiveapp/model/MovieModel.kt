@@ -17,14 +17,10 @@ data class MovieModel(
     val movieUrl: String? = "",
     val description: String? = "",
     val yearOfRelease: String? = "",
-    val likeNum: Int? = 0,
-    val dislikeNum: Int? = 0,
     val duration: String? = "",
     val image: String? = "",
     val categories: List<String> = listOf()
 ) : Parcelable {
-    var isLike: Boolean = false
-    var isAdd: Boolean = false
 }
 
 class Converters {
