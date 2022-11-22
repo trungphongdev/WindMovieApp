@@ -73,5 +73,10 @@
         android:label="Account"
         android:name="com.example.windmoiveapp.ui.fragment.NotificationFragment" />
 
+    <fragment
+        android:id="@+id/updateUserFragment"
+        android:label="Account"
+        android:name="com.example.windmoiveapp.ui.fragment.UpdateProfileFragment" />
+
 
 </navigation>

@@ -194,7 +194,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
             activity?.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
         }
 
-    private fun getListPermissionDenied(): Array<String> {
+    protected fun getListPermissionDenied(): Array<String> {
         return listPermission.filter { activity?.checkSelfPermission(it) == PackageManager.PERMISSION_DENIED }.toTypedArray()
     }
 

@@ -18,15 +18,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imvUser"
         android:layout_width="@dimen/dp120"
         android:layout_height="@dimen/dp120"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_user"
-        android:layout_marginTop="@dimen/dp80" />
+        android:src="@drawable/ic_user"
+        android:layout_marginTop="@dimen/dp80"
+        app:civ_border_width="4dp"
+        app:civ_border_color="@color/white" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -47,6 +49,7 @@
             tools:visibility="visible">
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llUpdateUser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp8">
@@ -81,6 +84,7 @@
             tools:visibility="visible">
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llMyList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp8">
@@ -113,6 +117,7 @@
             android:layout_marginTop="@dimen/dp6">
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llUsers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp8">
@@ -145,6 +150,7 @@
             android:layout_marginTop="@dimen/dp6">
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llMovies"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp8">
@@ -164,6 +170,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_baseline_arrow_forward_ios_24"
                     app:tint="@color/black" />
+
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.cardview.widget.CardView>
@@ -177,6 +184,7 @@
             android:layout_marginTop="@dimen/dp6">
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llFeedback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp8">
@@ -209,6 +217,7 @@
             android:layout_marginTop="@dimen/dp6">
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llReport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp8">
@@ -241,6 +250,7 @@
             android:layout_marginTop="@dimen/dp6">
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llLogout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp8">

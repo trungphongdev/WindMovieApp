@@ -1,5 +1,6 @@
 package com.example.windmoiveapp.firebase
 
+import android.net.Uri
 import android.util.Log
 import com.example.windmoiveapp.constant.Categories
 import com.example.windmoiveapp.model.MovieModel
@@ -7,6 +8,7 @@ import com.example.windmoiveapp.model.RatingModel
 import com.example.windmoiveapp.model.UserModel
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -26,7 +28,7 @@ object FireBaseService {
 
     // <===========================================================================USER=====================================================================>
 
-    fun addInfoUser(user: UserModel, onResult: ((Boolean) -> Unit)? = null) {
+   suspend fun addInfoUser(user: UserModel, onResult: ((Boolean) -> Unit)? = null) {
         db.collection(USERS).document(user.uid ?: "").set(user)
             .addOnSuccessListener {
                 onResult?.invoke(true)
@@ -35,12 +37,41 @@ object FireBaseService {
             }
     }
 
-    fun updateInfoUser(
+    suspend fun updateInfoUserSever(userModel: UserModel) {
+        val currentUser = auth.currentUser ?: return
+        val profileUpdates = userProfileChangeRequest {
+            if (currentUser.displayName != userModel.name) {
+                displayName = userModel.name
+            }
+            if (currentUser.photoUrl.toString() != userModel.photoUrl) {
+                photoUri = Uri.parse(userModel.photoUrl)
+            }
+        }
+        if (currentUser.email != userModel.email) {
+            currentUser.updateEmail(userModel.email ?: "")
+                .addOnSuccessListener {
+                    Timber.tag("updateEmail").d("true")
+                }
+                .addOnFailureListener {
+                    Timber.tag("updateEmail").d("false")
+
+                }
+        }
+        currentUser.updateProfile(profileUpdates)
+            .addOnSuccessListener {
+                Timber.tag("updateProfile").d("true")
+            }.addOnFailureListener {
+                Timber.tag("updateProfile").d("true")
+            }
+
+    }
+
+    suspend  fun updateInfoUser(
         uid: String,
-        vararg fieldUser: Pair<String, Any>,
+        fieldUser: HashMap<String, Any>,
         onResult: ((Boolean) -> Unit)
     ) {
-        db.collection(USERS).document(uid).update(fieldUser.toMap())
+        db.collection(USERS).document(uid).update(fieldUser)
             .addOnCompleteListener {
                 onResult.invoke(true)
             }.addOnFailureListener {
@@ -277,6 +308,9 @@ object FireBaseService {
                 onResult?.invoke(false)
             }
     }
+
+
+
 
 
 }
