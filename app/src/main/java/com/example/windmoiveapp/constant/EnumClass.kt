@@ -1,5 +1,7 @@
 package com.example.windmoiveapp.constant
 
+import com.example.windmoiveapp.model.UserModel
+
 
 enum class Categories(val type: String) {
     HOME("Home"),
@@ -43,12 +45,33 @@ enum class Categories(val type: String) {
     }
 }
 
-enum class AccountPermission(val type: Int) {
+enum class AccountType(val type: Int) {
     NORMAL(0),
-    VIP(1)
+    VIP(1);
+    companion object {
+        fun getAccountByType(userModel: UserModel): AccountType {
+            return values().first { it.type == userModel.accountType }
+        }
+    }
 }
 
-enum class AccountType(val type: Int) {
+enum class AccountPermission(val type: Int) {
     USER(0),
     ADMIN(1)
+}
+enum class GenderType(val type: Int) {
+    MALE(0),
+    FEMALE(1),
+    NOTHING(-1);
+    companion object {
+        fun getGenderByType(userModel: UserModel): GenderType {
+            return values().first { it.type == userModel.gender }
+        }
+    }
+}
+
+enum class TypeLogin {
+    FACEBOOK,
+    FIREBASE,
+    GOOGLE,
 }

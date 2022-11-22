@@ -60,6 +60,10 @@ fun EditText.isValidString() =
     this.text.isNotEmpty() && Pattern.compile("[a-zA-Z0-9]+").matcher(this.text.toString())
         .matches()
 
+fun EditText.isValidText() =
+    this.text.isNotEmpty() && Pattern.compile("^[A-Za-z][A-Za-z0-9_]{7,29}\$").matcher(this.text.toString())
+        .matches()
+
 fun EditText.hideKeyBoardOnTouch(context: Context) {
     this.setOnFocusChangeListener { view, focus ->
         if (!focus) {

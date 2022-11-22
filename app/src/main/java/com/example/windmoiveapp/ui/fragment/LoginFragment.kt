@@ -9,10 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.databinding.FragmentLoginBinding
 import com.example.windmoiveapp.extension.*
+import com.example.windmoiveapp.firebase.FacebookService
 import com.example.windmoiveapp.firebase.FireBaseService
 import com.example.windmoiveapp.firebase.GoogleService
 import com.example.windmoiveapp.model.UserModel
@@ -34,51 +36,14 @@ import com.google.android.gms.tasks.Task
 
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
-    private val authenViewModel by lazy { AuthViewModel(activity?.application as Application) }
+    private val authenViewModel: AuthViewModel by activityViewModels()
     private val pref by lazy { PrefUtil.getInstance(activity?.application as Application) }
     private val movieViewModel by lazy { MovieViewModel(activity?.application as Application) }
-    //private val listUser by lazy { FireBaseService.getInfoAllUser() }
+    private var typeLogin: Int? = null
 
     companion object {
-        const val RC_SIGN_IN_CODE_SUCCESS = 1
-        const val RC_SIGN_IN = 1
-    }
+        private const val LOGIN_FIREBASE = 1
 
-    private fun navigateToHomeFragment() {
-        findNavController().navigateWithAnim(R.id.dashBroadScreen)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-    }
-
-    fun getUserInfo() {
-        LoginManager.getInstance().logInWithReadPermissions(
-            this,
-            listOf("email")
-        )
-    }
-
-    private fun signInWithGoogle() {
-        val gso =
-            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
-        val googleSignInClient = GoogleSignIn.getClient(context ?: return, gso)
-        val signInIntent = googleSignInClient.signInIntent
-        activity?.startActivityForResult(signInIntent, RC_SIGN_IN_CODE_SUCCESS)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN_CODE_SUCCESS) {
-            try {
-                val googleSignInAccount = GoogleSignIn.getSignedInAccountFromIntent(data)
-                    .getResult(ApiException::class.java)
-                // authenViewModel.loginWithAccountGg(googleSignInAccount)
-            } catch (e: ApiException) {
-                // authenViewModel.loginWithAccountGg(null)
-            }
-        }
     }
 
     override fun onCreateViewBinding(
@@ -100,11 +65,51 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         validateEnableButtonLogin()
     }
 
+    override fun loadData() {
+        super.loadData()
+        movieViewModel.getAllUser()
+    }
+
     private fun initViews() {
         isSaveUserInfo()
         binding.edtPassword.apply {
             inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             setSwitchPasswordDialog()
+        }
+    }
+
+    private fun initListener() {
+        binding.btnLogin.setOnClickListener {
+            invalidLoginFirebase()
+        }
+        binding.ggLoginBtn.setOnClickListener {
+            invalidSignInGG()
+        }
+
+        FacebookService.loginWithFaceBook(binding.fbLoginBtn) { user ->
+            invalidSignInFb(user)
+        }
+
+        binding.edtPassword.afterTextChange {
+            validateEnableButtonLogin()
+        }
+
+        binding.imgBack.setOnClickListener {
+            onBackFragment()
+        }
+    }
+
+    private fun initObserver() {
+        movieViewModel.listAllUser.observe(viewLifecycleOwner) {}
+
+        authenViewModel.userModelLiveData.observe(viewLifecycleOwner) { user ->
+            dismissProgress()
+            if (user != null) {
+                navigateToHomeFragment()
+                setUpInfoUserSignIn(user)
+            } else {
+                context?.showAlertDialog(getString(R.string.signInFailLabel))
+            }
         }
     }
 
@@ -118,42 +123,27 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         }
     }
 
-    private fun initListener() {
-        binding.btnLogin.setOnClickListener {
-            if (invalidEmailPassword()) {
-                showProgress()
-                setEventLogin()
-            } else {
-                context?.getAlertDialog(getString(R.string.emailPasswordFailLabel))
-                dismissProgress()
+    private fun invalidLoginFirebase() {
+        typeLogin = LOGIN_FIREBASE
+        if (invalidEmailPassword()) {
+            showProgress()
+            setEventLogin()
+        } else {
+            context?.getAlertDialog(getString(R.string.emailPasswordFailLabel))
+            dismissProgress()
+        }
+    }
+
+    private fun invalidSignInFb(user: UserModel?) {
+        if (user == null) {
+            activity?.showAlertDialog(context?.getString(R.string.errorMessageLabel) ?: "")
+        } else {
+            val users = movieViewModel.listAllUser.value?.firstOrNull { user.uid == it.uid }
+            if (users == null) {
+                authenViewModel.addUserInfo(user) {
+                }
             }
-        }
-        binding.ggLoginBtn.setOnClickListener {
-            invalidSignInGG()
-        }
-        binding.fbLoginBtn.registerCallback(
-            CallbackManager.Factory.create(),
-            object : FacebookCallback<LoginResult> {
-                override fun onCancel() {
-                    activity?.showAlertDialog(context?.getString(R.string.errorMessageLabel) ?: "")
-                }
-
-                override fun onError(error: FacebookException) {
-                    activity?.showAlertDialog(error.message.toString())
-                }
-
-                override fun onSuccess(result: LoginResult) {
-                    //handleAccessToken(result.accessToken)
-                    navigateToHomeFragment()
-                }
-            })
-
-        binding.edtPassword.afterTextChange {
-            validateEnableButtonLogin()
-        }
-
-        binding.imgBack.setOnClickListener {
-            onBackFragment()
+            authenViewModel.getUserInfo(user.uid ?: "")
         }
     }
 
@@ -167,7 +157,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     private fun setEventLogin() {
         val email = binding.edtEmail.text.toString()
         val password = binding.edtPassword.text.toString()
-        authenViewModel.signInWithEmailPassword(email, password)
+        authenViewModel.signInWithEmailPassword(email, password) {
+            authenViewModel.getUserInfo(it?.uid ?: "")
+        }
     }
 
     private fun invalidEmailPassword(): Boolean {
@@ -176,34 +168,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         return emailIsValid && passwordIsValid
     }
 
-    private fun initObserver() {
-        movieViewModel.listAllUser.observe(viewLifecycleOwner) {
-
-        }
-        authenViewModel.googleSignInLiveData.observe(viewLifecycleOwner) { ggSignIn ->
-            val user = movieViewModel.listAllUser.value?.firstOrNull { it.uid == ggSignIn?.id }
-            if (user == null) {
-                FireBaseService.addInfoUser(ggSignIn?.convertToUserModel() ?: return@observe)
-            }
-            navigateToHomeFragment()
-        }
-
-        authenViewModel.userModelLiveData.observe(viewLifecycleOwner) { user ->
-            dismissProgress()
-            if (user != null) {
-                navigateToHomeFragment()
-                setUpInfoUserSignIn(user)
-            } else {
-                context?.showAlertDialog(getString(R.string.signInFailLabel))
-            }
-        }
-    }
-
     private fun setUpInfoUserSignIn(user: UserModel) {
-        if (binding.cbAccount.isChecked) {
-            pref.putValue(PREF_USER, GsonExt.convertObjetToGson(user))
-        } else {
-            pref.removeKey(PREF_USER)
+        when (typeLogin) {
+            LOGIN_FIREBASE -> {
+                if (binding.cbAccount.isChecked) {
+                    pref.putValue(PREF_USER, GsonExt.convertObjetToGson(user))
+                } else {
+                    pref.removeKey(PREF_USER)
+                }
+            } else -> {}
         }
         moveToDashBoard()
     }
@@ -219,28 +192,32 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         }
 
     private fun invalidSignInGG() {
-//        val googleSignInAccount = GoogleService.isLoggedInGg(context ?: requireContext())
-//        if (googleSignInAccount != null) {
-//            googleSignInAccount.convertToUserModel()
-//            navigateToHomeFragment()
-//        } else {
+        val googleSignInClient = GoogleService.loginWithAccountGg(activity ?: return)
+        val googleSignInAccount = GoogleService.isLoggedInGg(context ?: requireContext())
+        if (googleSignInAccount != null) {
+            googleSignInClient.signOut()
+        }
         val signInIntent = GoogleService.loginWithAccountGg(activity ?: return).signInIntent
         startForResult.launch(signInIntent)
-        //}
     }
 
     private fun handleSignInResult(task: Task<GoogleSignInAccount>) {
         try {
+            showProgress()
             val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
-            authenViewModel.setValueGoogleSignInAccount(account)
+            val user = movieViewModel.listAllUser.value?.firstOrNull { it.uid == account.id }
+            if (user == null) {
+                authenViewModel.addUserInfo(account.convertToUserModel()) {
+                }
+            }
+            authenViewModel.getUserInfo(account.convertToUserModel().uid ?: "")
         } catch (e: ApiException) {
             activity?.getAlertDialog(e.message ?: "")
         }
     }
 
-    override fun loadData() {
-        super.loadData()
-        movieViewModel.getAllUser()
+    private fun navigateToHomeFragment() {
+        findNavController().navigateWithAnim(R.id.dashBroadScreen)
     }
 
 

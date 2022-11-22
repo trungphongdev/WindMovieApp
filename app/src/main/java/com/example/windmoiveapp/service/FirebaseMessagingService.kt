@@ -17,9 +17,8 @@ import com.example.windmoiveapp.ui.MainActivity
 import com.example.windmoiveapp.util.AppApplication
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import okhttp3.Dispatcher
 import timber.log.Timber
 
 class FirebaseMessageService : FirebaseMessagingService() {
@@ -37,14 +36,13 @@ class FirebaseMessageService : FirebaseMessagingService() {
         super.onNewToken(token)
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         Timber.tag(FCM_TAG).d("From: %s", message.from)
         if (message.notification != null) {
             showNotification(message)
-            GlobalScope.launch {
-                BuildDaoDatabase.getNotificationDao(application = AppApplication())
+            CoroutineScope(Dispatchers.IO).launch {
+                BuildDaoDatabase.getNotificationDao(application = AppApplication.instance)
                     .insertNotification(message.convertToNotificationModel())
             }
         }

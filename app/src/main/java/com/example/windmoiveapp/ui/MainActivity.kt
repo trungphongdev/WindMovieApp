@@ -2,15 +2,24 @@ package com.example.windmoiveapp.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import com.example.windmoiveapp.R
+import com.example.windmoiveapp.database.BuildDaoDatabase
 import com.example.windmoiveapp.databinding.ActivityMainBinding
 import com.example.windmoiveapp.extension.getAlertDialog
 import com.example.windmoiveapp.extension.showAlertDialog
+import com.example.windmoiveapp.model.NotificationModel
+import com.example.windmoiveapp.model.convertToNotificationModel
 import com.example.windmoiveapp.ui.fragment.BaseFragment
 import com.example.windmoiveapp.ui.fragment.ProgressDialogFragment
+import com.example.windmoiveapp.util.AppApplication
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null

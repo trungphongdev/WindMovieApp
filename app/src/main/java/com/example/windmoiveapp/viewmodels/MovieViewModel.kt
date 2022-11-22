@@ -98,7 +98,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getListMovieRoom() {
         viewModelScope.launch {
-            val listMovie = BuildDaoDatabase.getMovieDao(AppApplication()).getAllMovie()
+            val listMovie = dao.getMovieDao().getAllMovie()
             listMovieRoom.postValue(listMovie)
         }
     }
@@ -189,12 +189,6 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getUserInfo() {
-        viewModelScope.launch {
-            val gsonUser = PrefUtil(getApplication<Application>().baseContext).getValue(UserModel.PREF_USER, "")
-            val user = GsonExt.convertGsonToObjet(gsonUser, UserModel::class.java)
-            userModelLiveData.postValue(user)
-        }
-    }
+
 
 }

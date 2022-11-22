@@ -7,35 +7,42 @@ import androidx.lifecycle.viewModelScope
 import com.example.windmoiveapp.firebase.FireBaseService
 import com.example.windmoiveapp.model.UserModel
 import com.example.windmoiveapp.model.convertToUserModel
-import com.facebook.AccessToken
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.launch
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
-    var accessTokenFBLiveData: MutableLiveData<AccessToken?> = MutableLiveData()
-    var googleSignInLiveData: MutableLiveData<GoogleSignInAccount?> = MutableLiveData()
     var userModelLiveData = MutableLiveData<UserModel?>()
 
     fun signInWithEmailPassword(
         email: String,
         passWord: String,
+        onResult: ((FirebaseUser?) -> Unit)? = null
     ) {
         viewModelScope.launch {
-            FireBaseService.signInWithEmailAndPassword(email, passWord, onSuccess = {
-                userModelLiveData.postValue(it?.convertToUserModel())
-            }, onFailure = {
-                userModelLiveData.postValue(null)
-            })
+            FireBaseService.signInWithEmailAndPassword(email, passWord,
+                onSuccess = {
+                    onResult?.invoke(it)
+                }, onFailure = {
+                    onResult?.invoke(null)
+                })
         }
     }
 
-    fun setValueUserModel(userModel: UserModel) {
-        userModelLiveData.postValue(userModel)
+    fun getUserInfo(uid: String) {
+        viewModelScope.launch {
+            FireBaseService.getInfoUser(uid) {
+                userModelLiveData.postValue(it)
+            }
+        }
     }
 
-    fun setValueGoogleSignInAccount(googleSignInAccount: GoogleSignInAccount) {
-        googleSignInLiveData.postValue(googleSignInAccount)
+    fun addUserInfo(userModel: UserModel, onResultCallback: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            FireBaseService.addInfoUser(userModel) {
+                onResultCallback.invoke(it)
+            }
+        }
     }
 
     fun signUpWithEmailPassword(
@@ -49,11 +56,11 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 passWord,
                 onSuccess = { firebaseUser ->
                     if (firebaseUser != null /*&& it.isEmailVerified*/) {
-                        FireBaseService.addInfoUser(firebaseUser.convertToUserModel()) {
+                        addUserInfo(firebaseUser.convertToUserModel()) {
                             if (it) {
                                 updateInfoUser(
                                     user = firebaseUser.convertToUserModel(),
-                                    fieldUser = arrayOf(Pair("password", passWord))
+                                    fieldUser = hashMapOf(UserModel::password.name to passWord)
                                 )
                                 onResult?.invoke(firebaseUser.convertToUserModel())
                             } else {
@@ -78,13 +85,21 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun updateInfoUser(user: UserModel, vararg fieldUser: Pair<String, Any>) {
-        FireBaseService.updateInfoUser(user.uid ?: "", *fieldUser) {
-            if (it) {
-                userModelLiveData.postValue(user)
-            } else {
-                userModelLiveData.postValue(null)
+    fun updateInfoUser(user: UserModel, fieldUser: HashMap<String, Any>) {
+        viewModelScope.launch {
+            FireBaseService.updateInfoUser(user.uid ?: "", fieldUser) {
+                if (it) {
+                    userModelLiveData.postValue(user)
+                } else {
+                    userModelLiveData.postValue(null)
+                }
             }
+        }
+    }
+
+    fun updateInfoUserOnServer(userModel: UserModel) {
+        viewModelScope.launch {
+        FireBaseService.updateInfoUserSever(userModel)
         }
     }
 

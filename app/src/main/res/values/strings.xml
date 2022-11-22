@@ -89,5 +89,6 @@
     <string name="default_notification_channel_id">channelID</string>
     <string name="alertCmtEmptyLabel">Please comment before rating movie</string>
     <string name="commentFailLabel">Comment Fail</string>
+    <string name="emailAndPasswordNotEmpty">Email and Password can\'t not be empty</string>
 
 </resources>

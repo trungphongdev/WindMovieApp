@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/dp4"
+    android:paddingVertical="@dimen/dp4"
+    android:layout_marginTop="@dimen/dp3"
+    android:elevation="@dimen/dp6">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgMovie"
+        android:layout_width="@dimen/dp50"
+        android:layout_height="@dimen/dp50"
+        android:src="@drawable/logohome"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="10dp"
+        app:layout_constraintHorizontal_weight="0.3" />
+
+    <TextView
+        android:id="@+id/tvUid"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp8"
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imvTrash"
+        app:layout_constraintStart_toEndOf="@id/imgMovie"
+        app:layout_constraintTop_toTopOf="@id/imgMovie"
+        tools:text="12121331" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@id/tvName"
+        app:layout_constraintTop_toBottomOf="@id/tvName"
+        tools:text="BabyBoss" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imvTrash"
+        android:layout_width="@dimen/dp40"
+        android:layout_height="@dimen/dp40"
+        android:padding="@dimen/dp8"
+        android:tint="@color/redB11313"
+        app:layout_constraintBottom_toBottomOf="@+id/imgMovie"
+        app:layout_constraintEnd_toStartOf="@id/imvEdit"
+        app:layout_constraintTop_toTopOf="@+id/imgMovie"
+        app:srcCompat="@drawable/ic_delete" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imvEdit"
+        android:layout_width="@dimen/dp40"
+        android:layout_height="@dimen/dp40"
+        android:padding="@dimen/dp8"
+        android:tint="@color/redB11313"
+        app:layout_constraintBottom_toBottomOf="@+id/imgMovie"
+        app:layout_constraintEnd_toStartOf="@id/imvInfo"
+        app:layout_constraintTop_toTopOf="@+id/imgMovie"
+        app:srcCompat="@drawable/ic_baseline_edit_24"
+        />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imvInfo"
+        android:layout_width="@dimen/dp40"
+        android:layout_height="@dimen/dp40"
+        android:padding="@dimen/dp8"
+        app:layout_constraintBottom_toBottomOf="@+id/imgMovie"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgMovie"
+        app:srcCompat="@drawable/ic_info"
+        android:tint="@color/redB11313" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
+
+
