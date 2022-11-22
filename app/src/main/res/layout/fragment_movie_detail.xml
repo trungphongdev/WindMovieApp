@@ -212,6 +212,7 @@
                 app:srcCompat="@drawable/icon_like_round" />
 
             <TextView
+                android:id="@+id/tvLikeNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
@@ -234,6 +235,7 @@
                 app:srcCompat="@drawable/dislike" />
 
             <TextView
+                android:id="@+id/tvDisLikeNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
