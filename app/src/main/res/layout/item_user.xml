@@ -30,27 +30,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp8"
         android:maxLines="1"
-        android:textColor="@color/white"
+        android:textColor="@color/redB11313"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imvTrash"
         app:layout_constraintStart_toEndOf="@id/imgUser"
         app:layout_constraintTop_toTopOf="@id/imgUser"
         tools:text="12121331" />
-
-    <TextView
-        android:id="@+id/tvName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@id/tvName"
-        app:layout_constraintTop_toBottomOf="@id/tvName"
-        tools:text="BabyBoss" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imvTrash"

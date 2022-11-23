@@ -38,7 +38,6 @@ import com.google.android.gms.tasks.Task
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     private val authenViewModel: AuthViewModel by activityViewModels()
     private val pref by lazy { PrefUtil.getInstance(activity?.application as Application) }
-    private val movieViewModel by lazy { MovieViewModel(activity?.application as Application) }
     private var typeLogin: Int? = null
 
     companion object {
@@ -67,7 +66,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     override fun loadData() {
         super.loadData()
-        movieViewModel.getAllUser()
+        authenViewModel.getAllUser()
     }
 
     private fun initViews() {
@@ -100,7 +99,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun initObserver() {
-        movieViewModel.listAllUser.observe(viewLifecycleOwner) {}
+        authenViewModel.listAllUser.observe(viewLifecycleOwner) {}
 
         authenViewModel.userModelLiveData.observe(viewLifecycleOwner) { user ->
             dismissProgress()
@@ -138,7 +137,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         if (user == null) {
             activity?.showAlertDialog(context?.getString(R.string.errorMessageLabel) ?: "")
         } else {
-            val users = movieViewModel.listAllUser.value?.firstOrNull { user.uid == it.uid }
+            val users = authenViewModel.listAllUser.value?.firstOrNull { user.uid == it.uid }
             if (users == null) {
                 authenViewModel.addUserInfo(user) {
                 }
@@ -205,7 +204,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         try {
             showProgress()
             val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
-            val user = movieViewModel.listAllUser.value?.firstOrNull { it.uid == account.id }
+            val user = authenViewModel.listAllUser.value?.firstOrNull { it.uid == account.id }
             if (user == null) {
                 authenViewModel.addUserInfo(account.convertToUserModel()) {
                 }

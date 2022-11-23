@@ -52,10 +52,10 @@ class TabMeFragment : BaseFragment<FragmentInfoUserBinding>() {
             navigateToScreen(R.id.myListFragment)
         }
         binding.llUsers.click {
-
+            navigateToScreen(R.id.accountManagementFragment)
         }
         binding.llMovies.click {
-
+            navigateToScreen(R.id.movieManagementFragment)
         }
         binding.llReport.click {
 
@@ -65,6 +65,11 @@ class TabMeFragment : BaseFragment<FragmentInfoUserBinding>() {
         }
         binding.llLogout.click {
 
+        }
+        binding.headerBar.apply {
+            setEventBackListener {
+                super.onBackFragment()
+            }
         }
 
     }

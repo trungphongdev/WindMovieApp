@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp8"
         android:maxLines="1"
-        android:textColor="@color/white"
+        android:textColor="@color/redB11313"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imvTrash"

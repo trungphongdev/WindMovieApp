@@ -9,36 +9,41 @@ import android.view.ViewGroup
 import android.widget.MediaController
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.adapter.RatingMovieAdapter
 import com.example.windmoiveapp.adapter.ViewPagerAdapter
 import com.example.windmoiveapp.constant.Categories
+import com.example.windmoiveapp.constant.StatusLovingMovie
 import com.example.windmoiveapp.databinding.FragmentMovieDetailBinding
 import com.example.windmoiveapp.extension.*
-import com.example.windmoiveapp.model.MovieModel
-import com.example.windmoiveapp.model.RatingModel
-import com.example.windmoiveapp.model.UserModel
-import com.example.windmoiveapp.model.postRating
+import com.example.windmoiveapp.model.*
 import com.example.windmoiveapp.util.PrefUtil
+import com.example.windmoiveapp.viewmodels.AuthViewModel
 import com.example.windmoiveapp.viewmodels.MovieViewModel
 import com.google.android.material.tabs.TabLayoutMediator
-import java.text.SimpleDateFormat
+import timber.log.Timber
 import java.util.*
 
 class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
     private val movieViewModels: MovieViewModel by lazy { MovieViewModel(activity?.application as Application) }
+    private val authenViewModel: AuthViewModel by activityViewModels()
     private val adapterRating by lazy { RatingMovieAdapter() }
     private var movieModel: MovieModel? = null
     private val pref by lazy { PrefUtil.getInstance(activity?.application as Application) }
-    private var ratingModel: RatingModel = RatingModel()
     private var isAdd: Boolean = false
+    private var lovingMovie: LovingMovieModel = LovingMovieModel()
 
     companion object {
         const val BUNDLE_CONTENT_MOVIE = "BUNDLE_CONTENT_MOVIE"
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        movieModel = this.arguments?.getParcelable(BUNDLE_CONTENT_MOVIE)
     }
 
     override fun onCreateViewBinding(
@@ -54,7 +59,6 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
         savedInstanceState: Bundle?,
         isViewCreated: Boolean
     ) {
-        getDataFromBundle()
         initViews()
         initListeners()
         initObserver()
@@ -62,13 +66,8 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
 
     private fun initObserver() {
         movieViewModels.movieRoomLiveData.observe(viewLifecycleOwner) {
-            if (it == null) {
-                isAdd = false
-                binding.imvMyList.setImageResource(R.drawable.ic_add)
-            } else {
-                isAdd = true
-                binding.imvMyList.setImageResource(R.drawable.ic_baseline_check_circle_24)
-            }
+            isAdd = it != null
+            binding.imvMyList.isSelected = isAdd
         }
 
         movieViewModels.listRating.observe(viewLifecycleOwner) {
@@ -88,11 +87,41 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
                 context?.showAlertDialog(getString(R.string.commentFailLabel))
             }
         }
+        movieViewModels.lovingsLiveData.observe(viewLifecycleOwner) {
+            dismissProgress()
+            bindDataLovingMovie(it)
+        }
+
+        movieViewModels.isLoveMovie.observe(viewLifecycleOwner) {
+            dismissProgress()
+            movieViewModels.getLovingsByIdMovie(movieModel?.id ?: return@observe)
+            Timber.tag("IsSendLove").d(it.toString())
+        }
 
     }
 
-    private fun getDataFromBundle() {
-        movieModel = this.arguments?.getParcelable(BUNDLE_CONTENT_MOVIE)
+    private fun bindDataLovingMovie(lovings: List<LovingMovieModel>?) {
+        val pair = lovings.getNumberLovingByMovie()
+        binding.tvLikeNumber.text = pair.first.toString()
+        binding.tvDisLikeNumber.text = pair.second.toString()
+        val isLike = lovings.getStatusLovingByUser(authenViewModel.userModelLiveData.value ?: return)
+        when (isLike) {
+            StatusLovingMovie.LIKE.status -> {
+                binding.imvLike.isSelected = true
+                binding.imvDislike.isSelected = false
+            }
+            StatusLovingMovie.DISLIKE.status -> {
+                binding.imvDislike.isSelected = true
+                binding.imvLike.isSelected = false
+            }
+            else -> {
+                binding.imvLike.isSelected = false
+                binding.imvDislike.isSelected = false
+            }
+        }
+        if (lovings != null) {
+            lovingMovie.id = lovings.firstOrNull { it.idMovie == movieModel?.id && it.idUser == authenViewModel.userModelLiveData.value?.uid }?.id ?: UUID.randomUUID().toString()
+        }
     }
 
     private fun initViews() {
@@ -103,6 +132,8 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             tvDuration.text = movieModel?.duration
             tvCategory.text = Categories.getCategoryByName(movieModel?.categories ?: emptyList())
         }
+        lovingMovie.idMovie = movieModel?.id ?: ""
+        lovingMovie.idUser = authenViewModel.userModelLiveData.value?.uid ?: ""
         setUpRecyclerViewComment()
         setUpVideoView()
         setUpViewPager()
@@ -132,24 +163,22 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             headerBar.setEventBackListener {
                 moveToDashBoard()
             }
-            llPlayMovie.setOnClickListener {
+            llPlayMovie.click {
                 setUpVideoView()
             }
-            imvLike.setOnClickListener {
-                findNavController().navigateWithAnim(R.id.myListFragment)
+            imvLike.click {
+                lovingMovie.like = StatusLovingMovie.LIKE.status
+                invalidLikeMovie()
             }
-            imvComment.setOnClickListener {
+            imvDislike.click {
+                lovingMovie.like = StatusLovingMovie.DISLIKE.status
+                invalidLikeMovie()
+            }
+            imvComment.click {
                 llComment.root.isVisible = true
             }
-            imvMyList.setOnClickListener {
-                isAdd = !isAdd
-                if (isAdd) {
-                    binding.imvMyList.setImageResource(R.drawable.ic_add)
-                    movieViewModels.removeMovieById(movieModel ?: return@setOnClickListener)
-                } else {
-                    binding.imvMyList.setImageResource(R.drawable.ic_baseline_check_circle_24)
-                    movieViewModels.addMovieToRoom(movieModel ?: return@setOnClickListener)
-                }
+            imvMyList.click {
+                saveFavouriteMovie()
             }
             headerBar.apply {
                 setEventBackListener {
@@ -158,33 +187,47 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
                 setEventSearchListener {
                     findNavController().navigateWithAnim(R.id.searchFragment)
                 }
-
-                llComment.btnPostCmt.click {
-                    val userJson = pref.getValue(UserModel.PREF_USER, "")
-                    val user = GsonExt.convertGsonToObjet(userJson, UserModel::class.java)
-                    if (llComment.edtComment.text.isNullOrBlank().not()) {
-                        val ratingModel = RatingModel(
-                            id = UUID.randomUUID().toString(),
-                            comment = llComment.edtComment.text.toString(),
-                            time = Date().time,
-                            isLike = false,
-                            userId = user.uid,
-                            movieId = movieModel?.id
-                        )
-                        llComment.edtComment.text?.clear()
-                        showProgress()
-                        movieViewModels.postRating(postRating(ratingModel))
-                    } else {
-                        context?.showAlertDialog(getString(R.string.alertCmtEmptyLabel))
-                    }
-                }
+            }
+            llComment.btnPostCmt.click {
+                postComment()
             }
 
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    private fun invalidLikeMovie() {
+        showProgress()
+        movieViewModels.lovingMovie(lovingMovie)
+    }
+
+    private fun saveFavouriteMovie() {
+        isAdd = !isAdd
+        binding.imvMyList.isSelected = isAdd
+        movieModel?.let {
+            if (isAdd) {
+                movieViewModels.removeMovieById(it)
+            } else {
+                movieViewModels.addMovieToRoom(it)
+            }
+        }
+    }
+
+    private fun postComment() {
+        showProgress()
+        if (binding.llComment.edtComment.text.isNullOrBlank().not()) {
+            val ratingModel = RatingModel(
+                id = UUID.randomUUID().toString(),
+                comment = binding.llComment.edtComment.text.toString(),
+                time = Date().time,
+                isLike = false,
+                userId = authenViewModel.userModelLiveData.value?.uid,
+                movieId = movieModel?.id
+            )
+            binding.llComment.edtComment.text?.clear()
+            movieViewModels.postRating(postRating(ratingModel))
+        } else {
+            context?.showAlertDialog(getString(R.string.alertCmtEmptyLabel))
+        }
     }
 
     private fun setUpViewPager() {
@@ -211,6 +254,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
         showProgress()
         movieViewModels.getMovieById(movieModel)
         movieViewModels.getRatingsById(movieModel?.id ?: return)
+        movieViewModels.getLovingsByIdMovie(movieModel?.id ?: return)
     }
 
 }

@@ -186,7 +186,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_add" />
+                app:srcCompat="@drawable/add_movie" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -209,7 +209,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imvMyList"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/icon_like_round" />
+                app:srcCompat="@drawable/status_like_movie" />
 
             <TextView
                 android:id="@+id/tvLikeNumber"
@@ -232,7 +232,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imvLike"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/dislike" />
+                app:srcCompat="@drawable/status_dislike_movie" />
 
             <TextView
                 android:id="@+id/tvDisLikeNumber"

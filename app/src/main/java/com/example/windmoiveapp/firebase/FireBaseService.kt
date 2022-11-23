@@ -23,8 +23,6 @@ object FireBaseService {
     private const val RATINGS = "ratings"
     private const val LOVING = "loving_movie"
     private const val CATEGORIES = "categories"
-    private const val DISLIKE_NUM = "dislikeNum"
-    private const val LIKE_NUM = "likeNum"
     private const val TAG = "Firebase"
 
 
@@ -313,8 +311,9 @@ object FireBaseService {
 
     // <==========================LOVING FILM=====================================================================>
 
-    suspend fun lovingMovie(lovingMovieModel: LovingMovieModel, onResult: ((Boolean) -> Unit)?) {
-        db.collection(LOVING).document().set(lovingMovieModel).addOnSuccessListener {
+     fun lovingMovie(lovingMovieModel: LovingMovieModel, onResult: ((Boolean) -> Unit)?) {
+        db.collection(LOVING).document(lovingMovieModel.id).set(lovingMovieModel)
+            .addOnSuccessListener {
             onResult?.invoke(true)
         }.addOnFailureListener {
             onResult?.invoke(false)
@@ -323,12 +322,10 @@ object FireBaseService {
 
     suspend fun updateLovingStatusMovie(
         lovingMovieModel: LovingMovieModel,
-        isLike: Boolean?,
         onResult: ((Boolean) -> Unit)?
     ) {
-        db.collection(LOVING).document(lovingMovieModel.id).update(
-            hashMapOf<String, Any?>(lovingMovieModel::isLike.name to isLike)
-        ).addOnSuccessListener {
+        db.collection(LOVING).document(lovingMovieModel.id).update(lovingMovieModel::like.name , lovingMovieModel.like)
+            .addOnSuccessListener {
             onResult?.invoke(true)
         }.addOnFailureListener {
             onResult?.invoke(false)
@@ -340,33 +337,21 @@ object FireBaseService {
         lovings: (List<LovingMovieModel>) -> Unit
     ) {
         val list = arrayListOf<LovingMovieModel>()
-        db.collection(LOVING).whereEqualTo(LovingMovieModel::idMovie.name, idMovie).get()
-            .addOnSuccessListener { _lovings ->
-                for (loving in _lovings) {
-                    list.add(loving.toObject())
+        try {
+            db.collection(LOVING).whereEqualTo(LovingMovieModel::idMovie.name, idMovie).get()
+                .addOnSuccessListener { _lovings ->
+                    for (loving in _lovings) {
+                        list.add(loving.toObject())
+                    }
+                    lovings.invoke(list)
+                }.addOnFailureListener {
+                    lovings.invoke(emptyList())
                 }
-                lovings.invoke(list)
-            }.addOnFailureListener {
-                lovings.invoke(emptyList())
-            }
-    }
+        } catch (e: Exception) {
+            lovings.invoke(emptyList())
+        }
 
-    suspend fun getLovingMoviesByIdMovie(
-        idMovie: String,
-        lovings: (List<LovingMovieModel>) -> Unit
-    ) {
-        val list = arrayListOf<LovingMovieModel>()
-        db.collection(LOVING).whereEqualTo(LovingMovieModel::idMovie.name, idMovie).get()
-            .addOnSuccessListener { _lovings ->
-                for (loving in _lovings) {
-                    list.add(loving.toObject())
-                }
-                lovings.invoke(list)
-            }.addOnFailureListener {
-                lovings.invoke(emptyList())
-            }
     }
-
 
 }
 

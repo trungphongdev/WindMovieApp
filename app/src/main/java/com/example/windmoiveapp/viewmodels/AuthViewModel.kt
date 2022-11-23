@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
     var userModelLiveData = MutableLiveData<UserModel?>()
+    var listAllUser: MutableLiveData<List<UserModel>> = MutableLiveData()
 
     fun signInWithEmailPassword(
         email: String,
@@ -100,6 +101,21 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     fun updateInfoUserOnServer(userModel: UserModel) {
         viewModelScope.launch {
         FireBaseService.updateInfoUserSever(userModel)
+        }
+    }
+
+
+    fun getAllUser() {
+        FireBaseService.getInfoAllUser {
+            listAllUser.postValue(it)
+        }
+    }
+
+    fun getUserByID(uid: String) {
+        viewModelScope.launch {
+            FireBaseService.getInfoUser(uid) {
+
+            }
         }
     }
 

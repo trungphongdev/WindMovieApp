@@ -19,11 +19,9 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     var listMovieRoom: MutableLiveData<List<MovieModel>> = MutableLiveData()
     var movieRoomLiveData: MutableLiveData<MovieModel?> = MutableLiveData()
     var likePostLiveData: MutableLiveData<Boolean> = MutableLiveData()
-    var listAllUser: MutableLiveData<List<UserModel>> = MutableLiveData()
     var listNotification: MutableLiveData<List<NotificationModel>> = MutableLiveData()
     var listRating: MutableLiveData<List<RatingModel>> = MutableLiveData()
     var listRatingUser: MutableLiveData<List<RatingModel>> = MutableLiveData()
-    var userModelLiveData: MutableLiveData<UserModel> = MutableLiveData()
     var postCommentSuccessLiveData: MutableLiveData<Boolean> = MutableLiveData()
     var isLoveMovie: MutableLiveData<Boolean> = MutableLiveData()
     var lovingsLiveData: MutableLiveData<List<LovingMovieModel>> = MutableLiveData()
@@ -66,14 +64,6 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     fun getMovieList() {
         viewModelScope.launch {
             FireBaseService.getMovieList {
-                listMovie.postValue(it)
-            }
-        }
-    }
-
-    fun getMovieListByCategory(categories: Categories) {
-        viewModelScope.launch {
-            FireBaseService.getMovieByCategory(categories) {
                 listMovie.postValue(it)
             }
         }
@@ -124,19 +114,6 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getAllUser() {
-        FireBaseService.getInfoAllUser {
-            listAllUser.postValue(it)
-        }
-    }
-
-    fun getUserByID(uid: String) {
-        viewModelScope.launch {
-            FireBaseService.getInfoUser(uid) {
-
-            }
-        }
-    }
 
     fun getListNotification() {
         viewModelScope.launch {
@@ -183,22 +160,6 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-
-    fun lovingMovie(lovingMovieModel: LovingMovieModel) {
-        viewModelScope.launch {
-            FireBaseService.lovingMovie(lovingMovieModel)
-        }
-    }
-
-    fun getLovingByIdUser(id: String) {
-        viewModelScope.launch {
-            FireBaseService.getLovingMoviesByIdMovie(idMovie) {
-                lovingsLiveData.postValue(it)
-            }
-        }
-    }
-
-
     fun getLovingsByIdMovie(idMovie: String) {
         viewModelScope.launch {
             FireBaseService.getLovingMoviesByIdMovie(idMovie) {
@@ -207,15 +168,25 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getNumberLovingByMovie(): Pair<Int, Int> {
-        val lovings = lovingsLiveData.value
-        if (lovings != null && lovings.isNotEmpty()) {
-            val like = lovings.filter { it.isLike == true }.size
-            val disLike = lovings.filter { it.isLike == false }.size
-            return like to disLike
+    fun lovingMovie(lovingMovieModel: LovingMovieModel) {
+        viewModelScope.launch {
+            val lovingItemExist = lovingsLiveData.value.getItemLovingExist(lovingMovieModel)
+            if (lovingItemExist != null) {
+                FireBaseService.updateLovingStatusMovie(lovingMovieModel) { isLike ->
+                    isLoveMovie.postValue(isLike)
+                }
+            } else {
+                FireBaseService.lovingMovie(lovingMovieModel) {
+                    if (it) {
+                        this.launch {
+                            FireBaseService.updateLovingStatusMovie(lovingMovieModel) { isLike ->
+                                isLoveMovie.postValue(isLike)
+                            }
+                        }
+                    }
+                }
+            }
         }
-        return 0 to 0
     }
-
 
 }

@@ -12,23 +12,25 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.windmoiveapp.R
+import com.example.windmoiveapp.adapter.ManagerMoviesAdapter
 import com.example.windmoiveapp.adapter.MyListMovieAdapter
+import com.example.windmoiveapp.databinding.FragmentManagerMovieBinding
 import com.example.windmoiveapp.databinding.FragmentMyListMovieBinding
 import com.example.windmoiveapp.extension.navigateWithAnim
 import com.example.windmoiveapp.extension.showAlertDialog
 import com.example.windmoiveapp.viewmodels.MovieViewModel
 
 
-class MovieManagerFragment : BaseFragment<FragmentMyListMovieBinding>() {
-    private val adapter: MyListMovieAdapter by lazy { MyListMovieAdapter() }
+class MovieManagerFragment : BaseFragment<FragmentManagerMovieBinding>() {
+    private val adapter: ManagerMoviesAdapter by lazy { ManagerMoviesAdapter() }
     private val movieViewModels: MovieViewModel by lazy { MovieViewModel(activity?.application as Application) }
 
     override fun onCreateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): FragmentMyListMovieBinding {
-        return FragmentMyListMovieBinding.inflate(inflater, container, false)
+    ): FragmentManagerMovieBinding {
+        return FragmentManagerMovieBinding.inflate(inflater, container, false)
     }
 
     override fun onViewInitialized(
@@ -36,7 +38,29 @@ class MovieManagerFragment : BaseFragment<FragmentMyListMovieBinding>() {
         savedInstanceState: Bundle?,
         isViewCreated: Boolean
     ) {
+        initViews()
+        initObserver()
+    }
+    private fun initViews() {
+        binding.apply {
+            rcvMovies.adapter = adapter
+            rcvMovies.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            rcvMovies.itemAnimator = DefaultItemAnimator()
+        }
+    }
 
+    private fun initObserver() {
+        movieViewModels.listMovie.observe(viewLifecycleOwner) {
+            dismissProgress()
+            binding.llEmptyData.root.isGone = it.isNotEmpty()
+            adapter.setList(it)
+        }
+    }
+
+    override fun loadData() {
+        super.loadData()
+        showProgress()
+        movieViewModels.getMovieList()
     }
 
 }

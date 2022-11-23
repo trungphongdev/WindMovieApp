@@ -40,7 +40,7 @@ class NewAndHotAdapter : RecyclerView.Adapter<NewAndHotAdapter.MovieViewHolder>(
         holder.binding.imvMovie.loadImage(itemData.image ?: "", radiusId = R.dimen.dp12)
         holder.binding.tvNameMovie.text = itemData.name
         holder.binding.tvDescription.text = itemData.description
-        holder.binding.tvNumberLike.text = itemData.likeNum.toString()
+        //holder.binding.tvNumberLike.text = itemData.likeNum.toString()
         holder.binding.root.setOnClickListener {
             onItemClickMovieItem?.invoke(itemData)
         }

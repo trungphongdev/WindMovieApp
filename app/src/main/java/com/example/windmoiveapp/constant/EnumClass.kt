@@ -75,3 +75,9 @@ enum class TypeLogin {
     FIREBASE,
     GOOGLE,
 }
+
+enum class StatusLovingMovie(val status: Int) {
+    LIKE(0),
+    DISLIKE(1),
+    NOTHING(2),
+}
