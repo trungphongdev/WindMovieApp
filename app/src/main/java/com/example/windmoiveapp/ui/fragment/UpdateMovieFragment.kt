@@ -7,13 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
-import com.example.windmoiveapp.adapter.CategoryArrayAdapter
 import com.example.windmoiveapp.databinding.FragmentUpdateMovieBinding
 import com.example.windmoiveapp.extension.loadImage
-import com.example.windmoiveapp.extension.onItemSelected
 import com.example.windmoiveapp.model.MovieModel
 import com.example.windmoiveapp.util.INFO_MOVIE
-import com.example.windmoiveapp.util.ZERO_INDEX
 import com.example.windmoiveapp.viewmodels.MovieViewModel
 
 
@@ -71,7 +68,7 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
     }
 
     private fun initDataSpinner() {
-        binding.spCategory.apply {
+ /*       binding.spCategory.apply {
             activity?.let { ct ->
                 val adapterCategory = CategoryArrayAdapter(ct, movieModel?.categories ?: emptyList())
                 adapter = adapterCategory
@@ -82,7 +79,7 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
                        // loadDataWithDate(index)
                 }
             }
-        }
+        }*/
     }
 
     private fun initListener() {

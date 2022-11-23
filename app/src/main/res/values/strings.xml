@@ -90,5 +90,6 @@
     <string name="alertCmtEmptyLabel">Please comment before rating movie</string>
     <string name="commentFailLabel">Comment Fail</string>
     <string name="emailAndPasswordNotEmpty">Email and Password can\'t not be empty</string>
+    <string name="categoryLabel">Category</string>
 
 </resources>
