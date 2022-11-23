@@ -22,4 +22,5 @@
     <color name="colorSubText">#A0A3AA</color>
     <color name="whiteEBEBEB">#EBEBEB</color>
     <color name="colorRegular">#FFFFFF</color>
+    <color name="colorInactive">#A0A3AA</color>
 </resources>

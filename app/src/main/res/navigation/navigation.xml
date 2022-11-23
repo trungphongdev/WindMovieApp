@@ -79,6 +79,11 @@
         android:name="com.example.windmoiveapp.ui.fragment.UpdateProfileFragment" />
 
     <fragment
+        android:id="@+id/updateMovieFragment"
+        android:label="Account"
+        android:name="com.example.windmoiveapp.ui.fragment.UpdateMovieFragment" />
+
+    <fragment
         android:id="@+id/accountManagementFragment"
         android:name="com.example.windmoiveapp.ui.fragment.AccountManagerFragment" />
 

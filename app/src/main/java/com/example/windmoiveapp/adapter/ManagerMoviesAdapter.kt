@@ -5,20 +5,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.windmoiveapp.databinding.ItemMovieBinding
-import com.example.windmoiveapp.databinding.ItemMyListBinding
-import com.example.windmoiveapp.databinding.ItemUserBinding
 import com.example.windmoiveapp.extension.click
 import com.example.windmoiveapp.extension.loadImage
 import com.example.windmoiveapp.model.MovieModel
-import com.example.windmoiveapp.model.UserModel
+import com.example.windmoiveapp.util.EDIT_MOVIE
+import com.example.windmoiveapp.util.INFO_MOVIE
+import com.example.windmoiveapp.util.REMOVE_MOVIE
 
 class ManagerMoviesAdapter : RecyclerView.Adapter<ManagerMoviesAdapter.MovieViewHolder>() {
-    companion object {
-        const val INFO_MOVIE = 0
-        const val ADD_MOVIE = 1
-        const val REMOVE_MOVIE = 2
-        const val EDIT_MOVIE = 3
-    }
 
     inner class MovieViewHolder(var binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root)

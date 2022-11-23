@@ -7,6 +7,14 @@ const val TIME_OUT = 30000L
 const val PASSWORD_CHAR_STYLE_DOT: Char = '.'
 const val PASSWORD_HIDE_7_CHAR: String = "0000000"
 const val PATTERN_TIME: String = "hh:mm:ss dd/MM/yyyy"
+const val INFO_USER = 0
+const val EDIT_USER = 1
+const val REMOVE_USER = 2
+const val INFO_MOVIE = 0
+const val ADD_MOVIE = 1
+const val REMOVE_MOVIE = 2
+const val EDIT_MOVIE = 3
+const val ZERO_INDEX = 0
 
 /*const val CAMERA_PERMISSION_CODE  = 1
 const val STORAGE_PERMISSION_CODE  = 1

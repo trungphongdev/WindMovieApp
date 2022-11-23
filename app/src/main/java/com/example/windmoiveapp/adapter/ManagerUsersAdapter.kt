@@ -4,19 +4,12 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.windmoiveapp.databinding.ItemMyListBinding
 import com.example.windmoiveapp.databinding.ItemUserBinding
 import com.example.windmoiveapp.extension.click
 import com.example.windmoiveapp.extension.loadImage
-import com.example.windmoiveapp.model.MovieModel
 import com.example.windmoiveapp.model.UserModel
 
 class ManagerUsersAdapter : RecyclerView.Adapter<ManagerUsersAdapter.UserViewHolder>() {
-    companion object {
-        const val INFO_USER = 0
-        const val EDIT_USER = 1
-        const val REMOVE_USER = 2
-    }
 
     inner class UserViewHolder(var binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root)

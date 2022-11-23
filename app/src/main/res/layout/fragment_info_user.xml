@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="@dimen/dp16"
     android:background="@color/black">
 
     <com.example.windmoiveapp.common.HeaderBar
@@ -36,6 +35,7 @@
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/imvUser"
         android:layout_marginTop="@dimen/dp12"
+        android:padding="@dimen/dp16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
