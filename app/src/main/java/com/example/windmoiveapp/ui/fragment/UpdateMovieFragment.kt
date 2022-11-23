@@ -79,18 +79,16 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
                 //dropDownVerticalOffset = TabTradeOrders.OFFSET_TRANSACTION_HISTORY
                 onItemSelected { index ->
                     adapterCategory.setChoose(index)
-                        loadDataWithDate(index)
+                       // loadDataWithDate(index)
                 }
             }
         }
     }
 
     private fun initListener() {
-        TODO("Not yet implemented")
     }
 
     private fun initObserver() {
-        TODO("Not yet implemented")
     }
 
 
