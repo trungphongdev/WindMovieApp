@@ -8,6 +8,9 @@ import com.example.windmoiveapp.databinding.ItemUserBinding
 import com.example.windmoiveapp.extension.click
 import com.example.windmoiveapp.extension.loadImage
 import com.example.windmoiveapp.model.UserModel
+import com.example.windmoiveapp.util.EDIT_USER
+import com.example.windmoiveapp.util.INFO_USER
+import com.example.windmoiveapp.util.REMOVE_USER
 
 class ManagerUsersAdapter : RecyclerView.Adapter<ManagerUsersAdapter.UserViewHolder>() {
 
