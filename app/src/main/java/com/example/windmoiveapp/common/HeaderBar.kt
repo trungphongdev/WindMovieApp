@@ -113,4 +113,8 @@ class HeaderBar(context: Context, attrs: AttributeSet) : ConstraintLayout(contex
         tvTitle = view.findViewById(R.id.tvTitle)
         imgUserAccount = view.findViewById(R.id.imgAccount)
     }
+
+    fun setTitle(title: String) {
+        tvTitle.text = title
+    }
 }

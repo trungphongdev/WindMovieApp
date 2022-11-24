@@ -1,6 +1,7 @@
 package com.example.windmoiveapp.viewmodels
 
 import android.app.Application
+import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -25,6 +26,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     var postCommentSuccessLiveData: MutableLiveData<Boolean> = MutableLiveData()
     var isLoveMovie: MutableLiveData<Boolean> = MutableLiveData()
     var lovingsLiveData: MutableLiveData<List<LovingMovieModel>> = MutableLiveData()
+    var postVideoSuccess: MutableLiveData<Boolean> = MutableLiveData()
 
     fun convertToListMovieByCategory(listMovie: List<MovieModel>) {
         viewModelScope.launch {
@@ -185,6 +187,14 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    fun postVideoOnServer(type: String, uri: Uri) {
+        viewModelScope.launch {
+            FireBaseService.postVideoToServer(type, uri) {
+                postVideoSuccess.postValue(it)
             }
         }
     }

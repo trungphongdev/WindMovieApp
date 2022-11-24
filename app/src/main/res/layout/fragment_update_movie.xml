@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/black">
 
     <com.example.windmoiveapp.common.HeaderBar
         android:id="@+id/headerBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:isShowButtonBack="true"
         app:isShowTitle="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:title="@string/addMovieLabel" />
 
     <androidx.core.widget.NestedScrollView
@@ -36,7 +36,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp10"
-                android:clickable="false"
                 android:hint="@string/movieIdLabel"
                 android:textSize="@dimen/sp14">
 
@@ -59,7 +58,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp10"
-                android:clickable="false"
                 android:hint="@string/movieNameLabel"
                 android:textSize="@dimen/sp14">
 
@@ -82,7 +80,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp10"
-                android:clickable="false"
                 android:hint="@string/movieDescLabel"
                 android:textSize="@dimen/sp14">
 
@@ -98,28 +95,37 @@
                     android:textSize="@dimen/sp16" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tlCategory"
-                style="@style/StyleTextInputLayoutGroupField"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp10"
-                android:enabled="false"
-                android:hint="@string/categoryLabel"
-                android:textSize="@dimen/sp14">
+                android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtCategory"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tlCategory"
+                    style="@style/StyleTextInputLayoutGroupField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/text_bottom_line"
-                    android:fontFamily="@font/roboto_medium"
-                    android:imeOptions="actionDone"
-                    android:paddingVertical="@dimen/dp8"
-                    android:textColor="@color/colorRegular"
-                    android:textSize="@dimen/sp16"
-                    android:drawableEnd="@drawable/ic_baseline_add_circle_24" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:enabled="false"
+                    android:hint="@string/categoryLabel"
+                    android:textSize="@dimen/sp14">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/text_bottom_line"
+                        android:drawableEnd="@drawable/ic_baseline_add_circle_24"
+                        android:fontFamily="@font/roboto_medium"
+                        android:imeOptions="actionDone"
+                        android:paddingVertical="@dimen/dp8"
+                        android:textColor="@color/colorRegular"
+                        android:textSize="@dimen/sp16" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tlDuration"
@@ -127,7 +133,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp10"
-                android:clickable="false"
                 android:hint="@string/movieDurationLabel"
                 android:textSize="@dimen/sp14">
 
@@ -142,6 +147,7 @@
                     android:paddingVertical="@dimen/dp8"
                     android:textColor="@color/colorRegular"
                     android:textSize="@dimen/sp16" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -151,25 +157,26 @@
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/movieYearOfReleaseLabel"
                 android:textColor="@color/colorSubText"
-                android:textSize="@dimen/sp16"/>
+                android:textSize="@dimen/sp16" />
 
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spYearRelease"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp20"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp10"
-                android:minWidth="@dimen/dp120"
                 android:background="@color/white"
-                android:spinnerMode="dropdown"
+                android:minWidth="@dimen/dp140"
+                android:minHeight="@dimen/dp30"
                 android:popupBackground="@drawable/bg_popup_spinner"
-                android:popupElevation="@dimen/dp6" />
+                android:popupElevation="@dimen/dp6"
+                android:spinnerMode="dropdown" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/llTrailerUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/dp10">
+                android:layout_marginTop="@dimen/dp10"
+                android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tlTrailerUrl"
@@ -184,24 +191,24 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/text_bottom_line"
+                        android:drawableEnd="@drawable/ic_baseline_add_circle_24"
+                        android:enabled="false"
                         android:fontFamily="@font/roboto_medium"
                         android:imeOptions="actionDone"
-                        android:enabled="false"
                         android:paddingVertical="@dimen/dp8"
                         android:textColor="@color/colorRegular"
-                        android:textSize="@dimen/sp16"
-                        android:drawableEnd="@drawable/ic_baseline_add_circle_24" />
+                        android:textSize="@dimen/sp16" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/llMovieUrl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/dp10">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llMovieUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp10"
+                android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tlMovieUrl"
@@ -216,17 +223,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/text_bottom_line"
+                        android:drawableEnd="@drawable/ic_baseline_add_circle_24"
+                        android:enabled="false"
                         android:fontFamily="@font/roboto_medium"
                         android:imeOptions="actionDone"
-                        android:enabled="false"
                         android:paddingVertical="@dimen/dp8"
                         android:textColor="@color/colorRegular"
-                        android:textSize="@dimen/sp16"
-                        android:drawableEnd="@drawable/ic_baseline_add_circle_24"/>
+                        android:textSize="@dimen/sp16" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <TextView
                 android:id="@+id/tvMovieImage"
@@ -254,13 +261,13 @@
     <TextView
         android:id="@+id/tvOption"
         style="@style/AppThemeButton"
-        android:layout_marginTop="@dimen/dp16"
-        tools:text="@string/addMovieLabel"
-        android:textAllCaps="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="@dimen/dp16"
-        tools:visibility="visible"
-        android:visibility="gone"/>
+        android:layout_marginTop="@dimen/dp16"
+        android:textAllCaps="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/addMovieLabel"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

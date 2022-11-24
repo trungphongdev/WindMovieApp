@@ -35,7 +35,7 @@ class SpinnerArrayAdapter(context: Context, list: List<Any>, isTextCenter: Boole
         )
         view.tvCategory.apply {
             text = item.toString()
-            gravity = if (mIsTextCenter) Gravity.CENTER_HORIZONTAL else Gravity.START
+          //  gravity = if (mIsTextCenter) Gravity.CENTER_HORIZONTAL else Gravity.START
         }
         return view.root
     }

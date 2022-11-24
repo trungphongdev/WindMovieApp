@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.adapter.ManagerMoviesAdapter
 import com.example.windmoiveapp.databinding.FragmentManagerMovieBinding
+import com.example.windmoiveapp.extension.click
+import com.example.windmoiveapp.util.ADD_MOVIE
 import com.example.windmoiveapp.viewmodels.MovieViewModel
 
 
@@ -56,6 +58,9 @@ class MovieManagerFragment : BaseFragment<FragmentManagerMovieBinding>() {
         adapter.onItemClick = { movieModel, type ->
             val bundle = bundleOf(UpdateMovieFragment.BUNDLE_TYPE_MANAGEMENT to type, UpdateMovieFragment.BUNDLE_CONTENT_MOVIE to movieModel)
             navigateToDestination(R.id.updateMovieFragment, bundle)
+        }
+        binding.fabAddMovie.click {
+            navigateToDestination(R.id.updateMovieFragment, bundleOf(UpdateMovieFragment.BUNDLE_TYPE_MANAGEMENT to ADD_MOVIE))
         }
     }
 

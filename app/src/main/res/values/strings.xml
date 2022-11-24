@@ -91,5 +91,8 @@
     <string name="commentFailLabel">Comment Fail</string>
     <string name="emailAndPasswordNotEmpty">Email and Password can\'t not be empty</string>
     <string name="categoryLabel">Category</string>
+    <string name="postVideoFailure">Post Video On Server Failure</string>
+    <string name="updateMovieLabel">Update Movie</string>
+    <string name="infoMovieLabel">Info Movie</string>
 
 </resources>

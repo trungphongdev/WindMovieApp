@@ -13,15 +13,21 @@ import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import timber.log.Timber
+import java.io.File
+import java.io.FileInputStream
 
 object FireBaseService {
     private val db by lazy { Firebase.firestore }
     private val auth by lazy { Firebase.auth }
+    private val storageRef  by lazy { Firebase.storage.reference }
     private const val USERS = "users"
     private const val MOVIES = "movies"
     private const val RATINGS = "ratings"
     private const val LOVING = "loving_movie"
+    private const val TRAILERS = "trailers"
+    private const val IMAGES = "images"
     private const val CATEGORIES = "categories"
     private const val TAG = "Firebase"
 
@@ -351,6 +357,29 @@ object FireBaseService {
             lovings.invoke(emptyList())
         }
 
+    }
+
+    suspend fun postVideoToServer(type: String, uri: Uri, onResult: ((Boolean) -> Unit)?) {
+        when (type) {
+            TRAILERS -> {
+                storageRef.child(TRAILERS).putFile(uri).addOnSuccessListener {
+                    Log.d("name video" , "" + it.storage.name)
+                    onResult?.invoke(true)
+                }.addOnFailureListener {
+                    onResult?.invoke(false)
+                }
+            }
+            MOVIES -> {
+                storageRef.child(MOVIES).putFile(uri).addOnSuccessListener {
+                    Log.d("name video" , "" + it.storage.name)
+                    onResult?.invoke(true)
+                }.addOnFailureListener {
+                    onResult?.invoke(false)
+                }
+            }
+            else -> {
+            }
+        }
     }
 
 }

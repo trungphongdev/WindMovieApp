@@ -8,17 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import com.example.windmoiveapp.R
 import com.example.windmoiveapp.adapter.SpinnerArrayAdapter
 import com.example.windmoiveapp.constant.Categories
 import com.example.windmoiveapp.databinding.FragmentUpdateMovieBinding
-import com.example.windmoiveapp.extension.click
-import com.example.windmoiveapp.extension.loadImage
-import com.example.windmoiveapp.extension.onItemSelected
+import com.example.windmoiveapp.extension.*
 import com.example.windmoiveapp.model.MovieModel
-import com.example.windmoiveapp.util.BULLET
-import com.example.windmoiveapp.util.INFO_MOVIE
-import com.example.windmoiveapp.util.ZERO_INDEX
+import com.example.windmoiveapp.util.*
 import com.example.windmoiveapp.viewmodels.MovieViewModel
 import java.util.*
 
@@ -27,6 +25,7 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
     private val viewModel: MovieViewModel by viewModels()
     private var typeManagement: Int = INFO_MOVIE
     private var movieModel: MovieModel? = MovieModel()
+    private val listYear = (1970..Calendar.getInstance().get(Calendar.YEAR)).toList()
     private var movieUri: Uri? = null
     private var imageUri: Uri? = null
     private var typeVideo: Int? = null
@@ -76,12 +75,43 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
         savedInstanceState: Bundle?,
         isViewCreated: Boolean
     ) {
-        initViews()
+        invalidManagementMovie()
         initListener()
         initObserver()
     }
 
     private fun initObserver() {
+        viewModel.postVideoSuccess.observe(viewLifecycleOwner) {
+            if (it) {
+
+            } else {
+                context?.showAlertDialog(getString(R.string.postVideoFailure))
+            }
+        }
+    }
+
+    private fun invalidManagementMovie() {
+        when (typeManagement) {
+            INFO_MOVIE -> {
+                enableViews()
+                initViews()
+                initDataSpinner(listYear.indexOf(movieModel?.yearOfRelease.convertStringToInt()))
+                binding.headerBar.setTitle(getString(R.string.infoMovieLabel))
+            }
+            ADD_MOVIE -> {
+                enableViews(true)
+                initDataSpinner()
+                binding.tvOption.text = getString(R.string.addMovieLabel)
+                binding.headerBar.setTitle(getString(R.string.addMovieLabel))
+            }
+            EDIT_MOVIE -> {
+                enableViews(true)
+                initViews()
+                initDataSpinner(listYear.indexOf(movieModel?.yearOfRelease.convertStringToInt()))
+                binding.tvOption.text = getString(R.string.updateMovieLabel)
+                binding.headerBar.setTitle(getString(R.string.updateMovieLabel))
+            }
+        }
     }
 
     private fun initViews() {
@@ -93,8 +123,20 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
         binding.edtTrailerUrl.setText(movieModel?.trailerUrl)
         binding.edtDuration.setText(movieModel?.duration)
         binding.edtCategory.setText(movieModel?.categories?.joinToString(separator = BULLET))
-        initDataSpinner()
-
+    }
+    
+    private fun enableViews(enable: Boolean = false) {
+        binding.imvMovieImage.isEnabled = enable
+        binding.edtMovieName.isEnabled = enable
+        binding.edtMovieDesc.isEnabled = enable
+        binding.edtMovieId.isEnabled = enable
+        binding.llMovieUrl.isEnabled = enable
+        binding.llTrailerUrl.isEnabled = enable
+        binding.llCategory.isEnabled = enable
+        binding.edtDuration.isEnabled = enable
+        binding.tvMovieImage.isEnabled = enable
+        binding.tvOption.isVisible = enable
+        binding.spYearRelease.isEnabled = enable
     }
 
     private fun initListener() {
@@ -112,20 +154,46 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
         binding.tvMovieImage.click {
             pickImage()
         }
-        binding.edtCategory.click {
+        binding.llCategory.click {
             BaseBottomSheet(items = Categories.values().map { it.type }.toList()) {
-                binding.edtCategory.text?.append(Categories.values().toList()[it].type)
+                binding.edtCategory.text?.append(Categories.values().toList()[it].name)
             }.show(childFragmentManager, BaseBottomSheet::class.simpleName)
+        }
+        binding.headerBar.apply {
+            setEventBackListener {
+                super.onBackFragment()
+            }
+        }
+        binding.tvOption.click {
+            when (typeManagement) {
+                EDIT_MOVIE -> {
+                    updateMovie()
+                }
+                ADD_MOVIE -> {
+                    insertMovie()
+                }
+                else -> {
+
+                }
+            }
         }
     }
 
-    private fun initDataSpinner() {
+    private fun insertMovie() {
+
+    }
+
+
+    private fun updateMovie() {
+
+    }
+
+    private fun initDataSpinner(initValue: Int = ZERO_INDEX) {
         binding.spYearRelease.apply {
             activity?.let { ct ->
-                val listYear = (1970..Calendar.getInstance().get(Calendar.YEAR)).toList()
                 val adapterCategory = SpinnerArrayAdapter(ct, listYear)
                 adapter = adapterCategory
-                adapterCategory.setChoose(ZERO_INDEX)
+                adapterCategory.setChoose(initValue)
                 dropDownVerticalOffset = 10
                 onItemSelected { index ->
                     adapterCategory.setChoose(index)
