@@ -11,8 +11,8 @@ import androidx.core.content.ContextCompat
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.databinding.ItemCategoryDropDownBinding
 
-class CategoryArrayAdapter(context: Context, list: List<String>, isTextCenter: Boolean = true) :
-    ArrayAdapter<String>(context, 0, list) {
+class SpinnerArrayAdapter(context: Context, list: List<Any>, isTextCenter: Boolean = true) :
+    ArrayAdapter<Any>(context, 0, list) {
     private var index = 0
     private val mIsTextCenter = isTextCenter
 
@@ -37,11 +37,11 @@ class CategoryArrayAdapter(context: Context, list: List<String>, isTextCenter: B
             false
         )
         view.tvCategory.apply {
-            text = item
+            text = item.toString()
             gravity = if (mIsTextCenter) Gravity.CENTER_HORIZONTAL else Gravity.START
         }
         view.tvCategory.apply {
-            text = item
+            text = item.toString()
             setBackgroundColor(
                 ContextCompat.getColor(
                     context,

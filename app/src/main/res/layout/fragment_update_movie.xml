@@ -121,16 +121,6 @@
                     android:drawableEnd="@drawable/ic_baseline_add_circle_24" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!--          <androidx.appcompat.widget.AppCompatSpinner
-                          android:id="@+id/spCategory"
-                          android:layout_width="wrap_content"
-                          android:layout_height="@dimen/dp20"
-                          android:layout_marginTop="@dimen/dp10"
-                          android:background="@color/whiteEBEBEB"
-                          android:minWidth="@dimen/dp120"
-                          android:popupBackground="@drawable/bg_popup_spinner"
-                          android:popupElevation="@dimen/dp6" />-->
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tlDuration"
                 style="@style/StyleTextInputLayoutGroupField"
@@ -154,85 +144,99 @@
                     android:textSize="@dimen/sp16" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tlYearOfRelease"
-                style="@style/StyleTextInputLayoutGroupField"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp10"
-                android:clickable="false"
-                android:hint="@string/movieYearOfReleaseLabel"
-                android:textSize="@dimen/sp14">
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/movieYearOfReleaseLabel"
+                android:textColor="@color/colorSubText"
+                android:textSize="@dimen/sp16"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtYearOfRelease"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/text_bottom_line"
-                    android:fontFamily="@font/roboto_medium"
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:paddingVertical="@dimen/dp8"
-                    android:textColor="@color/colorRegular"
-                    android:textSize="@dimen/sp16" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spYearRelease"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp20"
+                android:layout_marginTop="@dimen/dp10"
+                android:backgroundTint="@drawable/ic_arrow_drop_down"
+                android:minWidth="@dimen/dp120"
+                android:popupBackground="@drawable/bg_popup_spinner"
+                android:popupElevation="@dimen/dp6" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tlTrailerUrl"
-                style="@style/StyleTextInputLayoutGroupField"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llTrailerUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp10"
-                android:enabled="false"
-                android:hint="@string/movieTrailerLabel"
-                android:textSize="@dimen/sp14">
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/dp10">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtTrailerUrl"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tlTrailerUrl"
+                    style="@style/StyleTextInputLayoutGroupField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/text_bottom_line"
-                    android:fontFamily="@font/roboto_medium"
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:paddingVertical="@dimen/dp8"
-                    android:textColor="@color/colorRegular"
-                    android:textSize="@dimen/sp16"
-                    android:drawableEnd="@drawable/ic_baseline_add_circle_24" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="@string/movieTrailerLabel"
+                    android:textSize="@dimen/sp14">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tlMovieUrl"
-                style="@style/StyleTextInputLayoutGroupField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp10"
-                android:enabled="false"
-                android:hint="@string/movieLabel"
-                android:textSize="@dimen/sp14">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtTrailerUrl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/text_bottom_line"
+                        android:fontFamily="@font/roboto_medium"
+                        android:imeOptions="actionDone"
+                        android:enabled="false"
+                        android:paddingVertical="@dimen/dp8"
+                        android:textColor="@color/colorRegular"
+                        android:textSize="@dimen/sp16"
+                        android:drawableEnd="@drawable/ic_baseline_add_circle_24" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtMovieUrl"
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/llMovieUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dp10">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tlMovieUrl"
+                    style="@style/StyleTextInputLayoutGroupField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/text_bottom_line"
-                    android:fontFamily="@font/roboto_medium"
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:paddingVertical="@dimen/dp8"
-                    android:textColor="@color/colorRegular"
-                    android:textSize="@dimen/sp16"
-                    android:drawableEnd="@drawable/ic_baseline_add_circle_24" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="@string/movieLabel"
+                    android:textSize="@dimen/sp14">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtMovieUrl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/text_bottom_line"
+                        android:fontFamily="@font/roboto_medium"
+                        android:imeOptions="actionDone"
+                        android:enabled="false"
+                        android:paddingVertical="@dimen/dp8"
+                        android:textColor="@color/colorRegular"
+                        android:textSize="@dimen/sp16"
+                        android:drawableEnd="@drawable/ic_baseline_add_circle_24"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tvMovieImage"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp10"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/imageLabel"
                 android:textColor="@color/colorSubText"
-                android:textSize="@dimen/sp16" />
+                android:textSize="@dimen/sp16"
+                app:drawableEndCompat="@drawable/ic_baseline_add_circle_24" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imvMovieImage"

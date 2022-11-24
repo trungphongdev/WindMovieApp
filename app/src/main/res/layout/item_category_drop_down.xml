@@ -12,5 +12,4 @@
     android:textColor="@color/black"
     android:textSize="@dimen/sp14"
     android:fontFamily="@font/roboto_medium"
-    app:drawableRightCompat="@drawable/ic_arrow_drop_down"
     tools:text="dropdown" />
