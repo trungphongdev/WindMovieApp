@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/containerItem"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp42"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvItem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        tools:text="Date"
+        android:textColor="@color/redB11313"
+        android:textSize="@dimen/sp14" />
+
+    <View
+        android:id="@+id/viewLine2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp1"
+        android:background="@drawable/ic_line"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</LinearLayout>

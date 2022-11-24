@@ -20,4 +20,11 @@ object GoogleService {
         return GoogleSignIn.getLastSignedInAccount(context)
     }
 
+    fun signUpBeforeLogin(activity: Activity) {
+        val googleSignInClient = loginWithAccountGg(activity)
+        val googleSignInAccount = isLoggedInGg(activity.baseContext)
+        if (googleSignInAccount != null) {
+            googleSignInClient.signOut()
+        }
+    }
 }

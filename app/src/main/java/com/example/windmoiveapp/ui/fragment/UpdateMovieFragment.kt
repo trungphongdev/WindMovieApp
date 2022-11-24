@@ -115,7 +115,7 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
         binding.edtCategory.click {
             BaseBottomSheet(items = Categories.values().map { it.type }.toList()) {
                 binding.edtCategory.text?.append(Categories.values().toList()[it].type)
-            }
+            }.show(childFragmentManager, BaseBottomSheet::class.simpleName)
         }
     }
 
@@ -126,7 +126,7 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
                 val adapterCategory = SpinnerArrayAdapter(ct, listYear)
                 adapter = adapterCategory
                 adapterCategory.setChoose(ZERO_INDEX)
-                //dropDownVerticalOffset = TabTradeOrders.OFFSET_TRANSACTION_HISTORY
+                dropDownVerticalOffset = 10
                 onItemSelected { index ->
                     adapterCategory.setChoose(index)
                     // loadDataWithDate(index)

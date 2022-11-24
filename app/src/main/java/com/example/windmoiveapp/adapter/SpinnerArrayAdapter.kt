@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.databinding.ItemCategoryDropDownBinding
+import com.example.windmoiveapp.databinding.ItemSpinnerBinding
 
 class SpinnerArrayAdapter(context: Context, list: List<Any>, isTextCenter: Boolean = true) :
     ArrayAdapter<Any>(context, 0, list) {
@@ -22,14 +23,10 @@ class SpinnerArrayAdapter(context: Context, list: List<Any>, isTextCenter: Boole
 
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return initViewDropDown(position, convertView, parent)
+        return initView(position, convertView, parent)
     }
 
-    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return initViewDropDown(position, convertView, parent)
-    }
-
-    private fun initViewDropDown(position: Int, convertView: View?, parent: ViewGroup): View {
+    private fun initView(position: Int, convertView: View?, parent: ViewGroup): View {
         val item = getItem(position)
         val view = ItemCategoryDropDownBinding.inflate(
             (parent.context as Activity).layoutInflater,
@@ -40,7 +37,22 @@ class SpinnerArrayAdapter(context: Context, list: List<Any>, isTextCenter: Boole
             text = item.toString()
             gravity = if (mIsTextCenter) Gravity.CENTER_HORIZONTAL else Gravity.START
         }
-        view.tvCategory.apply {
+        return view.root
+    }
+
+    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+        return initViewDropDown(position, convertView, parent)
+    }
+
+    private fun initViewDropDown(position: Int, convertView: View?, parent: ViewGroup): View {
+        val item = getItem(position)
+        val view = ItemSpinnerBinding.inflate(
+            (parent.context as Activity).layoutInflater,
+            parent,
+            false
+        )
+
+        view.tvItem.apply {
             text = item.toString()
             setBackgroundColor(
                 ContextCompat.getColor(

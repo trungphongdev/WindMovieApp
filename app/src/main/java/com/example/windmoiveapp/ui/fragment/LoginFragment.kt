@@ -39,6 +39,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     private val authenViewModel: AuthViewModel by activityViewModels()
     private val pref by lazy { PrefUtil.getInstance(activity?.application as Application) }
     private var typeLogin: Int? = null
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultActivity ->
+            if (resultActivity.resultCode == Activity.RESULT_OK && resultActivity.data != null) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(resultActivity.data)
+                handleSignInResult(task)
+            } else {
+                activity?.getAlertDialog(getString(R.string.signInFailLabel))
+            }
+        }
 
     companion object {
         private const val LOGIN_FIREBASE = 1
@@ -118,6 +127,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             if (userInString.isBlank().not()) {
                 val userModel = GsonExt.convertGsonToObjet(userInString, UserModel::class.java)
                 binding.edtEmail.setText(userModel.email)
+                binding.cbAccount.isChecked = true
             }
         }
     }
@@ -180,22 +190,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         moveToDashBoard()
     }
 
-    private val startForResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultActivity ->
-            if (resultActivity.resultCode == Activity.RESULT_OK && resultActivity.data != null) {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(resultActivity.data)
-                handleSignInResult(task)
-            } else {
-                activity?.getAlertDialog(getString(R.string.signInFailLabel))
-            }
-        }
-
     private fun invalidSignInGG() {
-        val googleSignInClient = GoogleService.loginWithAccountGg(activity ?: return)
-        val googleSignInAccount = GoogleService.isLoggedInGg(context ?: requireContext())
-        if (googleSignInAccount != null) {
-            googleSignInClient.signOut()
-        }
+        GoogleService.signUpBeforeLogin(activity ?: return)
         val signInIntent = GoogleService.loginWithAccountGg(activity ?: return).signInIntent
         startForResult.launch(signInIntent)
     }

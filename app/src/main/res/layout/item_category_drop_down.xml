@@ -9,7 +9,9 @@
     android:gravity="center"
     android:paddingHorizontal="@dimen/dp16"
     android:paddingVertical="@dimen/dp10"
-    android:textColor="@color/black"
+    android:textColor="@color/redB11313"
     android:textSize="@dimen/sp14"
     android:fontFamily="@font/roboto_medium"
-    tools:text="dropdown" />
+    tools:text="dropdown"
+    app:drawableRightCompat="@drawable/ic_arrow_drop_down"
+    app:drawableTint="@color/redB11313" />

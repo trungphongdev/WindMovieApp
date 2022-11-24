@@ -158,8 +158,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp20"
                 android:layout_marginTop="@dimen/dp10"
-                android:backgroundTint="@drawable/ic_arrow_drop_down"
                 android:minWidth="@dimen/dp120"
+                android:background="@color/white"
+                android:spinnerMode="dropdown"
                 android:popupBackground="@drawable/bg_popup_spinner"
                 android:popupElevation="@dimen/dp6" />
 
