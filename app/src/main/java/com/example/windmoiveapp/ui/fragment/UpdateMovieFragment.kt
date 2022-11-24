@@ -16,6 +16,7 @@ import com.example.windmoiveapp.constant.Categories
 import com.example.windmoiveapp.databinding.FragmentUpdateMovieBinding
 import com.example.windmoiveapp.extension.*
 import com.example.windmoiveapp.model.MovieModel
+import com.example.windmoiveapp.model.isMovieExist
 import com.example.windmoiveapp.util.*
 import com.example.windmoiveapp.viewmodels.MovieViewModel
 import java.util.*
@@ -29,6 +30,7 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
     private var movieUri: Uri? = null
     private var imageUri: Uri? = null
     private var typeVideo: Int? = null
+    private var indexYearOfRelease: Int = 0
 
     private val getImageResult =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -88,6 +90,7 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
                 context?.showAlertDialog(getString(R.string.postVideoFailure))
             }
         }
+        viewModel.listMovie.observe(viewLifecycleOwner) {}
     }
 
     private fun invalidManagementMovie() {
@@ -180,7 +183,12 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
     }
 
     private fun insertMovie() {
+        val itemExist = viewModel.listMovie.value?.isMovieExist(binding.edtMovieId.text.toString())
+        if (itemExist == true) {
+            context?.showAlertDialog(getString(R.string.idMovieExistLabel))
+        } else {
 
+        }
     }
 
 
@@ -197,7 +205,7 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
                 dropDownVerticalOffset = 10
                 onItemSelected { index ->
                     adapterCategory.setChoose(index)
-                    // loadDataWithDate(index)
+                    indexYearOfRelease = index
                 }
             }
         }
@@ -212,5 +220,42 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
 
     private fun pickImage() {
         getImageResult.launch("image/*")
+    }
+
+    override fun loadData() {
+        super.loadData()
+        viewModel.getMovieList()
+    }
+
+    private fun getItemMovieInsert() {
+        val id = binding.edtMovieId.text
+        val name = binding.edtMovieName.text
+        val desc = binding.edtMovieDesc.text
+        val category = binding.edtCategory.text
+        val duration = binding.edtDuration.text
+        val trailer = binding.edtTrailerUrl.text
+        val movieUrl = binding.edtMovieUrl.text
+        val imgUrl = imageUri?.toString()
+        val yearOfRelease = listYear[indexYearOfRelease]
+        if (id.isNullOrBlank() && name.isNullOrBlank()
+            && desc.isNullOrBlank() && category.isNullOrBlank()
+            && duration.isNullOrBlank() && trailer.isNullOrBlank()
+            && movieUrl.isNullOrBlank() && imgUrl.isNullOrBlank()
+        ) {
+            context?.showAlertDialog(getString(R.string.addFieldInsertMovie))
+        } else {
+            val movie = MovieModel(
+                id = id.toString(),
+                name = name.toString(),
+                description = desc.toString(),
+                yearOfRelease = yearOfRelease.toString(),
+                duration = duration.toString(),
+                image = "",
+                trailerUrl = trailer.toString(),
+                movieUrl = movieUrl.toString(),
+                categories = category.toString().split(BULLET)
+            )
+            viewModel.addMovieOnServer(movie)
+        }
     }
 }

@@ -22,6 +22,10 @@ data class MovieModel(
     val categories: List<String> = listOf()
 ) : Parcelable {
 }
+fun List<MovieModel>.isMovieExist(id: String): Boolean {
+    val movie = this.find { it.id == id }
+    return movie != null
+}
 
 class Converters {
     @TypeConverter

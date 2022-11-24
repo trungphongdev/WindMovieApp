@@ -19,6 +19,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     var listMovieByCategories: MutableLiveData<List<MovieCategoryModel>> = MutableLiveData()
     var listMovieRoom: MutableLiveData<List<MovieModel>> = MutableLiveData()
     var movieRoomLiveData: MutableLiveData<MovieModel?> = MutableLiveData()
+    var postMovieSuccess: MutableLiveData<Boolean> = MutableLiveData()
     var likePostLiveData: MutableLiveData<Boolean> = MutableLiveData()
     var listNotification: MutableLiveData<List<NotificationModel>> = MutableLiveData()
     var listRating: MutableLiveData<List<RatingModel>> = MutableLiveData()
@@ -27,6 +28,14 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     var isLoveMovie: MutableLiveData<Boolean> = MutableLiveData()
     var lovingsLiveData: MutableLiveData<List<LovingMovieModel>> = MutableLiveData()
     var postVideoSuccess: MutableLiveData<Boolean> = MutableLiveData()
+
+    fun addMovieOnServer(model: MovieModel) {
+        viewModelScope.launch {
+            FireBaseService.addMovie(model) {
+                postMovieSuccess.postValue(it)
+            }
+        }
+    }
 
     fun convertToListMovieByCategory(listMovie: List<MovieModel>) {
         viewModelScope.launch {

@@ -94,5 +94,8 @@
     <string name="postVideoFailure">Post Video On Server Failure</string>
     <string name="updateMovieLabel">Update Movie</string>
     <string name="infoMovieLabel">Info Movie</string>
+    <string name="idMovieExistLabel">ID Movie Exist !!!</string>
+    <string name="addFieldInsertMovie">Please! Fill All Field Before Insert Movie</string>
+    <string name="addFieldUpdateMovie">Please! Fill All Field Before Update Movie</string>
 
 </resources>

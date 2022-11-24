@@ -15,8 +15,6 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import timber.log.Timber
-import java.io.File
-import java.io.FileInputStream
 
 object FireBaseService {
     private val db by lazy { Firebase.firestore }
@@ -199,6 +197,15 @@ object FireBaseService {
 
     // <===========================================================================MOVIE=====================================================================>
 
+
+    suspend fun addMovie(movie: MovieModel, onResult: ((Boolean) -> Unit)? = null) {
+        db.collection(MOVIES).document(movie.id).set(movie)
+            .addOnSuccessListener {
+                onResult?.invoke(true)
+            }.addOnFailureListener {
+                onResult?.invoke(false)
+            }
+    }
 
     suspend fun getMovieList(list: ((List<MovieModel>) -> Unit)) {
         db.collection(MOVIES).get().addOnSuccessListener { result ->
