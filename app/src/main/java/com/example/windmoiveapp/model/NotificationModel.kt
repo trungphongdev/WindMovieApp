@@ -17,9 +17,9 @@ data class NotificationModel(
 fun RemoteMessage.convertToNotificationModel(): NotificationModel{
     return NotificationModel(
         id = this.messageId ?: "",
-        title = this.notification?.title,
-        content = this.notification?.body ?: "",
-        img = this.notification?.imageUrl.toString(),
-        timeStamp = this.notification?.eventTime
+        title = this.data["title"],
+        content = this.data["body"],
+        img = this.data["image"].toString(),
+        timeStamp = this.sentTime
     )
 }

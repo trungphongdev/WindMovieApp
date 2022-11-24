@@ -15,27 +15,44 @@
             android:id="@+id/imvNotify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="60dp"
+            android:minHeight="60dp"
             android:src="@drawable/logohome"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvContent"
+            android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/dp8"
             app:layout_constraintEnd_toStartOf="@id/imvMore"
             app:layout_constraintStart_toEndOf="@id/imvNotify"
-            app:layout_constraintTop_toTopOf="@id/imvNotify" />
+            app:layout_constraintTop_toTopOf="@id/imvNotify"
+            android:textColor="@color/black"
+            android:fontFamily="@font/roboto_medium" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/tvTitle"
+            app:layout_constraintEnd_toEndOf="@id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            android:layout_marginTop="@dimen/dp6" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTime"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/tvContent"
-            app:layout_constraintTop_toBottomOf="@id/tvContent"
-            android:layout_marginTop="@dimen/dp6" />
+            android:layout_marginTop="@dimen/dp6"
+            app:drawableStartCompat="@drawable/ic_baseline_access_time_24"
+            android:drawablePadding="6dp"
+            app:drawableTint="@color/redB11313"
+            app:layout_constraintEnd_toEndOf="@id/tvContent"
+            app:layout_constraintStart_toStartOf="@+id/tvContent"
+            app:layout_constraintTop_toBottomOf="@id/tvContent" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imvMore"

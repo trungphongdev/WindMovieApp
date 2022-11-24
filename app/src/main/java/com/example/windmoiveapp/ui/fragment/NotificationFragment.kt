@@ -2,7 +2,6 @@ package com.example.windmoiveapp.ui.fragment
 
 import android.app.Application
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,7 +55,7 @@ class NotificationFragment : BaseFragment<FragmentNotiticationBinding>() {
                 },
                 callBack = {
                     movieViewModels.removeNotification(it.id ?: "")
-                    movieViewModels.getListMovieRoom()
+                    movieViewModels.getListNotification()
                 })
         }
 
@@ -77,7 +76,6 @@ class NotificationFragment : BaseFragment<FragmentNotiticationBinding>() {
                 binding.llEmptyData.root.isVisible = true
                 binding.rcvNotify.isGone = true
             } else {
-                Log.d("notifyList", it[0].toString())
                 adapter.setList(it)
                 binding.llEmptyData.root.isGone = true
                 binding.rcvNotify.isVisible = true

@@ -8,7 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.databinding.LayoutMessageNotificationBinding
 import com.example.windmoiveapp.extension.click
+import com.example.windmoiveapp.extension.loadCircleImage
 import com.example.windmoiveapp.model.NotificationModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NotificationAdapter : RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
 
@@ -34,13 +37,14 @@ class NotificationAdapter : RecyclerView.Adapter<NotificationAdapter.Notificatio
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
         val itemData = listNotify[position]
         if (itemData.img.isNullOrEmpty()) {
-            holder.binding.imvNotify.setImageResource(R.drawable.logohome)
+            holder.binding.imvNotify.setBackgroundResource(R.drawable.logohome)
         } else {
-            holder.binding.imvNotify.setImageURI(itemData.img.toUri())
+            holder.binding.imvNotify.loadCircleImage(itemData.img.toUri())
         }
+        holder.binding.tvTitle.text = itemData.title
         holder.binding.tvContent.text = itemData.content
-        holder.binding.tvTime.text = itemData.timeStamp.toString()
-
+        holder.binding.tvTime.text =
+            SimpleDateFormat("hh:mm:ss dd/M/yy", Locale.getDefault()).format(itemData.timeStamp)
         holder.binding.imvMore.click {
             onItemClickRemoveItem?.invoke(itemData)
         }

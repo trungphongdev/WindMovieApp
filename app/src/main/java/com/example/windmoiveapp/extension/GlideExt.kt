@@ -1,5 +1,6 @@
 package com.example.windmoiveapp.extension
 
+import android.net.Uri
 import android.widget.ImageView
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
@@ -32,6 +33,18 @@ fun ImageView.loadCircleImage(
         .circleCrop()
         .into(this)
 }
+
+fun ImageView.loadCircleImage(
+    uri: Uri?, @DimenRes radiusId: Int = R.dimen.dp4,
+    @DrawableRes defaultDrawableId: Int? = null
+) {
+    Glide.with(this)
+        .load(uri)
+        .placeholder(defaultDrawableId ?: R.drawable.logohome)
+        .error(defaultDrawableId ?: com.google.android.material.R.drawable.mtrl_ic_error)
+        .into(this)
+}
+
 
 fun ImageView.loadImage(
     urlImage: String,
