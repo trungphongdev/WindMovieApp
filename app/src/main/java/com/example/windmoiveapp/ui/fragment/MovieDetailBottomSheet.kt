@@ -99,7 +99,7 @@ class MovieDetailBottomSheet : BottomSheetDialogFragment() {
                 isAdd = !isAdd
                 if (isAdd) {
                     binding?.imgAdd?.setImageResource(R.drawable.ic_add)
-                    movieViewModels.removeMovieById(movieModel ?: return@setOnClickListener)
+                    movieViewModels.removeMovieByIdRoomDB(movieModel ?: return@setOnClickListener)
                 } else {
                     binding?.imgAdd?.setImageResource(R.drawable.ic_baseline_check_circle_24)
                     movieViewModels.addMovieToRoom(movieModel ?: return@setOnClickListener)

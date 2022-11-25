@@ -221,24 +221,36 @@ object FireBaseService {
         }
     }
 
-/*    suspend fun likePostMovie(
-        isLike: Boolean = false,
-        movieModel: MovieModel,
-        onResult: ((Boolean) -> Unit)?
-    ) {
-        val movie = db.collection(MOVIES).document(movieModel.id)
-        if (isLike) {
-            movie.update(LIKE_NUM, ((movieModel.likeNum ?: 0) + 1))
-                .addOnCompleteListener { onResult?.invoke(true) }
-                .addOnFailureListener { onResult?.invoke(false) }
-        } else {
-            movie.update(DISLIKE_NUM, ((movieModel.dislikeNum ?: 0) + 1))
-                .addOnCompleteListener { onResult?.invoke(true) }
-                .addOnFailureListener { onResult?.invoke(false) }
+    suspend fun removeMovieOnServer(movie: MovieModel, onResult: ((Boolean) -> Unit)) {
+        try {
+            db.collection(MOVIES).document(movie.id).delete()
+                .addOnSuccessListener {
+                    onResult.invoke(true)
+                }.addOnFailureListener {
+                    onResult.invoke(false)
+                }
+
+        } catch (e: Exception) {
+            onResult.invoke(false)
         }
-    }*/
+    }
+
+    suspend fun updateMovieOnServer(id: String, hashMap: HashMap<String, Any?>, onResult: ((Boolean) -> Unit)) {
+        try {
+            db.collection(MOVIES).document(id).delete()
+                .addOnSuccessListener {
+                    onResult.invoke(true)
+                }.addOnFailureListener {
+                    onResult.invoke(false)
+                }
+
+        } catch (e: Exception) {
+            onResult.invoke(false)
+        }
+    }
 
     suspend fun getMovieByCategory(category: Categories, list: ((List<MovieModel>) -> Unit)) {
+        try {
         val listMovie = ArrayList<MovieModel>()
         db.collection(MOVIES)
             .whereArrayContains(CATEGORIES, category.name)
@@ -254,6 +266,9 @@ object FireBaseService {
                 Timber.tag(TAG).w(exception, "Error getting documents: ")
                 list.invoke(emptyList())
             }
+        } catch (e: Exception) {
+            list.invoke(emptyList())
+        }
     }
 
 /*    suspend fun getMovieByName(name: String, list: ((List<MovieModel>) -> Unit)) {

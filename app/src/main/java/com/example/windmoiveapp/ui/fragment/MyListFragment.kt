@@ -57,7 +57,7 @@ class MyListFragment : BaseFragment<FragmentMyListMovieBinding>() {
 
                 },
                 callBack = {
-                    movieViewModels.removeMovieById(it)
+                    movieViewModels.removeMovieByIdRoomDB(it)
                     movieViewModels.getListMovieRoom()
                 })
         }

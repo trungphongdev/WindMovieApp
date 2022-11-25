@@ -100,6 +100,7 @@
     <string name="postImageFail">Post Image On Server Storage Fail. Try Again!</string>
     <string name="postMovieFail">Post Movie On Server Storage Fail. Try Again!</string>
     <string name="postTrailerFail">Post Trailer On Server Storage Fail. Try Again!</string>
-    <string name="postMovieOnServerSucess">Post Movie On Server Sucess</string>
-
+    <string name="postMovieOnServerSuccess">Post Movie On Server Success</string>
+    <string name="confirmRemoveMovie">Remove Movie %s with ID %s</string>
+    <string name="removeMovieFail">Remove Movie Failure</string>
 </resources>

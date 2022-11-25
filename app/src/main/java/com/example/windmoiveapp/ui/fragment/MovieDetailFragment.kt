@@ -205,7 +205,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
         binding.imvMyList.isSelected = isAdd
         movieModel?.let {
             if (isAdd) {
-                movieViewModels.removeMovieById(it)
+                movieViewModels.removeMovieByIdRoomDB(it)
             } else {
                 movieViewModels.addMovieToRoom(it)
             }

@@ -13,7 +13,10 @@ import com.example.windmoiveapp.R
 import com.example.windmoiveapp.adapter.ManagerMoviesAdapter
 import com.example.windmoiveapp.databinding.FragmentManagerMovieBinding
 import com.example.windmoiveapp.extension.click
+import com.example.windmoiveapp.extension.showAlertDialog
+import com.example.windmoiveapp.extension.showCustomToast
 import com.example.windmoiveapp.util.ADD_MOVIE
+import com.example.windmoiveapp.util.REMOVE_MOVIE
 import com.example.windmoiveapp.viewmodels.MovieViewModel
 
 
@@ -56,8 +59,24 @@ class MovieManagerFragment : BaseFragment<FragmentManagerMovieBinding>() {
             }
         }
         adapter.onItemClick = { movieModel, type ->
-            val bundle = bundleOf(UpdateMovieFragment.BUNDLE_TYPE_MANAGEMENT to type, UpdateMovieFragment.BUNDLE_CONTENT_MOVIE to movieModel)
-            navigateToDestination(R.id.updateMovieFragment, bundle)
+            if (type == REMOVE_MOVIE) {
+                activity?.showAlertDialog(
+                    getString(
+                        R.string.confirmRemoveMovie,
+                        movieModel.name,
+                        movieModel.id
+                    ), isShowNegativeBtn = true
+                ) {
+                    showProgress()
+                    movieViewModels.removeMovieByIdOnServer(movieModel)
+                }
+            } else {
+                val bundle = bundleOf(
+                    UpdateMovieFragment.BUNDLE_TYPE_MANAGEMENT to type,
+                    UpdateMovieFragment.BUNDLE_CONTENT_MOVIE to movieModel
+                )
+                navigateToDestination(R.id.updateMovieFragment, bundle)
+            }
         }
         binding.fabAddMovie.click {
             navigateToDestination(R.id.updateMovieFragment, bundleOf(UpdateMovieFragment.BUNDLE_TYPE_MANAGEMENT to ADD_MOVIE))
@@ -70,10 +89,20 @@ class MovieManagerFragment : BaseFragment<FragmentManagerMovieBinding>() {
             binding.llEmptyData.root.isGone = it.isNotEmpty()
             adapter.setList(it)
         }
+
+        movieViewModels.isRemoveMovieLiveData.observe(viewLifecycleOwner) {
+            if (it) {
+                showProgress()
+                movieViewModels.getMovieList()
+            } else {
+                dismissProgress()
+                activity.showCustomToast(getString(R.string.removeMovieFail), true)
+            }
+        }
     }
 
-    override fun loadData() {
-        super.loadData()
+    override fun onResume() {
+        super.onResume()
         showProgress()
         movieViewModels.getMovieList()
     }

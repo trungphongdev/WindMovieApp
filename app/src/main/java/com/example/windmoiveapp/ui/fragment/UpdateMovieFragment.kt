@@ -85,7 +85,7 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
         viewModel.postMovieSuccessLiveData.observe(viewLifecycleOwner) {
             dismissProgress()
             if (it) {
-                context?.showAlertDialog(getString(R.string.postMovieOnServerSucess)) {
+                context?.showAlertDialog(getString(R.string.postMovieOnServerSuccess)) {
                     initViews()
                 }
             } else {
@@ -133,8 +133,9 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
             }
             ADD_MOVIE -> {
                 enableViews(true)
-                initDataSpinner()
+                initDataSpinner(ZERO_INDEX)
                 binding.tvOption.text = getString(R.string.addMovieLabel)
+                binding.tvOption.isVisible = true
                 binding.headerBar.setTitle(getString(R.string.addMovieLabel))
             }
             EDIT_MOVIE -> {
@@ -217,7 +218,6 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
         if (itemExist == true) {
             context?.showAlertDialog(getString(R.string.idMovieExistLabel))
         } else {
-            showProgress()
             postMovieOnStorageServer()
             postTrailerOnStorageServer()
             postImageOnStorageServer()
@@ -259,7 +259,7 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
         }
     }
 
-    private fun initDataSpinner(initValue: Int = ZERO_INDEX) {
+    private fun initDataSpinner(initValue: Int) {
         binding.spYearRelease.apply {
             activity?.let { ct ->
                 val adapterCategory = SpinnerArrayAdapter(ct, listYear)
@@ -317,6 +317,7 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
                 movieUrl = movie.toString(),
                 categories = category.toString().split(BULLET)
             )
+            showProgress()
             viewModel.addMovieOnServer(movieModel ?: return)
         }
     }
