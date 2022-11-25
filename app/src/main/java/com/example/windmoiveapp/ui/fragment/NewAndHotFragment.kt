@@ -64,7 +64,7 @@ class NewAndHotFragment : BaseFragment<FragmentNewAndHotMovieBinding>() {
     }
 
     private fun initObserver() {
-        movieViewModels.listMovie.observe(viewLifecycleOwner) {
+        movieViewModels.listMovieLiveData.observe(viewLifecycleOwner) {
             dismissProgress()
             adapter.setList(it)
         }

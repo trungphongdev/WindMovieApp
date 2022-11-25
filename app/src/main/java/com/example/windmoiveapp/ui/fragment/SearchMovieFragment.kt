@@ -69,10 +69,10 @@ class SearchMovieFragment : BaseFragment<FragmentSearchMovieBinding>() {
     }
 
     private fun initObservers() {
-        movieViewModels.listMovie.observe(viewLifecycleOwner) {
+        movieViewModels.listMovieLiveData.observe(viewLifecycleOwner) {
             adapterTopSearch.setList(it)
         }
-        movieViewModels.listMovieByName.observe(viewLifecycleOwner) {
+        movieViewModels.listMovieByNameLiveData.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
                 binding.rcvTopSearch.isVisible = true
                 binding.rcvSearch.isVisible = false

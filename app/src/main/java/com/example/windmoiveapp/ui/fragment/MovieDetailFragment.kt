@@ -70,11 +70,11 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             binding.imvMyList.isSelected = isAdd
         }
 
-        movieViewModels.listRating.observe(viewLifecycleOwner) {
+        movieViewModels.listRatingLiveData.observe(viewLifecycleOwner) {
           movieViewModels.getRatingsUser()
         }
 
-        movieViewModels.listRatingUser.observe(viewLifecycleOwner) {
+        movieViewModels.listRatingUserLiveData.observe(viewLifecycleOwner) {
             dismissProgress()
             adapterRating.setList(it)
         }

@@ -49,7 +49,7 @@ class TrailerMovieFragment : BaseFragment<FragmentTrailerMovieBinding>() {
     }
 
     private fun initObserver() {
-        movieViewModels.listMovie.observe(viewLifecycleOwner) {
+        movieViewModels.listMovieLiveData.observe(viewLifecycleOwner) {
             dismissProgress()
             adapter.setList(it.shuffled())
         }

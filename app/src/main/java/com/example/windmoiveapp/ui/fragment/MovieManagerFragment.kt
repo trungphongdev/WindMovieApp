@@ -65,7 +65,7 @@ class MovieManagerFragment : BaseFragment<FragmentManagerMovieBinding>() {
     }
 
     private fun initObserver() {
-        movieViewModels.listMovie.observe(viewLifecycleOwner) {
+        movieViewModels.listMovieLiveData.observe(viewLifecycleOwner) {
             dismissProgress()
             binding.llEmptyData.root.isGone = it.isNotEmpty()
             adapter.setList(it)

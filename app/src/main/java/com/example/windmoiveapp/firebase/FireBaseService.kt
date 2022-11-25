@@ -24,8 +24,9 @@ object FireBaseService {
     private const val MOVIES = "movies"
     private const val RATINGS = "ratings"
     private const val LOVING = "loving_movie"
-    private const val TRAILERS = "trailers"
-    private const val IMAGES = "images"
+    private const val TRAILERS = "trailers/"
+    private const val IMAGES = "images/"
+    private const val MOVIES_PATH = "movies/"
     private const val CATEGORIES = "categories"
     private const val TAG = "Firebase"
 
@@ -366,27 +367,58 @@ object FireBaseService {
 
     }
 
-    suspend fun postVideoToServer(type: String, uri: Uri, onResult: ((Boolean) -> Unit)?) {
-        when (type) {
-            TRAILERS -> {
-                storageRef.child(TRAILERS).putFile(uri).addOnSuccessListener {
-                    Log.d("name video" , "" + it.storage.name)
-                    onResult?.invoke(true)
+    suspend fun postImageToServerStorage(imageUri: Uri, fileName: String, onResult: ((String?) -> Unit)) {
+        try {
+            val ref = storageRef.child(IMAGES).child("image$fileName")
+            ref.putFile(imageUri).addOnSuccessListener {
+                ref.downloadUrl.addOnSuccessListener {
+                    onResult.invoke(it.toString())
                 }.addOnFailureListener {
-                    onResult?.invoke(false)
+                    onResult.invoke(null)
                 }
+            }.addOnFailureListener {
+                onResult.invoke(null)
             }
-            MOVIES -> {
-                storageRef.child(MOVIES).putFile(uri).addOnSuccessListener {
-                    Log.d("name video" , "" + it.storage.name)
-                    onResult?.invoke(true)
-                }.addOnFailureListener {
-                    onResult?.invoke(false)
-                }
-            }
-            else -> {
-            }
+        } catch (e: Exception) {
+            onResult.invoke(null)
         }
+
+    }
+
+    suspend fun postTrailerToServerStorage(trailerUri: Uri, fileName: String, onResult: ((String?) -> Unit)) {
+        try {
+            val ref = storageRef.child(TRAILERS).child("trailer$fileName")
+            ref.putFile(trailerUri).addOnSuccessListener {
+                ref.downloadUrl.addOnSuccessListener {
+                    onResult.invoke(it.toString())
+                }.addOnFailureListener {
+                    onResult.invoke(null)
+                }
+            }.addOnFailureListener {
+                onResult.invoke(null)
+            }
+        } catch (e: Exception) {
+            onResult.invoke(null)
+        }
+
+    }
+
+    suspend fun postMovieToServerStorage(movieUri: Uri, fileName: String, onResult: ((String?) -> Unit)) {
+        try {
+            val ref = storageRef.child(MOVIES_PATH).child("movie$fileName")
+            ref.putFile(movieUri).addOnSuccessListener {
+                ref.downloadUrl.addOnSuccessListener {
+                    onResult.invoke(it.toString())
+                }.addOnFailureListener {
+                    onResult.invoke(null)
+                }
+            }.addOnFailureListener {
+                onResult.invoke(null)
+            }
+        } catch (e: Exception) {
+            onResult.invoke(null)
+        }
+
     }
 
 }

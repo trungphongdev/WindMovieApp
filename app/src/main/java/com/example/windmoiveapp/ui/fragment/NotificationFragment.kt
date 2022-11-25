@@ -70,7 +70,7 @@ class NotificationFragment : BaseFragment<FragmentNotiticationBinding>() {
     }
 
     private fun initObserver() {
-        movieViewModels.listNotification.observe(viewLifecycleOwner) {
+        movieViewModels.listNotificationLiveData.observe(viewLifecycleOwner) {
             dismissProgress()
             if (it.isNullOrEmpty()) {
                 binding.llEmptyData.root.isVisible = true

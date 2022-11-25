@@ -97,5 +97,9 @@
     <string name="idMovieExistLabel">ID Movie Exist !!!</string>
     <string name="addFieldInsertMovie">Please! Fill All Field Before Insert Movie</string>
     <string name="addFieldUpdateMovie">Please! Fill All Field Before Update Movie</string>
+    <string name="postImageFail">Post Image On Server Storage Fail. Try Again!</string>
+    <string name="postMovieFail">Post Movie On Server Storage Fail. Try Again!</string>
+    <string name="postTrailerFail">Post Trailer On Server Storage Fail. Try Again!</string>
+    <string name="postMovieOnServerSucess">Post Movie On Server Sucess</string>
 
 </resources>

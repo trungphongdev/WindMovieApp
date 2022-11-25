@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.example.windmoiveapp.R
@@ -27,26 +28,24 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
     private var typeManagement: Int = INFO_MOVIE
     private var movieModel: MovieModel? = MovieModel()
     private val listYear = (1970..Calendar.getInstance().get(Calendar.YEAR)).toList()
-    private var movieUri: Uri? = null
-    private var imageUri: Uri? = null
     private var typeVideo: Int? = null
+    private var imageUri: Uri? = null
     private var indexYearOfRelease: Int = 0
 
     private val getImageResult =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             imageUri = uri
-            binding.imvMovieImage.setImageURI(imageUri)
+            binding.imvMovieImage.setImageURI(uri)
         }
 
     private val getVideoResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                movieUri = it.data?.data
                 if (typeVideo == TYPE_MOVIE) {
-                    binding.edtMovieUrl.setText(movieUri.toString())
+                    binding.edtMovieUrl.setText(it.data?.data.toString())
                 }
                 if (typeVideo == TYPE_TRAILER) {
-                    binding.edtTrailerUrl.setText(movieUri.toString())
+                    binding.edtTrailerUrl.setText(it.data?.data.toString())
                 }
             }
         }
@@ -83,14 +82,45 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
     }
 
     private fun initObserver() {
-        viewModel.postVideoSuccess.observe(viewLifecycleOwner) {
+        viewModel.postMovieSuccessLiveData.observe(viewLifecycleOwner) {
+            dismissProgress()
             if (it) {
-
+                context?.showAlertDialog(getString(R.string.postMovieOnServerSucess)) {
+                    initViews()
+                }
             } else {
                 context?.showAlertDialog(getString(R.string.postVideoFailure))
             }
         }
-        viewModel.listMovie.observe(viewLifecycleOwner) {}
+        viewModel.listMovieLiveData.observe(viewLifecycleOwner) {}
+
+        viewModel.postMovieStorageLiveData.observe(viewLifecycleOwner) {
+            if (it == null) {
+                activity?.showAlertDialog(getString(R.string.postMovieFail)) {
+                    binding.edtMovieUrl.setText(getText(R.string.emptyLabel))
+                }
+            } else {
+                postResourceOnServerStorageSuccess()
+            }
+        }
+        viewModel.postImageStorageLiveData.observe(viewLifecycleOwner) {
+            if (it == null) {
+                activity?.showAlertDialog(getString(R.string.postImageFail)) {
+                    binding.imvMovieImage.setImageResource(R.drawable.ic_baseline_add_photo_alternate_24)
+                }
+            } else {
+                postResourceOnServerStorageSuccess()
+            }
+        }
+        viewModel.postTrailerStorageLiveData.observe(viewLifecycleOwner) {
+            if (it == null) {
+                activity?.showAlertDialog(getString(R.string.postTrailerFail)) {
+                    binding.edtMovieUrl.setText(getText(R.string.emptyLabel))
+                }
+            } else {
+                postResourceOnServerStorageSuccess()
+            }
+        }
     }
 
     private fun invalidManagementMovie() {
@@ -183,17 +213,50 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
     }
 
     private fun insertMovie() {
-        val itemExist = viewModel.listMovie.value?.isMovieExist(binding.edtMovieId.text.toString())
+        val itemExist = viewModel.listMovieLiveData.value?.isMovieExist(binding.edtMovieId.text.toString())
         if (itemExist == true) {
             context?.showAlertDialog(getString(R.string.idMovieExistLabel))
         } else {
-
+            showProgress()
+            postMovieOnStorageServer()
+            postTrailerOnStorageServer()
+            postImageOnStorageServer()
         }
     }
 
 
     private fun updateMovie() {
+        postMovieOnStorageServer()
+    }
 
+    private fun postMovieOnStorageServer() {
+        val movieUri = binding.edtMovieUrl.text
+        val fileName = binding.edtMovieName.text
+        if (movieUri.isNullOrBlank() || fileName.isNullOrBlank()) {
+            context?.showAlertDialog(getString(R.string.addFieldInsertMovie))
+
+        } else {
+            viewModel.postMovieOnServerStorage(movieUri.toString().toUri(), fileName.toString())
+        }
+    }
+
+    private fun postTrailerOnStorageServer() {
+        val trailerUri = binding.edtTrailerUrl.text
+        val fileName = binding.edtMovieName.text
+        if (binding.edtTrailerUrl.text.isNullOrBlank() || fileName.isNullOrBlank()) {
+            context?.showAlertDialog(getString(R.string.addFieldInsertMovie))
+
+        } else {
+            viewModel.postTrailerOnServerStorage(trailerUri.toString().toUri(), fileName.toString())
+        }
+    }
+    private fun postImageOnStorageServer() {
+        val fileName = binding.edtMovieName.text
+        if (imageUri == null || fileName.isNullOrBlank()) {
+            context?.showAlertDialog(getString(R.string.addFieldInsertMovie))
+        } else {
+            viewModel.postImageOnServerStorage(imageUri!!, fileName.toString())
+        }
     }
 
     private fun initDataSpinner(initValue: Int = ZERO_INDEX) {
@@ -233,29 +296,37 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
         val desc = binding.edtMovieDesc.text
         val category = binding.edtCategory.text
         val duration = binding.edtDuration.text
-        val trailer = binding.edtTrailerUrl.text
-        val movieUrl = binding.edtMovieUrl.text
-        val imgUrl = imageUri?.toString()
+        val image = viewModel.postImageStorageLiveData.value
+        val movie = viewModel.postMovieStorageLiveData.value
+        val trailer = viewModel.postTrailerStorageLiveData.value
         val yearOfRelease = listYear[indexYearOfRelease]
         if (id.isNullOrBlank() && name.isNullOrBlank()
             && desc.isNullOrBlank() && category.isNullOrBlank()
-            && duration.isNullOrBlank() && trailer.isNullOrBlank()
-            && movieUrl.isNullOrBlank() && imgUrl.isNullOrBlank()
+            && duration.isNullOrBlank()
         ) {
             context?.showAlertDialog(getString(R.string.addFieldInsertMovie))
         } else {
-            val movie = MovieModel(
+            movieModel = MovieModel(
                 id = id.toString(),
                 name = name.toString(),
                 description = desc.toString(),
                 yearOfRelease = yearOfRelease.toString(),
                 duration = duration.toString(),
-                image = "",
+                image = image.toString(),
                 trailerUrl = trailer.toString(),
-                movieUrl = movieUrl.toString(),
+                movieUrl = movie.toString(),
                 categories = category.toString().split(BULLET)
             )
-            viewModel.addMovieOnServer(movie)
+            viewModel.addMovieOnServer(movieModel ?: return)
+        }
+    }
+
+    private fun postResourceOnServerStorageSuccess() {
+        val image = viewModel.postImageStorageLiveData.value
+        val movie = viewModel.postMovieStorageLiveData.value
+        val trailer = viewModel.postTrailerStorageLiveData.value
+        if (image != null && movie != null && trailer != null) {
+            getItemMovieInsert()
         }
     }
 }

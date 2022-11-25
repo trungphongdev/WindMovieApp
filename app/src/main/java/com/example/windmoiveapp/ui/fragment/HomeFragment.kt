@@ -92,7 +92,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun initObserver() {
-        movieViewModels.listMovie.observe(viewLifecycleOwner) {
+        movieViewModels.listMovieLiveData.observe(viewLifecycleOwner) {
             dismissProgress()
             movieViewModels.convertToListMovieByCategory(it)
         }

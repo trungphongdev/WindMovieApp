@@ -51,6 +51,7 @@ class BaseBottomSheet(
         }
         adapter?.onItemClick = {
             this.onItemClick?.invoke(it)
+            this.dismiss()
         }
     }
 }

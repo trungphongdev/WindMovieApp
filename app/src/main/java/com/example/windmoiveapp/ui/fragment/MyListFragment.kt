@@ -70,7 +70,7 @@ class MyListFragment : BaseFragment<FragmentMyListMovieBinding>() {
     }
 
     private fun initObserver() {
-        movieViewModels.listMovieRoom.observe(viewLifecycleOwner) {
+        movieViewModels.listMovieRoomLiveData.observe(viewLifecycleOwner) {
             dismissProgress()
             if (it.isNullOrEmpty()) {
                 binding.llEmptyData.root.isVisible = true
