@@ -11,15 +11,15 @@ import kotlinx.parcelize.Parcelize
 @Entity
 data class MovieModel(
     @PrimaryKey
-    val id: String = "",
-    val name: String? = "",
-    val trailerUrl: String? = "",
-    val movieUrl: String? = "",
-    val description: String? = "",
+    var id: String = "",
+    var name: String? = "",
+    var trailerUrl: String? = "",
+    var movieUrl: String? = "",
+    var description: String? = "",
     val yearOfRelease: String? = "",
     val duration: String? = "",
-    val image: String? = "",
-    val categories: List<String> = listOf()
+    var image: String? = "",
+    var categories: List<String> = listOf()
 ) : Parcelable {
 }
 fun List<MovieModel>.isMovieExist(id: String): Boolean {

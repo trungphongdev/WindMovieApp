@@ -19,7 +19,7 @@ import timber.log.Timber
 object FireBaseService {
     private val db by lazy { Firebase.firestore }
     private val auth by lazy { Firebase.auth }
-    private val storageRef  by lazy { Firebase.storage.reference }
+    private val storageRef by lazy { Firebase.storage.reference }
     private const val USERS = "users"
     private const val MOVIES = "movies"
     private const val RATINGS = "ratings"
@@ -33,7 +33,7 @@ object FireBaseService {
 
     // <===========================================================================USER=====================================================================>
 
-   suspend fun addInfoUser(user: UserModel, onResult: ((Boolean) -> Unit)? = null) {
+    suspend fun addInfoUser(user: UserModel, onResult: ((Boolean) -> Unit)? = null) {
         db.collection(USERS).document(user.uid ?: "").set(user)
             .addOnSuccessListener {
                 onResult?.invoke(true)
@@ -71,7 +71,7 @@ object FireBaseService {
 
     }
 
-    suspend  fun updateInfoUser(
+    suspend fun updateInfoUser(
         uid: String,
         fieldUser: HashMap<String, Any>,
         onResult: ((Boolean) -> Unit)
@@ -97,37 +97,52 @@ object FireBaseService {
     }
 
     suspend fun getInfoUser(uid: String, onResult: ((UserModel?) -> Unit)?) {
-        db.collection(USERS).document(uid).get().addOnSuccessListener { documentSnapshot ->
-            onResult?.invoke(documentSnapshot.toObject())
-        }.addOnFailureListener {
+        try {
+            db.collection(USERS).document(uid).get().addOnSuccessListener { documentSnapshot ->
+                onResult?.invoke(documentSnapshot.toObject())
+            }.addOnFailureListener {
+                onResult?.invoke(null)
+            }
+        } catch (e: Exception) {
             onResult?.invoke(null)
+            Timber.tag("getInfoUser").e(e.message.toString())
         }
     }
 
     fun deleteInfoUser(uid: String, onResult: ((Boolean) -> Unit)?) {
-        db.collection(USERS).document(uid).delete()
-            .addOnSuccessListener {
-                onResult?.invoke(true)
-            }.addOnFailureListener {
-                onResult?.invoke(false)
-            }
+        try {
+            db.collection(USERS).document(uid).delete()
+                .addOnSuccessListener {
+                    onResult?.invoke(true)
+                }.addOnFailureListener {
+                    onResult?.invoke(false)
+                }
+        } catch (e: Exception) {
+            onResult?.invoke(false)
+        }
     }
 
     fun getInfoUserWithCondition(
         field: String,
         value: Any,
-        onFailure: ((String) -> Unit)? = null
-    ): List<UserModel> {
-        val listUser = arrayListOf<UserModel>()
-        db.collection(USERS).whereEqualTo(field, value).get().addOnSuccessListener { documents ->
-            for (document in documents) {
-                listUser.add(document.toObject())
+        onResult: ((Boolean) -> Unit)?,
+        onSuccess: ((List<UserModel>) -> Unit)
+    ) {
+        try {
+            val listUser = arrayListOf<UserModel>()
+            db.collection(USERS).whereEqualTo(field, value).get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        listUser.add(document.toObject())
+                    }
+                    onSuccess.invoke(listUser)
+                }.addOnFailureListener {
+                onResult?.invoke(false)
+                onSuccess.invoke(emptyList())
             }
-        }.addOnFailureListener {
-            onFailure?.invoke(it.message.toString())
-            listUser.addAll(emptyList())
+        } catch (e: Exception) {
+            onResult?.invoke(false)
         }
-        return listUser
     }
 
 
@@ -140,21 +155,26 @@ object FireBaseService {
         onSuccess: ((FirebaseUser?) -> Unit)? = null,
         onFailure: (() -> Unit)? = null
     ) {
-        if (auth.currentUser != null) {
-            auth.signOut()
-        }
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Timber.tag(TAG).d("createUserWithEmail:success")
-                onSuccess?.invoke(auth.currentUser)
-            } else {
+        try {
+            if (auth.currentUser != null) {
+                auth.signOut()
+            }
+            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Timber.tag(TAG).d("createUserWithEmail:success")
+                    onSuccess?.invoke(auth.currentUser)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Timber.tag(TAG).d("createUserWithEmail :failure" + task.exception)
+                    onFailure?.invoke()
+                }
+            }.addOnFailureListener {
                 // If sign in fails, display a message to the user.
-                Timber.tag(TAG).d("createUserWithEmail :failure" + task.exception)
+                Timber.tag(TAG).d("createUserWithEmail :failure" + it.message)
                 onFailure?.invoke()
             }
-        }.addOnFailureListener {
-            // If sign in fails, display a message to the user.
-            Timber.tag(TAG).d("createUserWithEmail :failure" + it.message)
+        } catch (e: Exception) {
+            Timber.tag(TAG).d(e.message.toString())
             onFailure?.invoke()
         }
     }
@@ -165,19 +185,23 @@ object FireBaseService {
         onSuccess: ((FirebaseUser?) -> Unit)? = null,
         onFailure: (() -> Unit)? = null
     ) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Timber.tag(TAG).d("signInWithEmail:success")
-                    onSuccess?.invoke(auth.currentUser)
-                } else {
-                    Timber.tag(TAG).w(task.exception, "signInWithEmail:failure")
+        try {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Timber.tag(TAG).d("signInWithEmail:success")
+                        onSuccess?.invoke(auth.currentUser)
+                    } else {
+                        Timber.tag(TAG).w(task.exception, "signInWithEmail:failure")
+                        onFailure?.invoke()
+                    }
+                }.addOnFailureListener {
+                    Timber.tag(TAG).w(it.message, "signInWithEmail:failure")
                     onFailure?.invoke()
                 }
-            }.addOnFailureListener {
-                Timber.tag(TAG).w(it.message, "signInWithEmail:failure")
-                onFailure?.invoke()
-            }
+        } catch (e: Exception) {
+            onFailure?.invoke()
+        }
     }
 
     fun verifyEmail(
@@ -200,25 +224,34 @@ object FireBaseService {
 
 
     suspend fun addMovie(movie: MovieModel, onResult: ((Boolean) -> Unit)? = null) {
-        db.collection(MOVIES).document(movie.id).set(movie)
-            .addOnSuccessListener {
-                onResult?.invoke(true)
-            }.addOnFailureListener {
-                onResult?.invoke(false)
-            }
+        try {
+            db.collection(MOVIES).document(movie.id).set(movie)
+                .addOnSuccessListener {
+                    onResult?.invoke(true)
+                }.addOnFailureListener {
+                    onResult?.invoke(false)
+                }
+        } catch (e: Exception) {
+            onResult?.invoke(false)
+        }
     }
 
     suspend fun getMovieList(list: ((List<MovieModel>) -> Unit)) {
-        db.collection(MOVIES).get().addOnSuccessListener { result ->
-            val listMovie = ArrayList<MovieModel>()
-            for (movie in result.toObjects(MovieModel::class.java)) {
-                listMovie.add(movie)
-                Log.d("movies", "size" + listMovie.size)
+        try {
+            db.collection(MOVIES).get().addOnSuccessListener { result ->
+                val listMovie = ArrayList<MovieModel>()
+                for (movie in result.toObjects(MovieModel::class.java)) {
+                    listMovie.add(movie)
+                    Log.d("movies", "size" + listMovie.size)
+                }
+                list.invoke(listMovie)
+            }.addOnFailureListener {
+                list.invoke(emptyList())
             }
-            list.invoke(listMovie)
-        }.addOnFailureListener {
+        } catch (e: Exception) {
             list.invoke(emptyList())
         }
+
     }
 
     suspend fun removeMovieOnServer(movie: MovieModel, onResult: ((Boolean) -> Unit)) {
@@ -235,9 +268,13 @@ object FireBaseService {
         }
     }
 
-    suspend fun updateMovieOnServer(id: String, hashMap: HashMap<String, Any?>, onResult: ((Boolean) -> Unit)) {
+    suspend fun updateMovieOnServer(
+        id: String,
+        data: HashMap<String, Any?>,
+        onResult: ((Boolean) -> Unit)
+    ) {
         try {
-            db.collection(MOVIES).document(id).delete()
+            db.collection(MOVIES).document(id).update(data)
                 .addOnSuccessListener {
                     onResult.invoke(true)
                 }.addOnFailureListener {
@@ -251,21 +288,21 @@ object FireBaseService {
 
     suspend fun getMovieByCategory(category: Categories, list: ((List<MovieModel>) -> Unit)) {
         try {
-        val listMovie = ArrayList<MovieModel>()
-        db.collection(MOVIES)
-            .whereArrayContains(CATEGORIES, category.name)
-            .get()
-            .addOnSuccessListener { documents ->
-                for (movie in documents.toObjects(MovieModel::class.java)) {
-                    listMovie.add(movie)
-                    Timber.tag("moviesbycate").d("size" + listMovie.size)
+            val listMovie = ArrayList<MovieModel>()
+            db.collection(MOVIES)
+                .whereArrayContains(CATEGORIES, category.name)
+                .get()
+                .addOnSuccessListener { documents ->
+                    for (movie in documents.toObjects(MovieModel::class.java)) {
+                        listMovie.add(movie)
+                        Timber.tag("moviesbycate").d("size" + listMovie.size)
+                    }
+                    list.invoke(listMovie)
                 }
-                list.invoke(listMovie)
-            }
-            .addOnFailureListener { exception ->
-                Timber.tag(TAG).w(exception, "Error getting documents: ")
-                list.invoke(emptyList())
-            }
+                .addOnFailureListener { exception ->
+                    Timber.tag(TAG).w(exception, "Error getting documents: ")
+                    list.invoke(emptyList())
+                }
         } catch (e: Exception) {
             list.invoke(emptyList())
         }
@@ -293,72 +330,103 @@ object FireBaseService {
     // <==========================RATINGS=====================================================================>
 
     suspend fun addRating(rating: HashMap<String, Any?>, onResult: ((Boolean) -> Unit)?) {
-        db.collection(RATINGS).document().set(rating)
-            .addOnSuccessListener {
-                onResult?.invoke(true)
-            }.addOnFailureListener {
-                onResult?.invoke(false)
-            }
+        try {
+            db.collection(RATINGS).document().set(rating)
+                .addOnSuccessListener {
+                    onResult?.invoke(true)
+                }.addOnFailureListener {
+                    onResult?.invoke(false)
+                }
+        } catch (e: Exception) {
+            onResult?.invoke(false)
+
+        }
 
     }
 
     fun getRatingsByIdMovie(movieId: String, onResult: ((List<RatingModel>) -> Unit)?) {
-        db.collection(RATINGS).whereEqualTo(RatingModel::movieId.name, movieId).get().addOnSuccessListener { collection ->
-            val ratings = ArrayList<RatingModel>()
-            for (rating in collection.documents) {
-                rating.toObject<RatingModel>()?.let {
-                    ratings.add(it)
-                }
+        try {
+            db.collection(RATINGS).whereEqualTo(RatingModel::movieId.name, movieId).get()
+                .addOnSuccessListener { collection ->
+                    val ratings = ArrayList<RatingModel>()
+                    for (rating in collection.documents) {
+                        rating.toObject<RatingModel>()?.let {
+                            ratings.add(it)
+                        }
+                    }
+                    onResult?.invoke(ratings)
+                }.addOnFailureListener {
+                onResult?.invoke(emptyList())
             }
-            onResult?.invoke(ratings)
-        }.addOnFailureListener {
+        } catch (e: Exception) {
             onResult?.invoke(emptyList())
         }
     }
 
 
     suspend fun getAllRating(listRating: ((List<RatingModel>) -> Unit)) {
-        val list = arrayListOf<RatingModel>()
-        db.collection(RATINGS).get().addOnSuccessListener { ratings ->
-            for (rate in ratings) {
-                list.add(rate.toObject())
+        try {
+            val list = arrayListOf<RatingModel>()
+            db.collection(RATINGS).get().addOnSuccessListener { ratings ->
+                for (rate in ratings) {
+                    list.add(rate.toObject())
+                }
+                listRating.invoke(list)
+            }.addOnFailureListener {
+                listRating.invoke(emptyList())
             }
-            listRating.invoke(list)
-        }.addOnFailureListener {
+        } catch (e: Exception) {
             listRating.invoke(emptyList())
         }
     }
 
     suspend fun deleteRating(rating: RatingModel, onResult: ((Boolean) -> Unit)?) {
-        db.collection(RATINGS).document(rating.id ?: "").delete()
-            .addOnSuccessListener {
-                onResult?.invoke(true)
-            }.addOnFailureListener {
-                onResult?.invoke(false)
-            }
+        try {
+            db.collection(RATINGS).document(rating.id ?: "").delete()
+                .addOnSuccessListener {
+                    onResult?.invoke(true)
+                }.addOnFailureListener {
+                    onResult?.invoke(false)
+                }
+        } catch (e: Exception) {
+            onResult?.invoke(false)
+        }
     }
 
     // <==========================LOVING FILM=====================================================================>
 
-     fun lovingMovie(lovingMovieModel: LovingMovieModel, onResult: ((Boolean) -> Unit)?) {
-        db.collection(LOVING).document(lovingMovieModel.id).set(lovingMovieModel)
-            .addOnSuccessListener {
-            onResult?.invoke(true)
-        }.addOnFailureListener {
+    fun lovingMovie(lovingMovieModel: LovingMovieModel, onResult: ((Boolean) -> Unit)?) {
+        try {
+            db.collection(LOVING).document(lovingMovieModel.id).set(lovingMovieModel)
+                .addOnSuccessListener {
+                    onResult?.invoke(true)
+                }.addOnFailureListener {
+                    onResult?.invoke(false)
+                }
+        } catch (e: Exception) {
             onResult?.invoke(false)
+
         }
+
     }
 
     suspend fun updateLovingStatusMovie(
         lovingMovieModel: LovingMovieModel,
         onResult: ((Boolean) -> Unit)?
     ) {
-        db.collection(LOVING).document(lovingMovieModel.id).update(lovingMovieModel::like.name , lovingMovieModel.like)
-            .addOnSuccessListener {
-            onResult?.invoke(true)
-        }.addOnFailureListener {
+        try {
+            db.collection(LOVING).document(lovingMovieModel.id)
+                .update(lovingMovieModel::like.name, lovingMovieModel.like)
+                .addOnSuccessListener {
+                    onResult?.invoke(true)
+                }.addOnFailureListener {
+                    onResult?.invoke(false)
+                }
+        } catch (e: Exception) {
             onResult?.invoke(false)
+
         }
+
     }
 
     suspend fun getLovingMoviesByIdMovie(
@@ -382,7 +450,11 @@ object FireBaseService {
 
     }
 
-    suspend fun postImageToServerStorage(imageUri: Uri, fileName: String, onResult: ((String?) -> Unit)) {
+    suspend fun postImageToServerStorage(
+        imageUri: Uri,
+        fileName: String,
+        onResult: ((String?) -> Unit)
+    ) {
         try {
             val ref = storageRef.child(IMAGES).child("image$fileName")
             ref.putFile(imageUri).addOnSuccessListener {
@@ -400,7 +472,11 @@ object FireBaseService {
 
     }
 
-    suspend fun postTrailerToServerStorage(trailerUri: Uri, fileName: String, onResult: ((String?) -> Unit)) {
+    suspend fun postTrailerToServerStorage(
+        trailerUri: Uri,
+        fileName: String,
+        onResult: ((String?) -> Unit)
+    ) {
         try {
             val ref = storageRef.child(TRAILERS).child("trailer$fileName")
             ref.putFile(trailerUri).addOnSuccessListener {
@@ -418,7 +494,11 @@ object FireBaseService {
 
     }
 
-    suspend fun postMovieToServerStorage(movieUri: Uri, fileName: String, onResult: ((String?) -> Unit)) {
+    suspend fun postMovieToServerStorage(
+        movieUri: Uri,
+        fileName: String,
+        onResult: ((String?) -> Unit)
+    ) {
         try {
             val ref = storageRef.child(MOVIES_PATH).child("movie$fileName")
             ref.putFile(movieUri).addOnSuccessListener {

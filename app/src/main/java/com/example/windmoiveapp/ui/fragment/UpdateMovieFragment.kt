@@ -23,7 +23,7 @@ import com.example.windmoiveapp.viewmodels.MovieViewModel
 import java.util.*
 
 
-class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
+class UpdateMovieFragment : BaseFragment<FragmentUpdateMovieBinding>() {
     private val viewModel: MovieViewModel by viewModels()
     private var typeManagement: Int = INFO_MOVIE
     private var movieModel: MovieModel? = MovieModel()
@@ -51,10 +51,10 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
         }
 
     companion object {
-        const val BUNDLE_TYPE_MANAGEMENT =  "BUNDLE_TYPE_MANAGEMENT"
-        const val BUNDLE_CONTENT_MOVIE =  "BUNDLE_CONTENT_MOVIE"
-        const val TYPE_MOVIE =  0
-        const val TYPE_TRAILER =  1
+        const val BUNDLE_TYPE_MANAGEMENT = "BUNDLE_TYPE_MANAGEMENT"
+        const val BUNDLE_CONTENT_MOVIE = "BUNDLE_CONTENT_MOVIE"
+        const val TYPE_MOVIE = 0
+        const val TYPE_TRAILER = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,6 +86,7 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
             dismissProgress()
             if (it) {
                 context?.showAlertDialog(getString(R.string.postMovieOnServerSuccess)) {
+                    movieModel = null
                     initViews()
                 }
             } else {
@@ -128,20 +129,21 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
             INFO_MOVIE -> {
                 enableViews()
                 initViews()
-                initDataSpinner(listYear.indexOf(movieModel?.yearOfRelease.convertStringToInt()))
+                initDataSpinner()
+                binding.spYearRelease.setSelection(listYear.indexOf(movieModel?.yearOfRelease.convertStringToInt()))
                 binding.headerBar.setTitle(getString(R.string.infoMovieLabel))
             }
             ADD_MOVIE -> {
                 enableViews(true)
-                initDataSpinner(ZERO_INDEX)
+                initDataSpinner()
                 binding.tvOption.text = getString(R.string.addMovieLabel)
-                binding.tvOption.isVisible = true
                 binding.headerBar.setTitle(getString(R.string.addMovieLabel))
             }
             EDIT_MOVIE -> {
                 enableViews(true)
                 initViews()
-                initDataSpinner(listYear.indexOf(movieModel?.yearOfRelease.convertStringToInt()))
+                initDataSpinner()
+                binding.spYearRelease.setSelection(listYear.indexOf(movieModel?.yearOfRelease.convertStringToInt()))
                 binding.tvOption.text = getString(R.string.updateMovieLabel)
                 binding.headerBar.setTitle(getString(R.string.updateMovieLabel))
             }
@@ -149,16 +151,16 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
     }
 
     private fun initViews() {
-        binding.imvMovieImage.loadImage(movieModel?.image ?: "")
-        binding.edtMovieName.setText(movieModel?.name)
-        binding.edtMovieDesc.setText(movieModel?.description)
-        binding.edtMovieId.setText(movieModel?.id)
-        binding.edtMovieUrl.setText(movieModel?.movieUrl)
-        binding.edtTrailerUrl.setText(movieModel?.trailerUrl)
-        binding.edtDuration.setText(movieModel?.duration)
-        binding.edtCategory.setText(movieModel?.categories?.joinToString(separator = BULLET))
+        binding.imvMovieImage.loadImage(movieModel?.image ?: "", R.drawable.ic_baseline_add_photo_alternate_24)
+        binding.edtMovieName.setText(movieModel?.name ?: "")
+        binding.edtMovieDesc.setText(movieModel?.description ?: "")
+        binding.edtMovieId.setText(movieModel?.id ?: "")
+        binding.edtMovieUrl.setText(movieModel?.movieUrl ?: "")
+        binding.edtTrailerUrl.setText(movieModel?.trailerUrl ?: "")
+        binding.edtDuration.setText(movieModel?.duration ?: "")
+        binding.edtCategory.setText(movieModel?.categories?.joinToString(separator = BULLET)  ?: "")
     }
-    
+
     private fun enableViews(enable: Boolean = false) {
         binding.imvMovieImage.isEnabled = enable
         binding.edtMovieName.isEnabled = enable
@@ -218,54 +220,56 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
         if (itemExist == true) {
             context?.showAlertDialog(getString(R.string.idMovieExistLabel))
         } else {
-            postMovieOnStorageServer()
-            postTrailerOnStorageServer()
-            postImageOnStorageServer()
+            setUpInsertMovie()
         }
     }
-
 
     private fun updateMovie() {
         postMovieOnStorageServer()
     }
 
-    private fun postMovieOnStorageServer() {
-        val movieUri = binding.edtMovieUrl.text
-        val fileName = binding.edtMovieName.text
-        if (movieUri.isNullOrBlank() || fileName.isNullOrBlank()) {
-            context?.showAlertDialog(getString(R.string.addFieldInsertMovie))
+    override fun loadData() {
+        super.loadData()
+        viewModel.getMovieList()
+    }
 
+    private fun setUpInsertMovie() {
+        val id = binding.edtMovieId.text
+        val name = binding.edtMovieName.text
+        val desc = binding.edtMovieDesc.text
+        val category = binding.edtCategory.text
+        val duration = binding.edtDuration.text
+        val movie = binding.edtMovieUrl.text
+        val trailer = binding.edtTrailerUrl.text
+        val yearOfRelease = listYear[indexYearOfRelease].toString()
+        if (id.isNullOrBlank() || name.isNullOrBlank() ||
+            desc.isNullOrBlank() || category.isNullOrBlank() ||
+            duration.isNullOrBlank() || imageUri == null ||
+            trailer.isNullOrBlank() || movie.isNullOrBlank()
+        ) {
+            context?.showAlertDialog(getString(R.string.addFieldInsertMovie))
         } else {
-            viewModel.postMovieOnServerStorage(movieUri.toString().toUri(), fileName.toString())
+            showProgress()
+            postMovieOnStorageServer()
+            postTrailerOnStorageServer()
+            postImageOnStorageServer()
+            movieModel = MovieModel(
+                id = id.toString(),
+                name = name.toString(),
+                description = desc.toString(),
+                yearOfRelease = yearOfRelease,
+                duration = duration.toString(),
+                categories = category.toString().split(BULLET)
+            )
         }
     }
 
-    private fun postTrailerOnStorageServer() {
-        val trailerUri = binding.edtTrailerUrl.text
-        val fileName = binding.edtMovieName.text
-        if (binding.edtTrailerUrl.text.isNullOrBlank() || fileName.isNullOrBlank()) {
-            context?.showAlertDialog(getString(R.string.addFieldInsertMovie))
-
-        } else {
-            viewModel.postTrailerOnServerStorage(trailerUri.toString().toUri(), fileName.toString())
-        }
-    }
-    private fun postImageOnStorageServer() {
-        val fileName = binding.edtMovieName.text
-        if (imageUri == null || fileName.isNullOrBlank()) {
-            context?.showAlertDialog(getString(R.string.addFieldInsertMovie))
-        } else {
-            viewModel.postImageOnServerStorage(imageUri!!, fileName.toString())
-        }
-    }
-
-    private fun initDataSpinner(initValue: Int) {
+    private fun initDataSpinner() {
         binding.spYearRelease.apply {
             activity?.let { ct ->
                 val adapterCategory = SpinnerArrayAdapter(ct, listYear)
                 adapter = adapterCategory
-                adapterCategory.setChoose(initValue)
-                dropDownVerticalOffset = 10
+                dropDownVerticalOffset = 9
                 onItemSelected { index ->
                     adapterCategory.setChoose(index)
                     indexYearOfRelease = index
@@ -285,49 +289,34 @@ class UpdateMovieFragment: BaseFragment<FragmentUpdateMovieBinding>() {
         getImageResult.launch("image/*")
     }
 
-    override fun loadData() {
-        super.loadData()
-        viewModel.getMovieList()
-    }
-
-    private fun getItemMovieInsert() {
-        val id = binding.edtMovieId.text
-        val name = binding.edtMovieName.text
-        val desc = binding.edtMovieDesc.text
-        val category = binding.edtCategory.text
-        val duration = binding.edtDuration.text
+    private fun postResourceOnServerStorageSuccess() {
         val image = viewModel.postImageStorageLiveData.value
+        val trailer =  viewModel.postTrailerStorageLiveData.value
         val movie = viewModel.postMovieStorageLiveData.value
-        val trailer = viewModel.postTrailerStorageLiveData.value
-        val yearOfRelease = listYear[indexYearOfRelease]
-        if (id.isNullOrBlank() && name.isNullOrBlank()
-            && desc.isNullOrBlank() && category.isNullOrBlank()
-            && duration.isNullOrBlank()
-        ) {
-            context?.showAlertDialog(getString(R.string.addFieldInsertMovie))
-        } else {
-            movieModel = MovieModel(
-                id = id.toString(),
-                name = name.toString(),
-                description = desc.toString(),
-                yearOfRelease = yearOfRelease.toString(),
-                duration = duration.toString(),
-                image = image.toString(),
-                trailerUrl = trailer.toString(),
-                movieUrl = movie.toString(),
-                categories = category.toString().split(BULLET)
-            )
-            showProgress()
+        if (image != null && trailer != null && movie != null) {
+            movieModel?.apply {
+                this.image = viewModel.postImageStorageLiveData.value
+                this.trailerUrl = viewModel.postTrailerStorageLiveData.value
+                this.movieUrl = viewModel.postMovieStorageLiveData.value
+            }
             viewModel.addMovieOnServer(movieModel ?: return)
         }
     }
 
-    private fun postResourceOnServerStorageSuccess() {
-        val image = viewModel.postImageStorageLiveData.value
-        val movie = viewModel.postMovieStorageLiveData.value
-        val trailer = viewModel.postTrailerStorageLiveData.value
-        if (image != null && movie != null && trailer != null) {
-            getItemMovieInsert()
-        }
+    private fun postMovieOnStorageServer() {
+        val movieUri = binding.edtMovieUrl.text.toString().toUri()
+        val fileName = binding.edtMovieName.text.toString()
+        viewModel.postMovieOnServerStorage(movieUri, fileName)
+    }
+
+    private fun postTrailerOnStorageServer() {
+        val trailerUri = binding.edtTrailerUrl.text.toString().toUri()
+        val fileName = binding.edtMovieName.text.toString()
+        viewModel.postTrailerOnServerStorage(trailerUri, fileName)
+    }
+
+    private fun postImageOnStorageServer() {
+        val fileName = binding.edtMovieName.text.toString()
+        viewModel.postImageOnServerStorage(imageUri!!, fileName)
     }
 }

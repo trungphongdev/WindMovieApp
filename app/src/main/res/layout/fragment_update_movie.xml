@@ -160,7 +160,7 @@
                 android:textColor="@color/colorSubText"
                 android:textSize="@dimen/sp16" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
+            <Spinner
                 android:id="@+id/spYearRelease"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

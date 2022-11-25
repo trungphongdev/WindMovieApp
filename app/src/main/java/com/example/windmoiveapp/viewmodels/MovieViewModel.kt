@@ -29,6 +29,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     var lovingsLiveData: MutableLiveData<List<LovingMovieModel>> = MutableLiveData()
     var postVideoSuccess: MutableLiveData<Boolean> = MutableLiveData()
     var isRemoveMovieLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    var isUpdateMovieLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     var postMovieStorageLiveData: MutableLiveData<String?> = MutableLiveData()
     var postTrailerStorageLiveData: MutableLiveData<String?> = MutableLiveData()
@@ -122,6 +123,14 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     fun removeMovieByIdRoomDB(movieModel: MovieModel?) {
         viewModelScope.launch {
             val movie = dao.getMovieDao().deleteMovie(movieModel?.id ?: return@launch)
+        }
+    }
+
+    fun updateMovieByIdOnServer(id: String, data: HashMap<String, Any?>) {
+        viewModelScope.launch {
+            FireBaseService.updateMovieOnServer(id, data) {
+                isUpdateMovieLiveData.postValue(it)
+            }
         }
     }
 
@@ -230,7 +239,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     }
     fun postImageOnServerStorage(imageUri: Uri, fileName: String) {
         viewModelScope.launch {
-            FireBaseService.postMovieToServerStorage(imageUri, fileName) {
+            FireBaseService.postImageToServerStorage(imageUri, fileName) {
                 postImageStorageLiveData.postValue(it)
             }
         }
