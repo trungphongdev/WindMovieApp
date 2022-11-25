@@ -63,3 +63,97 @@ fun updateUserModel(userModel: UserModel): HashMap<String, Any> {
 fun getUserWithUUID(): String {
     return "User ${UUID.randomUUID()}"
 }
+
+
+/*
+*     private fun upDateDataForChart(listMarginDevelop: List<MarginDeveloperModel>) {
+        binding?.cbMarginDevelopChart?.apply {
+            data = listMarginDevelop.barDataChart(requireContext())
+            xAxis.valueFormatter = IndexAxisValueFormatter(listMarginDevelop.labelChart())
+            xAxis.setLabelCount(listMarginDevelop.labelChart().size, false)
+            xAxis.setDrawAxisLine(false)
+            setUpBarChart()
+            invalidate()
+        }
+    }
+
+
+
+	 private fun setUpBarChart() {
+        binding?.cbMarginDevelopChart?.apply {
+            val valueColor = ContextCompat.getColor(context, R.color.gray33646464)
+            description.isEnabled = false
+            legend.isEnabled = false
+            setVisibleXRangeMaximum(5f)
+            setDrawGridBackground(false)
+            setPinchZoom(false)
+            extraBottomOffset = 10F
+            isDoubleTapToZoomEnabled = false
+
+            xAxis.apply {
+                spaceMin = 10F
+                setDrawGridLines(true)
+                gridLineWidth = 1f
+                position = XAxis.XAxisPosition.BOTTOM
+                axisMinimum += 0.1f
+                axisMaximum += 0f
+                granularity = 1f
+                gridColor = valueColor
+                axisLineColor = valueColor
+                axisLineWidth = 1f
+                textColor = Color.WHITE
+                setDrawGridLines(false)
+            }
+
+            axisLeft.apply {
+                axisMinimum = 0f
+                gridColor = valueColor
+                axisLineColor = valueColor
+                gridLineWidth = 1f
+                axisLineWidth = 1f
+                textColor = Color.WHITE
+            }
+
+            axisRight.apply {
+                axisMinimum = 0.1f
+                setDrawLabels(false)
+                gridColor = valueColor
+                axisMinimum = 0f
+                axisLineColor = valueColor
+                gridColor = valueColor
+                gridLineWidth = 1f
+                axisLineWidth = 1f
+            }
+        }
+    }
+
+
+
+fun List<MarginDeveloperModel>.barDataChart(context: Context): BarData {
+    val listBarEntry = this.barEntry()
+    val dataSet: BarDataSet = BarDataSet(listBarEntry, "").apply {
+        color = ContextCompat.getColor(context, R.color.yellowF18725)
+        valueTextColor = ContextCompat.getColor(context, R.color.yellowF18725)
+        valueTextSize = 8f
+        valueFormatter = ValueFormatterBarDataSet()
+    }
+    return BarData(dataSet).apply {
+        this.barWidth = if (listBarEntry.size > 3) 0.3f else 0.1f
+    }
+}
+
+fun List<MarginDeveloperModel>.labelChart(): List<String> {
+    return this.sortedBy { it.dateConvert }.map { it.reportDate.convertToDateStr(FORMAT_DD_MM_YYYY, FORMAT_DATE_NEWS)}
+}
+
+fun List<MarginDeveloperModel>.barEntry(): List<BarEntry> {
+    return this.sortedBy { it.dateConvert }.mapIndexed { index, investorModel ->
+        BarEntry(index.toFloat(), (investorModel.value).toFloat())
+    }
+}
+
+class ValueFormatterBarDataSet : ValueFormatter() {
+    override fun getFormattedValue(value: Float): String {
+        return value.format(FORMATTER_NUMBER_DECIMAL)
+    }
+}*/
