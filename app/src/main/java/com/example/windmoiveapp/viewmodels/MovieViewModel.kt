@@ -30,6 +30,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     var postVideoSuccess: MutableLiveData<Boolean> = MutableLiveData()
     var isRemoveMovieLiveData: MutableLiveData<Boolean> = MutableLiveData()
     var isUpdateMovieLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    var ratingsLiveData: MutableLiveData<List<RatingModel>> = MutableLiveData()
 
     var postMovieStorageLiveData: MutableLiveData<String?> = MutableLiveData()
     var postTrailerStorageLiveData: MutableLiveData<String?> = MutableLiveData()
@@ -174,6 +175,14 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             FireBaseService.addRating(ratingModel) {
                 postCommentSuccessLiveData.postValue(it)
+            }
+        }
+    }
+
+    fun getRatingsList() {
+        viewModelScope.launch {
+            FireBaseService.getAllRating {
+                ratingsLiveData.postValue(it)
             }
         }
     }

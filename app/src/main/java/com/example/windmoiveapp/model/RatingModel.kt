@@ -2,6 +2,7 @@ package com.example.windmoiveapp.model
 
 import android.graphics.Color
 import com.example.windmoiveapp.model.charts.MovieChartModel
+import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 
@@ -14,7 +15,7 @@ data class RatingModel(
 ) {
     var userModel: UserModel? = null
 }
-fun setBarDataNumberRatings(ratings: List<RatingModel>,movies: List<MovieModel>): List<BarEntry> {
+fun setBarDataNumberRatings(ratings: List<RatingModel>,movies: List<MovieModel>): BarData {
     val barEntries = ArrayList<BarEntry>()
     val list = ArrayList<MovieChartModel>()
        movies.forEach { movie ->
@@ -27,7 +28,9 @@ fun setBarDataNumberRatings(ratings: List<RatingModel>,movies: List<MovieModel>)
     val dataSet = BarDataSet(barEntries, "Number Rating On Movie").apply {
         color = Color.parseColor("#B11313")
         valueTextColor = Color.parseColor("#FFFFFF")
+        valueTextSize = 8f
     }
+    return BarData(dataSet)
 }
 
 fun getLabelChart(movies: List<MovieModel>): List<String> {
