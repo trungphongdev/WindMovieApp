@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragment.StatisticFragment">
+
+    <com.example.windmoiveapp.common.HeaderBar
+        android:id="@+id/headerBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:isShowAccount="false"
+        app:isShowButtonBack="true"
+        app:isShowTitle="true"
+        app:title="@string/statisticLabel"/>
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barChartMovie"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp200"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerBar"
+        />
+    <com.github.mikephil.charting.charts.PieChart
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp200"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barChartMovie"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

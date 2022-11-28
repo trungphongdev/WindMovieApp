@@ -1,9 +1,16 @@
 package com.example.windmoiveapp.model
 
+import android.content.Context
 import android.os.Parcelable
+import androidx.core.content.ContextCompat
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
+import com.example.windmoiveapp.R
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
 

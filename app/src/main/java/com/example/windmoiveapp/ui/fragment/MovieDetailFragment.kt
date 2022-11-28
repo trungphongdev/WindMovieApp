@@ -219,7 +219,6 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
                 id = UUID.randomUUID().toString(),
                 comment = binding.llComment.edtComment.text.toString(),
                 time = Date().time,
-                isLike = false,
                 userId = authenViewModel.userModelLiveData.value?.uid,
                 movieId = movieModel?.id
             )
