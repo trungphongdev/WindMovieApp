@@ -14,6 +14,7 @@ data class MovieChartModel(
     val number: Int
 )
 
+/*
 fun barDataChart(movies: List<MovieChartModel>, context: Context): BarData {
     val listBarEntry = movies.convertToListBarEntry()
     val dataSet = BarDataSet(listBarEntry, "")
@@ -35,4 +36,4 @@ class ValueFormatterBarDataSet : ValueFormatter() {
     override fun getFormattedValue(value: Float): String {
         return value.toInt().toString()
     }
-}
+}*/

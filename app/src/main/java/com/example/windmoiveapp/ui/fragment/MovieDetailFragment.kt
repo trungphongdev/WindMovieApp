@@ -2,11 +2,13 @@ package com.example.windmoiveapp.ui.fragment
 
 import android.app.Application
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
+import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -43,7 +45,11 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        movieModel = this.arguments?.getParcelable(BUNDLE_CONTENT_MOVIE)
+        movieModel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            this.arguments?.getParcelable(BUNDLE_CONTENT_MOVIE, MovieModel::class.java)
+        } else {
+            this.arguments?.getParcelable(BUNDLE_CONTENT_MOVIE)
+        }
     }
 
     override fun onCreateViewBinding(
@@ -71,7 +77,8 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
         }
 
         movieViewModels.listRatingLiveData.observe(viewLifecycleOwner) {
-          movieViewModels.getRatingsUser()
+            dismissProgress()
+            movieViewModels.getRatingsUser()
         }
 
         movieViewModels.listRatingUserLiveData.observe(viewLifecycleOwner) {
@@ -81,13 +88,13 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
 
         movieViewModels.postCommentSuccessLiveData.observe(viewLifecycleOwner) {
             if (it) {
-                showProgress()
+                dismissProgress()
                 movieViewModels.getRatingsById(movieModel?.id ?: "")
             } else {
                 context?.showAlertDialog(getString(R.string.commentFailLabel))
             }
         }
-        movieViewModels.lovingsLiveData.observe(viewLifecycleOwner) {
+        movieViewModels.lovingsByIdMovieLiveData.observe(viewLifecycleOwner) {
             dismissProgress()
             bindDataLovingMovie(it)
         }
@@ -196,7 +203,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
     }
 
     private fun invalidLikeMovie() {
-        showProgress()
+      //  showProgress()
         movieViewModels.lovingMovie(lovingMovie)
     }
 

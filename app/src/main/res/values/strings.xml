@@ -103,4 +103,6 @@
     <string name="postMovieOnServerSuccess">Post Movie On Server Success</string>
     <string name="confirmRemoveMovie">Remove Movie %s with ID %s</string>
     <string name="removeMovieFail">Remove Movie Failure</string>
+    <string name="numberRatings">Number of Rating On Movie</string>
+    <string name="saveToGallery">Save Gallery</string>
 </resources>

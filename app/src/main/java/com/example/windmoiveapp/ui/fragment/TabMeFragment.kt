@@ -50,7 +50,7 @@ class TabMeFragment : BaseFragment<FragmentInfoUserBinding>() {
             navigateToScreen(R.id.movieManagementFragment)
         }
         binding.llReport.click {
-
+            navigateToScreen(R.id.statisticFragment)
         }
         binding.llFeedback.click {
 

@@ -26,8 +26,8 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     var listRatingUserLiveData: MutableLiveData<List<RatingModel>> = MutableLiveData()
     var postCommentSuccessLiveData: MutableLiveData<Boolean> = MutableLiveData()
     var isLoveMovie: MutableLiveData<Boolean> = MutableLiveData()
+    var lovingsByIdMovieLiveData: MutableLiveData<List<LovingMovieModel>> = MutableLiveData()
     var lovingsLiveData: MutableLiveData<List<LovingMovieModel>> = MutableLiveData()
-    var postVideoSuccess: MutableLiveData<Boolean> = MutableLiveData()
     var isRemoveMovieLiveData: MutableLiveData<Boolean> = MutableLiveData()
     var isUpdateMovieLiveData: MutableLiveData<Boolean> = MutableLiveData()
     var ratingsLiveData: MutableLiveData<List<RatingModel>> = MutableLiveData()
@@ -203,17 +203,25 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun getLovingList() {
+        viewModelScope.launch {
+            FireBaseService.getLovingList {
+                lovingsLiveData.postValue(it)
+            }
+        }
+    }
+
     fun getLovingsByIdMovie(idMovie: String) {
         viewModelScope.launch {
             FireBaseService.getLovingMoviesByIdMovie(idMovie) {
-                lovingsLiveData.postValue(it)
+                lovingsByIdMovieLiveData.postValue(it)
             }
         }
     }
 
     fun lovingMovie(lovingMovieModel: LovingMovieModel) {
         viewModelScope.launch {
-            val lovingItemExist = lovingsLiveData.value.getItemLovingExist(lovingMovieModel)
+            val lovingItemExist = lovingsByIdMovieLiveData.value.getItemLovingExist(lovingMovieModel)
             if (lovingItemExist != null) {
                 FireBaseService.updateLovingStatusMovie(lovingMovieModel) { isLike ->
                     isLoveMovie.postValue(isLike)
@@ -221,7 +229,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
             } else {
                 FireBaseService.lovingMovie(lovingMovieModel) {
                     if (it) {
-                        this.launch {
+                        viewModelScope.launch {
                             FireBaseService.updateLovingStatusMovie(lovingMovieModel) { isLike ->
                                 isLoveMovie.postValue(isLike)
                             }

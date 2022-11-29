@@ -424,7 +424,6 @@ object FireBaseService {
                 }
         } catch (e: Exception) {
             onResult?.invoke(false)
-
         }
 
     }
@@ -448,6 +447,23 @@ object FireBaseService {
             lovings.invoke(emptyList())
         }
 
+    }
+
+    suspend fun getLovingList(lovings: (List<LovingMovieModel>) -> Unit) {
+        val list = arrayListOf<LovingMovieModel>()
+        try {
+            db.collection(LOVING).get()
+                .addOnSuccessListener { _lovings ->
+                    for (loving in _lovings) {
+                        list.add(loving.toObject())
+                    }
+                    lovings.invoke(list)
+                }.addOnFailureListener {
+                    lovings.invoke(emptyList())
+                }
+        } catch (e: Exception) {
+            lovings.invoke(emptyList())
+        }
     }
 
     suspend fun postImageToServerStorage(

@@ -16,10 +16,7 @@ import com.example.windmoiveapp.model.convertToNotificationModel
 import com.example.windmoiveapp.ui.fragment.BaseFragment
 import com.example.windmoiveapp.ui.fragment.ProgressDialogFragment
 import com.example.windmoiveapp.util.AppApplication
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null
@@ -44,6 +41,11 @@ class MainActivity : AppCompatActivity() {
     fun showProgress() {
         if (!progressDialog.isAdded && !progressDialog.isVisible) {
             progressDialog.show(supportFragmentManager)
+            CoroutineScope(Dispatchers.Default).launch {
+                delay(20000L)
+                dismissProgress()
+            }
+
         }
     }
 

@@ -91,6 +91,9 @@
         android:id="@+id/movieManagementFragment"
         android:name="com.example.windmoiveapp.ui.fragment.MovieManagerFragment" />
 
+    <fragment
+        android:id="@+id/statisticFragment"
+        android:name="com.example.windmoiveapp.ui.fragment.StatisticFragment" />
 
 
 </navigation>

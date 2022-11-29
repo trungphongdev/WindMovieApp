@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragment.StatisticFragment">
+    tools:context=".ui.fragment.StatisticFragment"
+    android:background="@color/black">
 
     <com.example.windmoiveapp.common.HeaderBar
         android:id="@+id/headerBar"
@@ -23,10 +24,44 @@
         android:layout_height="@dimen/dp200"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/headerBar"
+        android:background="@color/black"
         />
+
+    <TextView
+        android:id="@+id/tvSaveBarchart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/saveToGallery"
+        android:textColor="@color/white"
+        android:drawablePadding="@dimen/dp6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barChartMovie"
+        app:drawableEndCompat="@drawable/ic_baseline_folder_24"
+        android:layout_marginTop="@dimen/dp6"
+        android:layout_marginEnd="@dimen/dp6"
+        android:gravity="center"/>
+
     <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChartMovie"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp200"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/barChartMovie"/>
+        app:layout_constraintTop_toBottomOf="@id/barChartMovie"
+        android:background="@color/black"
+        android:layout_marginTop="@dimen/dp60"/>
+
+    <TextView
+        android:id="@+id/tvSavePieChart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/saveToGallery"
+        android:textColor="@color/white"
+        android:drawablePadding="@dimen/dp6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pieChartMovie"
+        app:drawableEndCompat="@drawable/ic_baseline_folder_24"
+        android:layout_marginTop="@dimen/dp6"
+        android:layout_marginEnd="@dimen/dp6"
+        android:gravity="center"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
