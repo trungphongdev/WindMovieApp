@@ -17,6 +17,7 @@ data class RatingModel(
 ) {
     var userModel: UserModel? = null
 }
+
 fun setBarDataNumberRatings(ratings: List<RatingModel>, movies: List<MovieModel>): BarData {
     val moviesChart: ArrayList<MovieChartModel> = arrayListOf()
        movies.forEach { movie ->

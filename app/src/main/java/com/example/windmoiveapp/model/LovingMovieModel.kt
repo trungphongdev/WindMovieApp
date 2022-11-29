@@ -16,6 +16,29 @@ data class LovingMovieModel(
     var idUser: String = "",
     var like: Int = StatusLovingMovie.NOTHING.status
 )
+fun getNumberLoveMovies(lovings: List<LovingMovieModel>, movies: List<MovieModel>, type: StatusLovingMovie): List<MovieChartModel> {
+    val moviesChart: ArrayList<MovieChartModel> = arrayListOf()
+    when (type.status) {
+        StatusLovingMovie.LIKE.status -> {
+            movies.forEach { movie ->
+                val number = lovings.filter { it.idMovie == movie.id && it.like == StatusLovingMovie.LIKE.status }.size
+                if (number > 0) {
+                    moviesChart.add(MovieChartModel(movie, number))
+                }
+            }
+        }
+        StatusLovingMovie.DISLIKE.status -> {
+            movies.forEach { movie ->
+                val number = lovings.filter { it.idMovie == movie.id && it.like == StatusLovingMovie.DISLIKE.status }.size
+                if (number > 0) {
+                    moviesChart.add(MovieChartModel(movie, number))
+                }
+            }
+        }
+        else -> {}
+    }
+    return moviesChart
+}
 
 fun dataLovingsPieEntry(lovings: List<LovingMovieModel>): PieData {
     val pieEntries = arrayListOf<PieEntry>()

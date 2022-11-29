@@ -7,18 +7,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.windmoiveapp.R
+import com.example.windmoiveapp.adapter.MovieChartAdapter
+import com.example.windmoiveapp.constant.StatusLovingMovie
 import com.example.windmoiveapp.databinding.FragmentStatisticBinding
 import com.example.windmoiveapp.extension.click
 import com.example.windmoiveapp.extension.showCustomToast
 import com.example.windmoiveapp.model.ValueFormatterBarDataSet
 import com.example.windmoiveapp.model.dataLovingsPieEntry
+import com.example.windmoiveapp.model.getNumberLoveMovies
 import com.example.windmoiveapp.model.setBarDataNumberRatings
-import com.example.windmoiveapp.util.PERMISSION_REQUEST_CODE
 import com.example.windmoiveapp.viewmodels.MovieViewModel
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.Chart
@@ -29,15 +33,15 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 
 class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
     private val movieViewModels: MovieViewModel by viewModels()
+    private val adapter: MovieChartAdapter by lazy { MovieChartAdapter() }
     private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                Log.d("position", "position" + isGranted)
-
+                activity?.showCustomToast(getString(R.string.permissionGrantedLabel))
             } else {
-                Log.d("position", "position" + false)
+                activity?.showCustomToast(getString(R.string.permissionDeniedLabel), false)
             }
         }
     override fun onCreateViewBinding(
@@ -62,12 +66,27 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
         binding.barChartMovie.setOnChartValueSelectedListener(object :
             OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry?, h: Highlight?) {
+                if (e == null) return
                 Log.d("position", "position" + e?.x)
             }
 
             override fun onNothingSelected() {}
         })
 
+        binding.pieChartMovie.setOnChartValueSelectedListener(object :
+            OnChartValueSelectedListener {
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                if (e == null) return
+                binding.rcvLoveMovies.isVisible = true
+                if (h?.x?.toInt() == StatusLovingMovie.LIKE.status) {
+                    setDataToLovingMovie(StatusLovingMovie.LIKE)
+                } else if (h?.x?.toInt() == StatusLovingMovie.DISLIKE.status) {
+                    setDataToLovingMovie(StatusLovingMovie.DISLIKE)
+                } else{}
+            }
+
+            override fun onNothingSelected() {}
+        })
         binding.headerBar.apply {
             setEventBackListener {
                 super.onBackFragment()
@@ -102,6 +121,15 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
     private fun initView() {
         setUpBarChart()
         setUpPieChart()
+        setUpRecyclerView()
+    }
+
+    private fun setUpRecyclerView() {
+        binding.rcvLoveMovies.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            itemAnimator = DefaultItemAnimator()
+            adapter = this@StatisticFragment.adapter
+        }
     }
 
     private fun setUpPieChart() {
@@ -170,6 +198,13 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
             dismissProgress()
             binding.barChartMovie.data = setBarDataNumberRatings(ratings, movies)
             binding.barChartMovie.invalidate()
+        }
+    }
+    private fun setDataToLovingMovie(type: StatusLovingMovie) {
+        val movies = movieViewModels.listMovieLiveData.value
+        val lovings = movieViewModels.lovingsLiveData.value
+        if (movies != null && lovings != null) {
+            adapter.setList(getNumberLoveMovies(lovings, movies, type), type.status != 1)
         }
     }
 

@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragment.StatisticFragment"
     android:background="@color/black">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.StatisticFragment">
 
     <com.example.windmoiveapp.common.HeaderBar
         android:id="@+id/headerBar"
@@ -64,4 +69,18 @@
         android:layout_marginEnd="@dimen/dp6"
         android:gravity="center"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvLoveMovies"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp200"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSavePieChart"
+        android:layout_marginTop="@dimen/dp6"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:listitem="@layout/item_love_movie"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
