@@ -79,6 +79,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
         movieViewModels.listRatingLiveData.observe(viewLifecycleOwner) {
             dismissProgress()
             movieViewModels.getRatingsUser()
+            binding.llComment.tvNumberComment.text = getString(R.string.numberCommentLabel, it.size)
         }
 
         movieViewModels.listRatingUserLiveData.observe(viewLifecycleOwner) {
@@ -189,7 +190,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             }
             headerBar.apply {
                 setEventBackListener {
-                    moveToDashBoard()
+                    onBackFragment()
                 }
                 setEventSearchListener {
                     findNavController().navigateWithAnim(R.id.searchFragment)

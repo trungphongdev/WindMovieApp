@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
+import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.text.*
@@ -32,7 +33,10 @@ import androidx.navigation.NavController
 import androidx.navigation.navOptions
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.databinding.DialogAlertBinding
+import com.example.windmoiveapp.model.ValueFormatterBarDataSet
 import com.example.windmoiveapp.ui.MainActivity
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.XAxis
 import com.google.android.material.tabs.TabLayout
 import org.json.JSONObject
 import java.math.BigDecimal
@@ -377,6 +381,40 @@ fun Activity.logOut() {
     }
     this.startActivity(newIntent)
     finish()
+}
+
+fun BarChart.configureUi() {
+    this.apply {
+        description.isEnabled = false
+        legend.textColor = Color.WHITE
+        setDrawGridBackground(false)
+        setPinchZoom(false)
+        extraBottomOffset = 10F
+        isDoubleTapToZoomEnabled = false
+        animateY(2000)
+
+        axisRight.apply {
+            setDrawLabels(true)
+            gridColor = Color.WHITE
+            axisLineColor = Color.WHITE
+            gridLineWidth = 1f
+            axisLineWidth = 1f
+            textColor = Color.WHITE
+            valueFormatter = ValueFormatterBarDataSet()
+        }
+
+        xAxis.apply {
+            position = XAxis.XAxisPosition.BOTTOM
+            textColor = Color.WHITE
+            setDrawGridLines(false)
+            setDrawGridLines(false)
+            setDrawAxisLine(true)
+            setDrawLabels(true)
+            granularity = 1f
+            spaceMin = 1F
+            xOffset = 20f
+        }
+    }
 }
 
 /*fun Spinner.setupData(data: List<*>, offset: Int? = null) {

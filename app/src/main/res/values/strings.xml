@@ -105,4 +105,5 @@
     <string name="removeMovieFail">Remove Movie Failure</string>
     <string name="numberRatings">Number of Rating On Movie</string>
     <string name="saveToGallery">Save Gallery</string>
+    <string name="numberCommentLabel">%d Comment</string>
 </resources>

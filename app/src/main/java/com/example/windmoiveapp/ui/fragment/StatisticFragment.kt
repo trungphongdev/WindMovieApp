@@ -1,6 +1,5 @@
 package com.example.windmoiveapp.ui.fragment
 
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -8,9 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.windmoiveapp.R
@@ -18,15 +18,15 @@ import com.example.windmoiveapp.adapter.MovieChartAdapter
 import com.example.windmoiveapp.constant.StatusLovingMovie
 import com.example.windmoiveapp.databinding.FragmentStatisticBinding
 import com.example.windmoiveapp.extension.click
+import com.example.windmoiveapp.extension.configureUi
 import com.example.windmoiveapp.extension.showCustomToast
-import com.example.windmoiveapp.model.ValueFormatterBarDataSet
+import com.example.windmoiveapp.model.MovieModel
 import com.example.windmoiveapp.model.dataLovingsPieEntry
 import com.example.windmoiveapp.model.getNumberLoveMovies
 import com.example.windmoiveapp.model.setBarDataNumberRatings
 import com.example.windmoiveapp.viewmodels.MovieViewModel
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.Chart
-import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
@@ -62,12 +62,28 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
         initListener()
     }
 
+    override fun loadData() {
+        super.loadData()
+        showProgress()
+        movieViewModels.getMovieList()
+        movieViewModels.getRatingsList()
+        movieViewModels.getLovingList()
+    }
+
+    private fun initView() {
+        setUpBarChart()
+        setUpPieChart()
+        setUpRecyclerView()
+    }
+
     private fun initListener() {
         binding.barChartMovie.setOnChartValueSelectedListener(object :
             OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry?, h: Highlight?) {
                 if (e == null) return
-                Log.d("position", "position" + e?.x)
+                movieViewModels.listMovieLiveData.value?.let {
+                    navigateToMovieFragment(it[e.x.toInt()])
+                }
             }
 
             override fun onNothingSelected() {}
@@ -82,7 +98,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
                     setDataToLovingMovie(StatusLovingMovie.LIKE)
                 } else if (h?.x?.toInt() == StatusLovingMovie.DISLIKE.status) {
                     setDataToLovingMovie(StatusLovingMovie.DISLIKE)
-                } else{}
+                } else{ }
             }
 
             override fun onNothingSelected() {}
@@ -96,33 +112,13 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
             saveToGallery(binding.barChartMovie, "NumberRatingOnMovie")
         }
         binding.tvSavePieChart.click {
-            saveToGallery(binding.pieChartMovie, "NumberRatingOnMovie")
+            saveToGallery(binding.pieChartMovie, "NumberLovingOnMovie")
+        }
+        adapter.onItemClick = {
+            navigateToMovieFragment(it)
         }
     }
 
-    private fun saveToGallery(
-        chart: Chart<*>,
-        name: String
-    ) {
-        if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissionLauncher.launch(
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
-        } else {
-            if (chart.saveToGallery(name + "_" + System.currentTimeMillis(), 70)) {
-                activity.showCustomToast("Success")
-            } else {
-                activity.showCustomToast("Fail", true)
-            }
-        }
-    }
-
-
-    private fun initView() {
-        setUpBarChart()
-        setUpPieChart()
-        setUpRecyclerView()
-    }
 
     private fun setUpRecyclerView() {
         binding.rcvLoveMovies.apply {
@@ -157,37 +153,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
     }
 
     private fun setUpBarChart() {
-        binding.barChartMovie.apply {
-            description.isEnabled = false
-            legend.textColor = Color.WHITE
-            setDrawGridBackground(false)
-            setPinchZoom(false)
-            extraBottomOffset = 10F
-            isDoubleTapToZoomEnabled = false
-            animateY(2000)
-
-            axisRight.apply {
-                setDrawLabels(true)
-                gridColor = Color.WHITE
-                axisLineColor = Color.WHITE
-                gridLineWidth = 1f
-                axisLineWidth = 1f
-                textColor = Color.WHITE
-                valueFormatter = ValueFormatterBarDataSet()
-            }
-
-            xAxis.apply {
-                position = XAxis.XAxisPosition.BOTTOM
-                textColor = Color.WHITE
-                setDrawGridLines(false)
-                setDrawGridLines(false)
-                setDrawAxisLine(true)
-                setDrawLabels(true)
-                granularity = 1f
-                spaceMin = 1F
-                xOffset = 20f
-            }
-        }
+        binding.barChartMovie.configureUi()
     }
 
 
@@ -204,16 +170,29 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding>() {
         val movies = movieViewModels.listMovieLiveData.value
         val lovings = movieViewModels.lovingsLiveData.value
         if (movies != null && lovings != null) {
-            adapter.setList(getNumberLoveMovies(lovings, movies, type), type.status != 1)
+            adapter.setList(getNumberLoveMovies(lovings, movies, type), type.status != StatusLovingMovie.DISLIKE.status)
         }
     }
 
-    override fun loadData() {
-        super.loadData()
-        showProgress()
-        movieViewModels.getMovieList()
-        movieViewModels.getRatingsList()
-        movieViewModels.getLovingList()
+    private fun saveToGallery(
+        chart: Chart<*>,
+        filename: String
+    ) {
+        if (getListPermissionDenied().contains(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            requestPermissionLauncher.launch(
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+        } else {
+            if (chart.saveToGallery(filename + "_" + System.currentTimeMillis(), 70)) {
+                activity.showCustomToast("Success")
+            } else {
+                activity.showCustomToast("Fail", true)
+            }
+        }
+    }
+
+    private fun navigateToMovieFragment(movieModel: MovieModel) {
+        navigateToDestination(R.id.movieDetailFragment, bundleOf(MovieDetailFragment.BUNDLE_CONTENT_MOVIE to movieModel))
     }
 
 }

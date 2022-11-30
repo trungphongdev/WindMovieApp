@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.databinding.ItemLoveMovieBinding
 import com.example.windmoiveapp.databinding.LayoutItemListMovieBinding
+import com.example.windmoiveapp.extension.click
 import com.example.windmoiveapp.extension.loadImage
 import com.example.windmoiveapp.model.MovieCategoryModel
 import com.example.windmoiveapp.model.MovieModel
@@ -20,6 +21,8 @@ class MovieChartAdapter : RecyclerView.Adapter<MovieChartAdapter.MovieViewHolder
         RecyclerView.ViewHolder(binding.root)
 
     private var items: ArrayList<MovieChartModel> = arrayListOf()
+
+    var onItemClick:((MovieModel) -> Unit)? = null
 
     private var isLove: Boolean = true
 
@@ -36,9 +39,12 @@ class MovieChartAdapter : RecyclerView.Adapter<MovieChartAdapter.MovieViewHolder
         holder.binding.tvNumberLove.text = item.number.toString()
         holder.binding.imvMovie.loadImage(item.movieModel.image ?: "")
         if (isLove) {
-            holder.binding.tvNumberLove.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_love, 0, 0, 0)
+            holder.binding.tvNumberLove.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_love, 0, 0)
         } else {
-            holder.binding.tvNumberLove.setCompoundDrawablesWithIntrinsicBounds(R.drawable.dislike, 0, 0, 0)
+            holder.binding.tvNumberLove.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.dislike, 0, 0)
+        }
+        holder.binding.root.click {
+            onItemClick?.invoke(item.movieModel)
         }
     }
 

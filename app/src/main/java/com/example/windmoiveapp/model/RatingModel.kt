@@ -19,7 +19,7 @@ data class RatingModel(
 }
 
 fun setBarDataNumberRatings(ratings: List<RatingModel>, movies: List<MovieModel>): BarData {
-    val moviesChart: ArrayList<MovieChartModel> = arrayListOf()
+    val moviesChart = mutableListOf<MovieChartModel>()
        movies.forEach { movie ->
            val number = ratings.filter { it.movieId == movie.id }.size
            moviesChart.add(MovieChartModel(movie, number))

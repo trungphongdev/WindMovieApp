@@ -37,7 +37,7 @@ fun getNumberLoveMovies(lovings: List<LovingMovieModel>, movies: List<MovieModel
         }
         else -> {}
     }
-    return moviesChart
+    return moviesChart.sortedBy { it.number }
 }
 
 fun dataLovingsPieEntry(lovings: List<LovingMovieModel>): PieData {

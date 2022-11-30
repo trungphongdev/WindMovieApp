@@ -3,6 +3,7 @@ package com.example.windmoiveapp.ui
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
@@ -86,6 +87,10 @@ class MainActivity : AppCompatActivity() {
         } else {
             mOnBackPressListener?.invoke()
         }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        return super.onKeyDown(keyCode, event)
     }
 
     private fun isDisableBackButton(): Boolean {

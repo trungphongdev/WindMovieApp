@@ -16,6 +16,7 @@ import androidx.viewbinding.ViewBinding
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.extension.ProgressDialogApiRequest
 import com.example.windmoiveapp.extension.hideKeyboard
+import com.example.windmoiveapp.extension.navigateWithAnim
 import com.example.windmoiveapp.model.BaseResource
 import com.example.windmoiveapp.model.ErrorMessage
 import com.example.windmoiveapp.model.Status
@@ -172,8 +173,8 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         activity?.let {
             Timber.tag(TAG).d("navigateToDestination: ")
             bundle?.let {
-                findNavController().navigate(destination, it)
-            } ?: findNavController().navigate(destination)
+                findNavController().navigateWithAnim(destination, it)
+            } ?: findNavController().navigateWithAnim(destination)
         }
     }
 
