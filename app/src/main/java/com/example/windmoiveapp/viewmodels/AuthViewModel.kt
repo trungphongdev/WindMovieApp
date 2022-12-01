@@ -1,6 +1,7 @@
 package com.example.windmoiveapp.viewmodels
 
 import android.app.Application
+import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
     var userModelLiveData = MutableLiveData<UserModel?>()
     var listAllUser: MutableLiveData<List<UserModel>> = MutableLiveData()
-
+    var postImageStorageLiveData: MutableLiveData<String?> = MutableLiveData()
     fun signInWithEmailPassword(
         email: String,
         passWord: String,
@@ -115,6 +116,14 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             FireBaseService.getInfoUser(uid) {
 
+            }
+        }
+    }
+
+    fun postImageOnServerStorage(imageUri: Uri, fileName: String) {
+        viewModelScope.launch {
+            FireBaseService.postImageToServerStorage(imageUri, fileName) {
+                postImageStorageLiveData.postValue(it)
             }
         }
     }

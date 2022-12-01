@@ -23,6 +23,7 @@ class UpdateProfileFragment: BaseFragment<FragmentUpdateInfoUserBinding>() {
     private val authenViewModel: AuthViewModel by activityViewModels()
     private var permissionUpdate: Boolean = false
     private var userUri: Uri? = null
+    private var userModel: UserModel = UserModel()
     private val getImageResult =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             userUri = uri
@@ -60,12 +61,7 @@ class UpdateProfileFragment: BaseFragment<FragmentUpdateInfoUserBinding>() {
     }
 
     private fun initViews() {
-        authenViewModel.userModelLiveData.observe(viewLifecycleOwner) {
-            dismissProgress()
-            if (it != null) {
-                bindDataUserModelToViews(it)
-            }
-        }
+
     }
 
     private fun invalidUpdateUser() {
@@ -134,20 +130,22 @@ class UpdateProfileFragment: BaseFragment<FragmentUpdateInfoUserBinding>() {
     private fun invalidUpdateUserViaFirebase(user: UserModel) {
         binding.apply {
             if (edtName.isValidText() && edtEmail.isValidEmail()) {
-                val data = UserModel(
-                    name = edtName.text.toString(),
-                    email = edtEmail.text.toString(),
-                    phone = edtPhone.text.toString(),
-                    gender = typeGender,
-                    photoUrl = userUri?.toString() ?: user.photoUrl
-
+                userModel = UserModel(
+                    name = binding.edtName.text.toString(),
+                    email = binding.edtEmail.text.toString(),
+                    phone = binding.edtPhone.text.toString(),
+                    gender = typeGender
                 )
-                authenViewModel.updateInfoUser(user, updateUserModel(data))
-                authenViewModel.updateInfoUserOnServer(user)
+                postImageOnStorageServer()
             } else {
                 context?.showAlertDialog(getString(R.string.emailAndPasswordNotEmpty))
             }
         }
+    }
+
+    private fun postImageOnStorageServer() {
+        val fileName = binding.edtId.text.toString()
+        authenViewModel.postImageOnServerStorage(userUri ?: return, fileName)
     }
 
     private fun pickImageFromGallery() {
@@ -155,6 +153,17 @@ class UpdateProfileFragment: BaseFragment<FragmentUpdateInfoUserBinding>() {
     }
 
     private fun initObserver() {
+        authenViewModel.postImageStorageLiveData.observe(viewLifecycleOwner) {
+            if (it == null) {
+                activity?.showAlertDialog(getString(R.string.postImageFail)) {
+                    binding.imvUser.setImageResource(R.drawable.ic_baseline_account_circle_24)
+                }
+            } else {
+                userModel.photoUrl = it
+                authenViewModel.updateInfoUser(userModel, updateUserModel(userModel))
+                authenViewModel.updateInfoUserOnServer(userModel)
+            }
+        }
         authenViewModel.userModelLiveData.observe(viewLifecycleOwner) {
            bindDataUserModelToViews(it ?: return@observe)
         }
@@ -166,8 +175,8 @@ class UpdateProfileFragment: BaseFragment<FragmentUpdateInfoUserBinding>() {
             imvUser.loadImage(userModel.photoUrl)
             edtId.setText(userModel.uid)
             edtName.setText(userModel.name)
-            edtEmail.setText(userModel.email ?: "")
-            edtPhone.setText(userModel.phone ?: "")
+            edtEmail.setText(userModel.email.ifBlankOrNull())
+            edtPhone.setText(userModel.phone.ifBlankOrNull())
             edtAccountType.setText(AccountType.getAccountByType(userModel).name)
             if (userModel.gender != GenderType.NOTHING.type) {
                 rdGender.check(rdGender.getChildAt(GenderType.getGenderByType(userModel).type).id)

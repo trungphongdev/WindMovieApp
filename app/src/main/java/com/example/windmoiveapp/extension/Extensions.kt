@@ -446,6 +446,9 @@ fun BarChart.configureUi() {
     behavior.state = BottomSheetBehavior.STATE_EXPANDED
 }*/
 
+fun String?.ifBlankOrNull(action:(() -> String) = { "" }): String {
+    return if (this.isNullOrBlank()) action() else this
+}
 fun Context.getWindowHeight(): Int {
     val displayMetrics = DisplayMetrics()
     (this as? Activity)?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)

@@ -35,7 +35,6 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
     private val authenViewModel: AuthViewModel by activityViewModels()
     private val adapterRating by lazy { RatingMovieAdapter() }
     private var movieModel: MovieModel? = null
-    private val pref by lazy { PrefUtil.getInstance(activity?.application as Application) }
     private var isAdd: Boolean = false
     private var lovingMovie: LovingMovieModel = LovingMovieModel()
 
@@ -90,7 +89,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
         movieViewModels.postCommentSuccessLiveData.observe(viewLifecycleOwner) {
             if (it) {
                 dismissProgress()
-                movieViewModels.getRatingsById(movieModel?.id ?: "")
+                movieViewModels.getRatingsById(movieModel?.id.ifBlankOrNull())
             } else {
                 context?.showAlertDialog(getString(R.string.commentFailLabel))
             }
@@ -128,7 +127,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             }
         }
         if (lovings != null) {
-            lovingMovie.id = lovings.firstOrNull { it.idMovie == movieModel?.id && it.idUser == authenViewModel.userModelLiveData.value?.uid }?.id ?: UUID.randomUUID().toString()
+            lovingMovie.id = lovings.firstOrNull { it.idMovie == movieModel?.id && it.idUser == authenViewModel.userModelLiveData.value?.uid }?.id.ifBlankOrNull { UUID.randomUUID().toString() }
         }
     }
 
@@ -141,7 +140,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             tvCategory.text = Categories.getCategoryByName(movieModel?.categories ?: emptyList())
         }
         lovingMovie.idMovie = movieModel?.id ?: ""
-        lovingMovie.idUser = authenViewModel.userModelLiveData.value?.uid ?: ""
+        lovingMovie.idUser = authenViewModel.userModelLiveData.value?.uid.ifBlankOrNull { "" }
         setUpRecyclerViewComment()
         setUpVideoView()
         setUpViewPager()
