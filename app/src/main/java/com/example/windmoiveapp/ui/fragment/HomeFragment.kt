@@ -1,16 +1,20 @@
 package com.example.windmoiveapp.ui.fragment
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.adapter.CategoryAdapter
 import com.example.windmoiveapp.adapter.MovieAdapter
@@ -23,6 +27,7 @@ import com.example.windmoiveapp.model.MovieModel
 import com.example.windmoiveapp.model.setListMovieByType
 import com.example.windmoiveapp.util.PERMISSION_REQUEST_CODE
 import com.example.windmoiveapp.viewmodels.MovieViewModel
+import kotlin.random.Random
 
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
@@ -84,6 +89,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 mainActivity?.showDialogBackPress()
             }
         }
+
+        binding.rcvMovies.addOnScrollListener(object  : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                binding.fabRandomMovie.isVisible = dy > 0
+            }
+        })
+
+        binding.fabRandomMovie.click {
+            val movies = movieViewModels.listMovieByCategories.value
+            if (movies.isNullOrEmpty().not()) {
+                findNavController().navigateWithAnim(
+                    R.id.movieDetailFragment,
+                    bundleOf(MovieDetailFragment.BUNDLE_CONTENT_MOVIE to (movies?.get(Random.nextInt(movies.size))))
+                )
+
+            }
+        }
+
     }
 
     private fun showBottomSheetMovieDetail(movieModel: MovieModel) {
