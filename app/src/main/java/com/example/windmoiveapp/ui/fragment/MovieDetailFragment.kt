@@ -35,8 +35,9 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
     private val authenViewModel: AuthViewModel by activityViewModels()
     private val adapterRating by lazy { RatingMovieAdapter() }
     private var movieModel: MovieModel? = null
-    private var isAdd: Boolean = false
     private var lovingMovie: LovingMovieModel = LovingMovieModel()
+    private var isAdd: Boolean = false
+    private var positionViewTypeCmt: Int = 2
 
     companion object {
         const val BUNDLE_CONTENT_MOVIE = "BUNDLE_CONTENT_MOVIE"
@@ -67,6 +68,14 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
         initViews()
         initListeners()
         initObserver()
+    }
+
+    override fun loadData() {
+        super.loadData()
+        showProgress()
+        movieViewModels.getMovieById(movieModel)
+        movieViewModels.getRatingsById(movieModel?.id ?: return)
+        movieViewModels.getLovingsByIdMovie(movieModel?.id ?: return)
     }
 
     private fun initObserver() {
@@ -184,6 +193,9 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             imvComment.click {
                 llComment.root.isVisible = true
             }
+            llComment.llArrangeCmt.click {
+                invalidArrangeViewCmt()
+            }
             imvMyList.click {
                 saveFavouriteMovie()
             }
@@ -255,12 +267,26 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
         }.attach()
     }
 
-    override fun loadData() {
-        super.loadData()
-        showProgress()
-        movieViewModels.getMovieById(movieModel)
-        movieViewModels.getRatingsById(movieModel?.id ?: return)
-        movieViewModels.getLovingsByIdMovie(movieModel?.id ?: return)
+
+    private fun invalidArrangeViewCmt() {
+        val listCmt = movieViewModels.listRatingUserLiveData.value
+        if (listCmt.isNullOrEmpty().not()) {
+            context?.showDialogComment(title = getString(R.string.arrangeCmtLabel), position = positionViewTypeCmt) {
+                positionViewTypeCmt = it
+                if (it == 0) {
+                    binding.llComment.tvTypeViewCmt.text = getString(R.string.newestLabel)
+                    adapterRating.setList(listCmt!!.sortedByDescending { cmt -> cmt.time })
+                }
+                if (it == 1) {
+                    binding.llComment.tvTypeViewCmt.text = getString(R.string.oldestLabel)
+                    adapterRating.setList(listCmt!!.sortedBy { cmt -> cmt.time })
+                }
+                if (it == 2) {
+                    binding.llComment.tvTypeViewCmt.text = getString(R.string.nothingLabel)
+                    adapterRating.setList(listCmt!!)
+                }
+            }
+        }
     }
 
 }

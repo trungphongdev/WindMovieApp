@@ -106,4 +106,8 @@
     <string name="numberRatings">Number of Rating On Movie</string>
     <string name="saveToGallery">Save Gallery</string>
     <string name="numberCommentLabel">%d Comment</string>
+    <string name="chooseLabel">Choose</string>
+    <string name="newestLabel">Newest</string>
+    <string name="oldestLabel">Oldest</string>
+    <string name="arrangeCmtLabel">Arrange Comment</string>
 </resources>

@@ -6,10 +6,14 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.annotation.StringRes
+import androidx.core.view.get
 import androidx.fragment.app.FragmentManager
 import com.example.windmoiveapp.R
+import com.example.windmoiveapp.databinding.DialogCmtBinding
 import com.example.windmoiveapp.ui.fragment.CommonDialogFragment
 import timber.log.Timber
 
@@ -105,4 +109,33 @@ class ProgressDialogApiRequest {
         }
     }
 }
+
+fun Context.showDialogComment(
+    title: String? = null,
+    position: Int? = null,
+    callBack: ((Int) -> Unit)? = null
+) {
+    val dialog = Dialog(this)
+    val binding = DialogCmtBinding.inflate((this as Activity).layoutInflater)
+    binding.apply {
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.setCanceledOnTouchOutside(false)
+        title.let {
+            tvTitleDialog.text = it
+        }
+        position?.let {
+            (rdgCmt.getChildAt(it) as? RadioButton)?.isChecked = true
+        }
+        //stringAction?.let { tvAction.text = it }
+        rdgCmt.setOnCheckedChangeListener { _, checkedId ->
+            val view = rdgCmt.findViewById<View>(checkedId)
+            val index = rdgCmt.indexOfChild(view)
+            callBack?.invoke(index)
+            dialog.dismiss()
+        }
+        dialog.setContentView(root)
+    }
+    dialog.show()
+}
+
 
