@@ -28,7 +28,7 @@ class IntroPagerAdapter(private val context: Context) : PagerAdapter() {
             0 -> {
                 this.findViewById<TextView>(R.id.tvTitle).setText(R.string.qualityMovieLabel)
                 //  this.tvContent.setText(R.string.startMessage0)
-                this.findViewById<ImageView>(R.id.imvIntro).loadRoundedImage(R.drawable.spidermanbanner)
+                this.findViewById<ImageView>(R.id.imvIntro).loadRoundedImage(R.drawable.sangchibanner)
 
             }
             1 -> {
@@ -39,7 +39,7 @@ class IntroPagerAdapter(private val context: Context) : PagerAdapter() {
             2 -> {
                 this.findViewById<TextView>(R.id.tvTitle).setText(R.string.hugeMovieStoreLabel)
                 // this.findViewById<TextView>(R.id.tvTitle).setText(R.string.startMessage2)
-                this.findViewById<ImageView>(R.id.imvIntro).loadRoundedImage(R.drawable.sangchibanner)
+                this.findViewById<ImageView>(R.id.imvIntro).loadRoundedImage(R.drawable.spidermanbanner)
             }
             else -> {
                 this.findViewById<TextView>(R.id.tvTitle).setText(R.string.fastestMovieNotifiLabel)

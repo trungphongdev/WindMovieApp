@@ -1,9 +1,11 @@
 package com.example.windmoiveapp.ui.fragment
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.windmoiveapp.R
@@ -101,6 +103,7 @@ class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
                 when (item.itemId) {
                     R.id.itemHome -> {
                         item.setIcon(R.drawable.ic_home_selected)
+                       // item.set = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.redB11313))
                         pagerDashBoard.setCurrentItem(HOME_SCREEN_POSITION, true)
                         return@setOnItemSelectedListener true
                     }
@@ -123,9 +126,7 @@ class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
 
     private fun setDefaultIcon() {
         binding.bottomNav.menu.apply {
-            val listIconDefault =
-                listOf(R.drawable.ic_home, R.drawable.ic_new_hot, R.drawable.ic_round_download)
-            listIconDefault.forEachIndexed { index, item ->
+                listOf(R.drawable.ic_home, R.drawable.ic_new_hot, R.drawable.ic_round_download).forEachIndexed { index, item ->
                 getItem(index).setIcon(item)
             }
         }
