@@ -124,6 +124,7 @@
             app:cardCornerRadius="@dimen/dp4">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llDownload"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/grey5E5E5E"

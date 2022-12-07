@@ -2,8 +2,12 @@ package com.example.windmoiveapp.ui.fragment
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -154,6 +158,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         if (requestMultiPermission()) {
             activity?.requestPermissions(listPermission.toTypedArray(), PERMISSION_REQUEST_CODE)
         }
+        requestPermissionManageAllFileAndroid11()
+    }
+
+     fun requestPermissionManageAllFileAndroid11(): Boolean {
+        if (Build.VERSION.SDK_INT >= 30) {
+            if (!Environment.isExternalStorageManager()) {
+                    Intent().apply {
+                        action = Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
+                        startActivity(this)
+                    }
+                return false
+            }
+        }
+        return true
     }
 
     override fun onRequestPermissionsResult(

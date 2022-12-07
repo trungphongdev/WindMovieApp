@@ -43,6 +43,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.CALL_PHONE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.MANAGE_EXTERNAL_STORAGE
     )
 
     protected var mOnBackPressFragment
