@@ -12,4 +12,8 @@
         android:title="@string/downloadLabel"
         android:icon="@drawable/ic_download"
         app:showAsAction="ifRoom"/>
+    <item android:id="@+id/itemMe"
+        android:title="@string/meLabel"
+        android:icon="@drawable/ic_baseline_account_circle_24"
+        app:showAsAction="ifRoom"/>
 </menu>

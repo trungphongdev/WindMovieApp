@@ -24,8 +24,9 @@ class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
         arrayListOf(
             HomeFragment() as Fragment,
             NewAndHotFragment() as Fragment,
-            DownloadingFragment.newInstance("", "") as Fragment
-        )
+            DownloadingFragment.newInstance("", "") as Fragment,
+            TabMeFragment() as Fragment,
+            )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,6 +118,11 @@ class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
                         pagerDashBoard.setCurrentItem(DOWNLOAD_SCREEN_POSITION, true)
                         return@setOnItemSelectedListener true
                     }
+                    R.id.itemMe -> {
+                        item.setIcon(R.drawable.ic_round_account_selected)
+                        pagerDashBoard.setCurrentItem(TAB_ME_SCREEN_POSITION, true)
+                        return@setOnItemSelectedListener true
+                    }
                     else -> false
                 }
             }
@@ -126,7 +132,7 @@ class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
 
     private fun setDefaultIcon() {
         binding.bottomNav.menu.apply {
-                listOf(R.drawable.ic_home, R.drawable.ic_new_hot, R.drawable.ic_round_download).forEachIndexed { index, item ->
+                listOf(R.drawable.ic_home, R.drawable.ic_new_hot, R.drawable.ic_round_download, R.drawable.ic_round_account).forEachIndexed { index, item ->
                 getItem(index).setIcon(item)
             }
         }
@@ -136,6 +142,7 @@ class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
         const val HOME_SCREEN_POSITION = 0
         const val NEWS_HOT_SCREEN_POSITION = 1
         const val DOWNLOAD_SCREEN_POSITION = 2
+        const val TAB_ME_SCREEN_POSITION = 3
 
         @JvmStatic
         fun newInstance() = DashBoardScreen()

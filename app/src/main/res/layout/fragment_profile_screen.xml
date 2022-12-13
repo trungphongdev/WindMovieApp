@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/black">
+
+    <com.example.windmoiveapp.common.HeaderBar
+        android:id="@+id/headerBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:isShowAccount="false"
+        app:title="@string/meLabel"
+        app:isShowButtonBack="false"
+        app:isShowTitle="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imvUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/user_icon"
+        android:layout_marginTop="@dimen/dp16"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerBar"
+        android:layout_marginStart="@dimen/dp16"/>
+
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp16"
+        tools:text="string"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp22"
+        app:layout_constraintStart_toEndOf="@id/imvUser"
+        app:layout_constraintTop_toTopOf="@id/imvUser"
+        app:layout_constraintBottom_toBottomOf="@id/imvUser"/>
+
+    <TextView
+        android:id="@+id/tvAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp16"
+        android:text="@string/accountLabel"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp18"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/dp35"
+        android:fontFamily="@font/roboto_bold"
+        app:layout_constraintTop_toBottomOf="@id/imvUser"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvContainerProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp16"
+        android:background="@drawable/profile_account_radius"
+        android:overScrollMode="never"
+        android:paddingHorizontal="@dimen/dp8"
+        android:paddingTop="@dimen/dp24"
+        android:paddingBottom="@dimen/dp7"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvAccount"
+        app:spanCount="4"
+        tools:itemCount="12"
+        tools:listitem="@layout/item_profile"
+        android:layout_marginHorizontal="@dimen/dp16"/>
+
+    <TextView
+        android:id="@+id/tvSupport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp16"
+        android:text="@string/supportLabel"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp18"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/dp35"
+        android:fontFamily="@font/roboto_bold"
+        app:layout_constraintTop_toBottomOf="@id/rvContainerProfile"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvSupport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp16"
+        app:cardBackgroundColor="@color/black141826"
+        app:cardCornerRadius="@dimen/dp8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSupport">
+
+        <include
+            layout="@layout/layout_support_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

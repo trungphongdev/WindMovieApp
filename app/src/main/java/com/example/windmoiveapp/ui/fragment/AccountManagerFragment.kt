@@ -34,7 +34,16 @@ class AccountManagerFragment : BaseFragment<FragmentManagerUsersBinding>() {
     ) {
         initViews()
         initObserver()
+        initListener()
 
+    }
+
+    private fun initListener() {
+        binding.headerBar.apply {
+            setEventBackListener {
+                super.onBackFragment()
+            }
+        }
     }
 
     private fun initViews() {

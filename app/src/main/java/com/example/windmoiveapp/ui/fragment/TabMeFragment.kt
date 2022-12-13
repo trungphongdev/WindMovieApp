@@ -4,27 +4,32 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DefaultItemAnimator
 import com.example.windmoiveapp.R
+import com.example.windmoiveapp.adapter.ProfileItemAdapter
 import com.example.windmoiveapp.constant.AccountPermission
-import com.example.windmoiveapp.databinding.FragmentInfoUserBinding
-import com.example.windmoiveapp.extension.click
+import com.example.windmoiveapp.constant.ProfileItemType
+import com.example.windmoiveapp.databinding.FragmentProfileScreenBinding
+import com.example.windmoiveapp.extension.loadCircleImage
 import com.example.windmoiveapp.extension.navigateWithAnim
+import com.example.windmoiveapp.model.ProfileItemModel
 import com.example.windmoiveapp.model.UserModel
 import com.example.windmoiveapp.viewmodels.AuthViewModel
 
 
-class TabMeFragment : BaseFragment<FragmentInfoUserBinding>() {
+class TabMeFragment : BaseFragment<FragmentProfileScreenBinding>() {
     private val authenViewModel: AuthViewModel by activityViewModels()
+    private val mProfileAdapter by lazy { ProfileItemAdapter() }
+    private val listProfile: ArrayList<ProfileItemModel> = arrayListOf()
 
     override fun onCreateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): FragmentInfoUserBinding {
-        return FragmentInfoUserBinding.inflate(inflater, container, false)
+    ): FragmentProfileScreenBinding {
+        return FragmentProfileScreenBinding.inflate(inflater, container, false)
     }
 
     override fun onViewInitialized(
@@ -32,38 +37,48 @@ class TabMeFragment : BaseFragment<FragmentInfoUserBinding>() {
         savedInstanceState: Bundle?,
         isViewCreated: Boolean
     ) {
+        initViewProfile()
         initListener()
         initObserver()
     }
 
     private fun initListener() {
-        binding.llUpdateUser.click {
-            navigateToScreen(R.id.updateUserFragment)
-        }
-        binding.llMyList.click {
-            navigateToScreen(R.id.myListFragment)
-        }
-        binding.llUsers.click {
-            navigateToScreen(R.id.accountManagementFragment)
-        }
-        binding.llMovies.click {
-            navigateToScreen(R.id.movieManagementFragment)
-        }
-        binding.llReport.click {
-            navigateToScreen(R.id.statisticFragment)
-        }
-        binding.llFeedback.click {
-
-        }
-        binding.llLogout.click {
-
-        }
         binding.headerBar.apply {
             setEventBackListener {
                 super.onBackFragment()
             }
         }
+        mProfileAdapter.setCallback {
+            when (it) {
+                ProfileItemType.MY_PROFILE -> {
+                    navigateToScreen(R.id.updateUserFragment)
+                }
+                ProfileItemType.NOTIFICATION -> {
+                    navigateToScreen(R.id.notifyFragment)
+                }
+                ProfileItemType.MY_FAVOURITE_LIST -> {
+                    navigateToScreen(R.id.myListFragment)
+                }
+                ProfileItemType.USER_MANAGEMENT -> {
+                    navigateToScreen(R.id.accountManagementFragment)
+                }
+                ProfileItemType.MOVIE_MANAGEMENT -> {
+                    navigateToScreen(R.id.movieManagementFragment)
+                }
+                ProfileItemType.FEEDBACK_MANAGEMENT -> {
 
+                }
+                ProfileItemType.STATIC_REPORT -> {
+                    navigateToScreen(R.id.statisticFragment)
+                }
+                ProfileItemType.SHARE_APP -> {
+
+                }
+                ProfileItemType.LOGOUT -> {
+
+                }
+            }
+        }
     }
 
     private fun navigateToScreen(id: Int) {
@@ -73,17 +88,108 @@ class TabMeFragment : BaseFragment<FragmentInfoUserBinding>() {
     private fun initObserver() {
         authenViewModel.userModelLiveData.observe(viewLifecycleOwner) {
             invalidAccountPermission(it)
+            binding.imvUser.loadCircleImage(it?.photoUrl)
+            binding.tvUserName.text = it?.name
         }
+    }
+
+    private fun initViewProfile() {
+        listProfile.clear()
+        listProfile.addAll(initListProfile())
+        mProfileAdapter.setList(initListProfile())
+        binding.rvContainerProfile.adapter = mProfileAdapter
+        binding.rvContainerProfile.itemAnimator = DefaultItemAnimator()
     }
 
     private fun invalidAccountPermission(user: UserModel?) {
         user?.let {
             if (user.accountPermission == AccountPermission.USER.type) {
-                binding.llReport.isGone = true
-                binding.llMovies.isGone = true
-                binding.llUsers.isGone = true
+                val listProfileTypeUser = listProfile.filter {
+                    it.type == ProfileItemType.USER_MANAGEMENT ||
+                    it.type == ProfileItemType.MOVIE_MANAGEMENT ||
+                    it.type == ProfileItemType.STATIC_REPORT
+                }
+                listProfile.removeAll(listProfileTypeUser.toSet())
             }
         }
     }
 
+    private fun initListProfile(): ArrayList<ProfileItemModel> {
+        val mListProfile = ArrayList<ProfileItemModel>()
+        var i = 0
+        mListProfile.add(
+            ProfileItemModel(
+                ++i,
+                R.drawable.updateprofile,
+                getString(R.string.myProfileLabel),
+                type = ProfileItemType.MY_PROFILE
+            )
+        )
+        mListProfile.add(
+            ProfileItemModel(
+                ++i,
+                R.drawable.ic_baseline_notifications_active_24,
+                getString(R.string.notificationLineCentreLabel),
+                type = ProfileItemType.NOTIFICATION
+            )
+        )
+        mListProfile.add(
+            ProfileItemModel(
+                ++i,
+                R.drawable.lovemovie,
+                getString(R.string.myMovieListLabel),
+                type = ProfileItemType.MY_FAVOURITE_LIST
+            )
+        )
+        mListProfile.add(
+            ProfileItemModel(
+                ++i,
+                R.drawable.management_user,
+                getString(R.string.userManagementBreakLine),
+                type = ProfileItemType.USER_MANAGEMENT
+            )
+        )
+        mListProfile.add(
+            ProfileItemModel(
+                ++i,
+                R.drawable.management_movie,
+                getString(R.string.movieManagementBreakLine),
+                type = ProfileItemType.MOVIE_MANAGEMENT
+            )
+        )
+        mListProfile.add(
+            ProfileItemModel(
+                ++i,
+                R.drawable.feedback,
+                getString(R.string.feedbackManagementBreakLine),
+                type = ProfileItemType.FEEDBACK_MANAGEMENT
+            )
+        )
+
+        mListProfile.add(
+            ProfileItemModel(
+                ++i,
+                R.drawable.report,
+                getString(R.string.statisticBreakLine),
+                type = ProfileItemType.STATIC_REPORT
+            )
+        )
+        mListProfile.add(
+            ProfileItemModel(
+                ++i,
+                R.drawable.share,
+                getString(R.string.shareAppLabel),
+                type = ProfileItemType.SHARE_APP
+            )
+        )
+        mListProfile.add(
+            ProfileItemModel(
+                ++i,
+                R.drawable.logout,
+                getString(R.string.logOutLabel),
+                type = ProfileItemType.LOGOUT
+            )
+        )
+        return mListProfile
+    }
 }

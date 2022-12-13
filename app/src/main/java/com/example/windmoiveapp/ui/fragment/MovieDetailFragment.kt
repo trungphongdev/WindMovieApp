@@ -4,7 +4,6 @@ import android.app.Application
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -14,8 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -33,9 +30,6 @@ import com.example.windmoiveapp.model.*
 import com.example.windmoiveapp.viewmodels.AuthViewModel
 import com.example.windmoiveapp.viewmodels.MovieViewModel
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.util.*
@@ -225,8 +219,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             }
 
             llDownload.click {
-                movieModel?.let { downloadVideo(it) }
-                val downloadID =/* movieModel?.let { downloadVideo(it) } ?: -1*/1
+                val downloadID = movieModel?.let { downloadVideo(it) } ?: -1
                 Intent().also { intent ->
                     intent.action = DownloadManager.ACTION_DOWNLOAD_COMPLETE
                     intent.putExtra("downloadID", downloadID)
@@ -312,33 +305,24 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
         }
     }
 
-    private fun downloadVideo(movieModel: MovieModel)/*: Long*/ {
-        GlobalScope.launch(Dispatchers.IO) {
-            val mp3 = "https://ringstone.ap-south-1.linodeobjects.com/Music/Violins/Violin Inspire.wav"
+    private fun downloadVideo(movieModel: MovieModel): Long {
             val downloadReference: Long
-            val fileName = "${movieModel.name?.replace(" ","")}.wav"
-   /*         if (!fileName.contains(".mp4")) {
-                //return -1
-            }*/
-            Log.d("permisson","" + getListPermissionDenied().toString())
-            val file = File(Environment.getExternalStorageDirectory(), "DownloadWindMovie")
+            val fileName = "${movieModel.name?.replace(" ","")}.mp4"
+            if (!fileName.contains(".mp4")) {
+                return -1L
+            }
+     /*       val file = File(Environment.getExternalStorageDirectory(), "DownloadWindMovie")
             if (file.exists().not()) {
                 file.mkdirs()
             }
-            val result = File(file.absolutePath + File.separator + fileName)
-            val request = DownloadManager.Request(Uri.parse(mp3))
+            val result = File(file.absolutePath + File.separator + fileName)*/
+            val request = DownloadManager.Request(Uri.parse(movieModel.movieUrl))
             request.setTitle("Download ${movieModel.name}")
             request.setDescription("File is downloading...")
-            request.setDestinationUri(Uri.fromFile(result))
-            /*      request.setDestinationInExternalFilesDir(
-                      this.context,
-                      Environment.getExternalStorageState().plus("DownloadWindMovie"),
-                      fileName
-                  )*/
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            // Enqueue download and save into referenceId
             downloadReference = downloadManager?.enqueue(request) ?: -1
-           /// return downloadReference
+            return downloadReference
         }
 
 
@@ -347,7 +331,6 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
                 e.printStackTrace()
                 return -1
             }*/
-    }
 
 
 }

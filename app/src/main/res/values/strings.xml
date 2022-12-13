@@ -81,7 +81,7 @@
     <string name="feedbackManagementLabel">Feedback Management</string>
     <string name="statisticLabel">Statistic and Report</string>
     <string name="updateInfo">Update User Info</string>
-    <string name="myMovieListLabel">My Movie List</string>
+    <string name="myMovieListLabel">Love Movie</string>
     <string name="logOutLabel">Logout</string>
     <string name="meLabel">Me</string>
     <string name="notificationLabel">Notifications</string>
@@ -110,4 +110,15 @@
     <string name="newestLabel">Newest</string>
     <string name="oldestLabel">Oldest</string>
     <string name="arrangeCmtLabel">Arrange Comment</string>
+    <string name="helpserviceLabel">Help Service</string>
+    <string name="feedbacks">Feedbacks, Help Center, Online Chat are here</string>
+    <string name="accountLabel">ACCOUNT</string>
+    <string name="supportLabel">SUPPORT</string>
+    <string name="notificationLineCentreLabel">Notification\nCentre</string>
+    <string name="shareAppLabel">Share App</string>
+    <string name="myProfileLabel">Profile</string>
+    <string name="userManagementBreakLine">User-M</string>
+    <string name="movieManagementBreakLine">Movie-M</string>
+    <string name="feedbackManagementBreakLine">Feedback-M</string>
+    <string name="statisticBreakLine">Statistic\nReport</string>
 </resources>

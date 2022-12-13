@@ -23,4 +23,7 @@
     <color name="whiteEBEBEB">#EBEBEB</color>
     <color name="colorRegular">#FFFFFF</color>
     <color name="colorInactive">#A0A3AA</color>
+    <color name="grayADADAD">#ADADAD</color>
+    <color name="black141826">#141826</color>
+    <color name="gray999999">#999999</color>
 </resources>

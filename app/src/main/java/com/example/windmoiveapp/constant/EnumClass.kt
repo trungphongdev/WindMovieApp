@@ -81,3 +81,10 @@ enum class StatusLovingMovie(val status: Int) {
     DISLIKE(1),
     NOTHING(2),
 }
+
+enum class ProfileItemType {
+    MY_PROFILE, NOTIFICATION, MY_FAVOURITE_LIST,
+    USER_MANAGEMENT, MOVIE_MANAGEMENT,
+    FEEDBACK_MANAGEMENT, STATIC_REPORT,
+    LOGOUT, SHARE_APP
+}
