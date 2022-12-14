@@ -97,12 +97,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.rcvMovies.addOnScrollListener(object  : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                binding.fabRandomMovie.isVisible = dy > 0
+                binding.fabRandomMovie.isVisible = dy > 0 && binding.llCategories.isVisible == false
             }
         })
 
         binding.fabRandomMovie.click {
-            val movies = movieViewModels.listMovieByCategories.value
+            val movies = movieViewModels.listMovieLiveData.value
             if (movies.isNullOrEmpty().not()) {
                 findNavController().navigateWithAnim(
                     R.id.movieDetailFragment,
@@ -161,7 +161,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         requestPermissionManageAllFileAndroid11()
     }
 
-     fun requestPermissionManageAllFileAndroid11(): Boolean {
+     private fun requestPermissionManageAllFileAndroid11(): Boolean {
         if (Build.VERSION.SDK_INT >= 30) {
             if (!Environment.isExternalStorageManager()) {
                     Intent().apply {

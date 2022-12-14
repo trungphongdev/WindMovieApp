@@ -81,6 +81,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="@dimen/dp40"
         android:tint="@color/redB11313"
+        app:backgroundTint="@color/redB11313"
         android:src="@drawable/random_movie"
         android:visibility="gone"
         android:backgroundTint="@color/white"/>

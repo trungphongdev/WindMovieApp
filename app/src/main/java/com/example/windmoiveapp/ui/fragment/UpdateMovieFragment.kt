@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.MediaController
+import android.widget.VideoView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -30,6 +32,8 @@ class UpdateMovieFragment : BaseFragment<FragmentUpdateMovieBinding>() {
     private val listYear = (1970..Calendar.getInstance().get(Calendar.YEAR)).toList()
     private var typeVideo: Int? = null
     private var imageUri: Uri? = null
+    private var movieUri: Uri? = null
+    private var trailerUri: Uri? = null
     private var indexYearOfRelease: Int = 0
 
     private val getImageResult =
@@ -42,10 +46,12 @@ class UpdateMovieFragment : BaseFragment<FragmentUpdateMovieBinding>() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 if (typeVideo == TYPE_MOVIE) {
-                    binding.edtMovieUrl.setText(it.data?.data.toString())
+                    movieUri = it.data?.data
+                    setUpVideoView(binding.videoViewMovie, it.data?.data ?: return@registerForActivityResult)
                 }
                 if (typeVideo == TYPE_TRAILER) {
-                    binding.edtTrailerUrl.setText(it.data?.data.toString())
+                    trailerUri = it.data?.data
+                    setUpVideoView(binding.videoViewTrailer, it.data?.data ?: return@registerForActivityResult)
                 }
             }
         }
@@ -86,8 +92,7 @@ class UpdateMovieFragment : BaseFragment<FragmentUpdateMovieBinding>() {
             dismissProgress()
             if (it) {
                 context?.showAlertDialog(getString(R.string.postMovieOnServerSuccess)) {
-                    movieModel = null
-                    initViews()
+                    super.onBackFragment()
                 }
             } else {
                 context?.showAlertDialog(getString(R.string.postVideoFailure))
@@ -98,7 +103,7 @@ class UpdateMovieFragment : BaseFragment<FragmentUpdateMovieBinding>() {
         viewModel.postMovieStorageLiveData.observe(viewLifecycleOwner) {
             if (it == null) {
                 activity?.showAlertDialog(getString(R.string.postMovieFail)) {
-                    binding.edtMovieUrl.setText(getText(R.string.emptyLabel))
+                    binding.videoViewMovie.setVideoURI(Uri.EMPTY)
                 }
             } else {
                 postResourceOnServerStorageSuccess()
@@ -116,7 +121,7 @@ class UpdateMovieFragment : BaseFragment<FragmentUpdateMovieBinding>() {
         viewModel.postTrailerStorageLiveData.observe(viewLifecycleOwner) {
             if (it == null) {
                 activity?.showAlertDialog(getString(R.string.postTrailerFail)) {
-                    binding.edtMovieUrl.setText(getText(R.string.emptyLabel))
+                    binding.videoViewMovie.setVideoURI(Uri.EMPTY)
                 }
             } else {
                 postResourceOnServerStorageSuccess()
@@ -155,8 +160,8 @@ class UpdateMovieFragment : BaseFragment<FragmentUpdateMovieBinding>() {
         binding.edtMovieName.setText(movieModel?.name ?: "")
         binding.edtMovieDesc.setText(movieModel?.description ?: "")
         binding.edtMovieId.setText(movieModel?.id ?: "")
-        binding.edtMovieUrl.setText(movieModel?.movieUrl ?: "")
-        binding.edtTrailerUrl.setText(movieModel?.trailerUrl ?: "")
+        setUpVideoView(binding.videoViewMovie, movieModel?.movieUrl?.toUri() ?: return)
+        setUpVideoView(binding.videoViewTrailer, movieModel?.trailerUrl?.toUri() ?: return)
         binding.edtDuration.setText(movieModel?.duration ?: "")
         binding.edtCategory.setText(movieModel?.categories?.joinToString(separator = BULLET)  ?: "")
     }
@@ -166,7 +171,7 @@ class UpdateMovieFragment : BaseFragment<FragmentUpdateMovieBinding>() {
         binding.edtMovieName.isEnabled = enable
         binding.edtMovieDesc.isEnabled = enable
         binding.edtMovieId.isEnabled = enable
-        binding.llMovieUrl.isEnabled = enable
+        binding.llMoviesUrl.isEnabled = enable
         binding.llTrailerUrl.isEnabled = enable
         binding.llCategory.isEnabled = enable
         binding.edtDuration.isEnabled = enable
@@ -176,11 +181,11 @@ class UpdateMovieFragment : BaseFragment<FragmentUpdateMovieBinding>() {
     }
 
     private fun initListener() {
-        binding.llMovieUrl.click {
+        binding.tvMovieUrl.click {
             typeVideo = TYPE_MOVIE
             pickVideo()
         }
-        binding.llTrailerUrl.click {
+        binding.tvTrailerUrl.click {
             typeVideo = TYPE_TRAILER
             pickVideo()
         }
@@ -239,13 +244,12 @@ class UpdateMovieFragment : BaseFragment<FragmentUpdateMovieBinding>() {
         val desc = binding.edtMovieDesc.text
         val category = binding.edtCategory.text
         val duration = binding.edtDuration.text
-        val movie = binding.edtMovieUrl.text
-        val trailer = binding.edtTrailerUrl.text
+
         val yearOfRelease = listYear[indexYearOfRelease].toString()
         if (id.isNullOrBlank() || name.isNullOrBlank() ||
             desc.isNullOrBlank() || category.isNullOrBlank() ||
             duration.isNullOrBlank() || imageUri == null ||
-            trailer.isNullOrBlank() || movie.isNullOrBlank()
+            movieUri?.toString().isNullOrBlank() || trailerUri?.toString().isNullOrBlank()
         ) {
             context?.showAlertDialog(getString(R.string.addFieldInsertMovie))
         } else {
@@ -304,19 +308,28 @@ class UpdateMovieFragment : BaseFragment<FragmentUpdateMovieBinding>() {
     }
 
     private fun postMovieOnStorageServer() {
-        val movieUri = binding.edtMovieUrl.text.toString().toUri()
         val fileName = binding.edtMovieName.text.toString()
-        viewModel.postMovieOnServerStorage(movieUri, fileName)
+        viewModel.postMovieOnServerStorage(movieUri!!, fileName)
     }
 
     private fun postTrailerOnStorageServer() {
-        val trailerUri = binding.edtTrailerUrl.text.toString().toUri()
         val fileName = binding.edtMovieName.text.toString()
-        viewModel.postTrailerOnServerStorage(trailerUri, fileName)
+        viewModel.postTrailerOnServerStorage(trailerUri!!, fileName)
     }
 
     private fun postImageOnStorageServer() {
         val fileName = binding.edtMovieName.text.toString()
         viewModel.postImageOnServerStorage(imageUri!!, fileName)
+    }
+
+    private fun setUpVideoView(videoView: VideoView, uri: Uri) {
+        binding.apply {
+            val mediaController = MediaController(this.root.context)
+            mediaController.setAnchorView(videoView)
+            videoView.setMediaController(mediaController)
+            videoView.setVideoURI(uri)
+            videoView.requestFocus()
+            videoView.start()
+        }
     }
 }

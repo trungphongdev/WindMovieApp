@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class MovieViewModel(application: Application) : AndroidViewModel(application) {
-    private val dao = AppDatabase.getDatabase(getApplication<Application>().baseContext)
+    private val dao = AppDatabase.getDatabase(application)
     var listMovieLiveData: MutableLiveData<List<MovieModel>> = MutableLiveData()
     var listMovieByNameLiveData: MutableLiveData<List<MovieModel>> = MutableLiveData()
     var listMovieByCategories: MutableLiveData<List<MovieCategoryModel>> = MutableLiveData()

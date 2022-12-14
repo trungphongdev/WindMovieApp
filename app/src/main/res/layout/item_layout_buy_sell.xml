@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/black">
+
+    <com.example.windmoiveapp.common.HeaderBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:isShowButtonBack="true"
+        app:isShowTitle="true"
+        app:isShowAccount="false"
+        app:title="@string/vipPackage"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:drawableStartCompat="@drawable/crown"
+        android:layout_gravity="center"
+        android:textColor="#D4AF37"
+        android:text="@string/goldenmember"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/dp16"
+        android:textSize="@dimen/sp14"
+        android:stateListAnimator="@anim/anim_faded"
+        android:layout_marginTop="@dimen/dp30"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_buy_active"
+        android:backgroundTint="#2B3248"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dp30"
+        android:layout_marginHorizontal="@dimen/dp16">
+
+        <TextView
+            android:id="@+id/tv_buy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_buy_active"
+            android:backgroundTint="@color/redB11313"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:paddingVertical="@dimen/dp12"
+            android:paddingBottom="@dimen/dp2"
+            android:text="@string/monthly"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp15"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/spacer"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintHorizontal_weight="0.4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/spacer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_sell"
+            app:layout_constraintHorizontal_weight="0.07"
+            app:layout_constraintStart_toEndOf="@id/tv_buy"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_sell"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_buy_active"
+            android:backgroundTint="#2B3248"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:paddingVertical="@dimen/dp12"
+            android:paddingBottom="@dimen/dp2"
+            android:text="@string/yearly"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp15"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="0.4"
+            app:layout_constraintStart_toEndOf="@id/spacer"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dp16"
+        android:paddingHorizontal="@dimen/dp16"
+        android:layout_weight="1">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:drawableStartCompat="@drawable/moviegold"
+            android:text="@string/moreFilm"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="start|center_vertical"
+            android:drawablePadding="@dimen/dp16"
+            android:paddingVertical="@dimen/dp8"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:drawableStartCompat="@drawable/ads"
+            android:text="@string/noAds"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="start|center_vertical"
+            android:drawablePadding="@dimen/dp16"
+            android:paddingVertical="@dimen/dp8"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:drawableStartCompat="@drawable/downloadgold"
+            android:text="@string/downloadMoreLabel"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="start|center_vertical"
+            android:drawablePadding="@dimen/dp16"
+            android:paddingVertical="@dimen/dp8"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:drawableStartCompat="@drawable/medal"
+            android:text="@string/qualityHigher"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="start|center_vertical"
+            android:drawablePadding="@dimen/dp16"
+            android:paddingVertical="@dimen/dp8"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnLogin"
+        android:layout_width="@dimen/dp200"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_button"
+        android:backgroundTint="#D4AF37"
+        android:layout_marginTop="20dp"
+        android:text="@string/buyLabel"
+        android:textSize="16sp"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="@color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/dp60"
+        />
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

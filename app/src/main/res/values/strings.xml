@@ -121,4 +121,13 @@
     <string name="movieManagementBreakLine">Movie-M</string>
     <string name="feedbackManagementBreakLine">Feedback-M</string>
     <string name="statisticBreakLine">Statistic\nReport</string>
+    <string name="monthly">Monthly\n59.000VND</string>
+    <string name="yearly">Yearly\n399.000VND</string>
+    <string name="moreFilm">1000+ movies</string>
+    <string name="noAds">No ADS</string>
+    <string name="downloadMoreLabel">Download Movie Unlimited</string>
+    <string name="qualityHigher">Movie Quality Higher</string>
+    <string name="buyLabel">Buy</string>
+    <string name="vipPackage">Update Vip Package</string>
+    <string name="goldenmember">Update Vip Package To Be Come A Golden Member</string>
 </resources>
