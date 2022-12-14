@@ -51,4 +51,9 @@
         <item name="android:gravity">center</item>
         <item name="android:includeFontPadding">false</item>
     </style>
+
+    <style name="ThemeSplash">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
 </resources>
