@@ -83,6 +83,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
         isViewCreated: Boolean
     ) {
         setUpADS()
+        setUpAccount()
         initViews()
         initListeners()
         initObserver()
@@ -383,6 +384,15 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
                 activity?.showAlertDialog("Show ADS Failure")
             }
         }
+    }
+
+    private fun setUpAccount() {
+        val accountNo = context?.let { PrefUtil(it).getValue(IS_ACCOUNT, false) } ?: false
+        binding.imvComment.isEnabled = accountNo
+        binding.imvLike.isEnabled = accountNo
+        binding.imvDislike.isEnabled = accountNo
+        binding.imvMyList.isEnabled = accountNo
+        binding.llDownload.isEnabled = accountNo
     }
 
 }

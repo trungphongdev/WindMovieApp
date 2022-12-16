@@ -16,6 +16,8 @@ import com.example.windmoiveapp.extension.loadCircleImage
 import com.example.windmoiveapp.extension.navigateWithAnim
 import com.example.windmoiveapp.model.ProfileItemModel
 import com.example.windmoiveapp.model.UserModel
+import com.example.windmoiveapp.util.IS_ACCOUNT
+import com.example.windmoiveapp.util.PrefUtil
 import com.example.windmoiveapp.viewmodels.AuthViewModel
 
 
@@ -37,6 +39,7 @@ class TabMeFragment : BaseFragment<FragmentProfileScreenBinding>() {
         savedInstanceState: Bundle?,
         isViewCreated: Boolean
     ) {
+        setUpAccount()
         initViewProfile()
         initListener()
         initObserver()
@@ -203,4 +206,13 @@ class TabMeFragment : BaseFragment<FragmentProfileScreenBinding>() {
         )
         return mListProfile
     }
+
+
+    private fun setUpAccount() {
+        val accountNo = context?.let { PrefUtil(it).getValue(IS_ACCOUNT, false) } ?: false
+        binding.rvContainerProfile.isEnabled = accountNo
+        binding.cvSupport.isEnabled = accountNo
+        binding.tvUserName.setText("Guest")
+    }
+
 }
