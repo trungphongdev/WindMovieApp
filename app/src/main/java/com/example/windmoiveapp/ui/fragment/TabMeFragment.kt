@@ -69,7 +69,18 @@ class TabMeFragment : BaseFragment<FragmentProfileScreenBinding>() {
                     navigateToScreen(R.id.movieManagementFragment)
                 }
                 ProfileItemType.FEEDBACK_MANAGEMENT -> {
+                    val typeAccount = authenViewModel.userModelLiveData.value
+                    when (typeAccount?.accountPermission) {
+                        AccountPermission.ADMIN.type -> {
+                            navigateToScreen(R.id.feedBackFragment)
+                        }
+                        AccountPermission.USER.type -> {
+                            navigateToScreen(R.id.chatLogFragment)
+                        }
+                        else -> {
 
+                        }
+                    }
                 }
                 ProfileItemType.STATIC_REPORT -> {
                     navigateToScreen(R.id.statisticFragment)
@@ -78,7 +89,7 @@ class TabMeFragment : BaseFragment<FragmentProfileScreenBinding>() {
 
                 }
                 ProfileItemType.LOGOUT -> {
-
+                    activity?.restartApp()
                 }
                 ProfileItemType.VIP -> {
                     navigateToScreen(R.id.purchaseFragment)

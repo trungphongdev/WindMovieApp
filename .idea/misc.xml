@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/drawable/bg_button.xml" value="0.1905" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/drawable/bg_edit_text.xml" value="0.1905" />
+        <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/drawable/design_chat_log.xml" value="0.193" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/drawable/ic_add.xml" value="0.206" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/drawable/ic_arrow_down.xml" value="0.206" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/drawable/ic_arrow_drop_down.xml" value="0.136" />
@@ -23,10 +24,13 @@
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/drawable/ic_round_download.xml" value="0.1905" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/drawable/ic_show_eye.xml" value="0.1905" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/drawable/ic_user.xml" value="0.217" />
+        <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/drawable/item_chat_left.xml" value="0.193" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/layout/dash_board_screen.xml" value="0.22239583333333332" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/layout/dialog_alert.xml" value="0.264" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/layout/fragment_categories.xml" value="0.23802083333333332" />
+        <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/layout/fragment_chat_log.xml" value="0.23697916666666666" />
+        <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/layout/fragment_feed_back.xml" value="0.23697916666666666" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/layout/fragment_home.xml" value="0.23802083333333332" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/layout/fragment_info_user.xml" value="0.264" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/layout/fragment_list_movie.xml" value="0.12864583333333332" />
@@ -46,6 +50,8 @@
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/layout/fragment_update_info_user.xml" value="0.23802083333333332" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/layout/fragment_update_movie.xml" value="0.23802083333333332" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/layout/item_category.xml" value="0.15364583333333334" />
+        <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/layout/item_chat_right.xml" value="0.1952991452991453" />
+        <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/layout/item_conversation.xml" value="0.23697916666666666" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/layout/item_intro.xml" value="0.1" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/layout/item_layout_new_hot.xml" value="0.23802083333333332" />
         <entry key="..\:/Jetpack Compose Folder/WindMoiveApp/app/src/main/res/layout/item_movie_normal.xml" value="0.21770833333333334" />

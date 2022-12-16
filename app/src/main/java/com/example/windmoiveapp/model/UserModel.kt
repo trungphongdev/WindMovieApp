@@ -1,14 +1,16 @@
 package com.example.windmoiveapp.model
 
+import android.os.Parcelable
 import com.example.windmoiveapp.constant.AccountPermission
 import com.example.windmoiveapp.constant.AccountType
 import com.example.windmoiveapp.constant.GenderType
 import com.example.windmoiveapp.constant.TypeLogin
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.parcelize.Parcelize
 import java.util.*
-import kotlin.collections.HashMap
 
+@Parcelize
 data class UserModel(
     var uid: String? = "",
     var name: String? = "",
@@ -20,10 +22,11 @@ data class UserModel(
     var accountPermission: Int = AccountPermission.USER.type,
     var password: String? = "",
     var typeLogin: String = ""
-) {
+) : Parcelable {
     companion object {
         const val PREF_USER = "PREF_USER"
-        const val DEFAULT_IMG_USER = "https://lh3.googleusercontent.com/a/ALm5wu3p26QqdgIsoCMAU_wX3gsMy24bgtSM7ajkDLd9"
+        const val DEFAULT_IMG_USER =
+            "https://lh3.googleusercontent.com/a/ALm5wu3p26QqdgIsoCMAU_wX3gsMy24bgtSM7ajkDLd9"
     }
 
 }

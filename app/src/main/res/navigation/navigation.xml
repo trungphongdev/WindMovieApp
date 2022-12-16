@@ -102,4 +102,12 @@
         android:id="@+id/chooseUserFragment"
         android:name="com.example.windmoiveapp.ui.fragment.ChooseUserFragment" />
 
+    <fragment
+        android:id="@+id/feedBackFragment"
+        android:name="com.example.windmoiveapp.ui.fragment.FeedBackFragment" />
+
+    <fragment
+        android:id="@+id/chatLogFragment"
+        android:name="com.example.windmoiveapp.ui.fragment.ChatLogFragment" />
+
 </navigation>

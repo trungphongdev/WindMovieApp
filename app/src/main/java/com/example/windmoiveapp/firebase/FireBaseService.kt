@@ -7,6 +7,11 @@ import com.example.windmoiveapp.model.*
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -17,6 +22,7 @@ object FireBaseService {
     private val db by lazy { Firebase.firestore }
     private val auth by lazy { Firebase.auth }
     private val storageRef by lazy { Firebase.storage.reference }
+    private val realtimeDB by lazy { Firebase.database }
     private const val USERS = "users"
     private const val MOVIES = "movies"
     private const val PURCHASE = "purchase"
@@ -27,6 +33,7 @@ object FireBaseService {
     private const val MOVIES_PATH = "movies/"
     private const val CATEGORIES = "categories"
     private const val TAG = "Firebase"
+    private const val FEEDBACK = "feedbacks"
 
 
     // <===========================================================================USER=====================================================================>
@@ -135,9 +142,9 @@ object FireBaseService {
                     }
                     onSuccess.invoke(listUser)
                 }.addOnFailureListener {
-                onResult?.invoke(false)
-                onSuccess.invoke(emptyList())
-            }
+                    onResult?.invoke(false)
+                    onSuccess.invoke(emptyList())
+                }
         } catch (e: Exception) {
             onResult?.invoke(false)
         }
@@ -354,8 +361,8 @@ object FireBaseService {
                     }
                     onResult?.invoke(ratings)
                 }.addOnFailureListener {
-                onResult?.invoke(emptyList())
-            }
+                    onResult?.invoke(emptyList())
+                }
         } catch (e: Exception) {
             onResult?.invoke(emptyList())
         }
@@ -541,6 +548,64 @@ object FireBaseService {
         } catch (e: Exception) {
             onResult?.invoke(false)
         }
+    }
+
+    suspend fun getUsersFeedback(listChat: ((List<ChatModel>) -> Unit)) {
+        try {
+            val list = arrayListOf<ChatModel>()
+            realtimeDB.getReference(FEEDBACK).addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    list.clear()
+                    for (chat in snapshot.children) {
+                        //chat.getValue<>()
+                        Log.d("obj", chat.getValue<String>().toString())
+                        chat.getValue(ChatModel::class.java)?.let {
+                            list.add(it)
+                        }
+                    }
+                    listChat.invoke(list)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    listChat.invoke(emptyList())
+                }
+            })
+        } catch (e: Exception) {
+            listChat.invoke(emptyList())
+        }
+    }
+
+    suspend fun sendFeedBack(chatModel: ChatModel, onResult: ((Boolean) -> Unit)?) {
+        val ref = realtimeDB.getReference(FEEDBACK)
+        val senderRoom = chatModel.fromId + chatModel.toId
+        val receiveRoom = chatModel.toId + chatModel.fromId
+        ref.child(senderRoom).child("messages").push().setValue(chatModel)
+            .addOnSuccessListener {
+                ref.child(receiveRoom).child("messages").push().setValue(chatModel)
+            }.addOnFailureListener {
+                onResult?.invoke(false)
+            }
+    }
+
+    suspend fun getFeedBack(chatModel: ChatModel, onResult: ((List<ChatModel>) -> Unit)?) {
+        val senderRoom = chatModel.fromId + chatModel.toId
+        val list = arrayListOf<ChatModel>()
+        realtimeDB.getReference(FEEDBACK).child(senderRoom).child("messages")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    list.clear()
+                    for (chat in snapshot.children) {
+                        chat.getValue(ChatModel::class.java)?.let {
+                            list.add(it)
+                        }
+                    }
+                    onResult?.invoke(list)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    onResult?.invoke(emptyList())
+                }
+            })
     }
 
 }

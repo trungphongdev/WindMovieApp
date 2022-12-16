@@ -13,7 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -34,7 +33,6 @@ import com.example.windmoiveapp.util.IS_ACCOUNT
 import com.example.windmoiveapp.util.PrefUtil
 import com.example.windmoiveapp.viewmodels.AuthViewModel
 import com.example.windmoiveapp.viewmodels.MovieViewModel
-import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
@@ -231,11 +229,16 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             }
 
             llDownload.click {
-                val downloadID = movieModel?.let { downloadVideo(it) } ?: -1
-                Intent().also { intent ->
-                    intent.action = DownloadManager.ACTION_DOWNLOAD_COMPLETE
-                    intent.putExtra("downloadID", downloadID)
-                    activity?.sendBroadcast(intent)
+                val accType = authenViewModel.userModelLiveData.value?.accountType
+                if (accType == AccountType.VIP.type) {
+                    val downloadID = movieModel?.let { downloadVideo(it) } ?: -1
+                    Intent().also { intent ->
+                        intent.action = DownloadManager.ACTION_DOWNLOAD_COMPLETE
+                        intent.putExtra("downloadID", downloadID)
+                        activity?.sendBroadcast(intent)
+                    }
+                } else {
+                    activity?.showAlertDialog("Buy Vip Package To Download Video")
                 }
             }
 

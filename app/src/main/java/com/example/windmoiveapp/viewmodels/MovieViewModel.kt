@@ -2,6 +2,7 @@ package com.example.windmoiveapp.viewmodels
 
 import android.app.Application
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -36,7 +37,9 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     var postTrailerStorageLiveData: MutableLiveData<String?> = MutableLiveData()
     var postImageStorageLiveData: MutableLiveData<String?> = MutableLiveData()
     var isUserPurchase: MutableLiveData<Boolean> = MutableLiveData()
-
+    var isSendFeedback: MutableLiveData<Boolean> = MutableLiveData()
+    var listChat: MutableLiveData<List<ChatModel>> = MutableLiveData()
+    var userFeedback: MutableLiveData<List<ChatModel>> = MutableLiveData()
 
 
     fun addMovieOnServer(model: MovieModel) {
@@ -272,6 +275,30 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun sendFeedback(chatModel: ChatModel) {
+        viewModelScope.launch {
+            FireBaseService.sendFeedBack(chatModel) {
+                isSendFeedback.value = it
+            }
+        }
+    }
+
+    fun getFeedback(chatModel: ChatModel) {
+        viewModelScope.launch {
+            FireBaseService.getFeedBack(chatModel) {
+                Log.d("feedback", it.toString())
+                listChat.value = it
+            }
+        }
+    }
+
+    fun getListUserFeedBack() {
+        viewModelScope.launch {
+            FireBaseService.getUsersFeedback {
+                userFeedback.value = it
+            }
+        }
+    }
 
 
 }

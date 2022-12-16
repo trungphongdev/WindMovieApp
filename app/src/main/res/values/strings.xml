@@ -135,4 +135,5 @@
     <string name="kidsLabel">Kids</string>
     <string name="members">WindMember</string>
     <string name="who_is_watching">Who is Watching?</string>
+    <string name="feedbackLabel">Feedbacks</string>
 </resources>
