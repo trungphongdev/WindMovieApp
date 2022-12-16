@@ -62,6 +62,7 @@ class PurchaseFragment : BaseFragment<LayoutPurchaseBinding>() {
                 authenViewModel.updateInfoUser(userModel ?: return@observe,
                     hashMapOf(UserModel::accountType.name to AccountType.VIP.type))
                 activity?.showAlertDialog("Buy VIP package Successfully!!!") {
+                    authenViewModel.getUserInfo(userModel?.uid ?: "")
                     onBackFragment()
                 }
 
@@ -83,6 +84,11 @@ class PurchaseFragment : BaseFragment<LayoutPurchaseBinding>() {
             val purchaseModel = PurchaseModel(userModel = userModel ?: return@click, price = typePrice,
             endDate = endDate)
             viewModel.purchaseVip(purchaseModel)
+        }
+        binding.headerBar.apply {
+            setEventBackListener {
+                onBackFragment()
+            }
         }
     }
 }

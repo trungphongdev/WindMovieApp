@@ -20,6 +20,7 @@ import com.example.windmoiveapp.firebase.GoogleService
 import com.example.windmoiveapp.model.UserModel
 import com.example.windmoiveapp.model.UserModel.Companion.PREF_USER
 import com.example.windmoiveapp.model.convertToUserModel
+import com.example.windmoiveapp.util.IS_ACCOUNT
 import com.example.windmoiveapp.util.PrefUtil
 import com.example.windmoiveapp.viewmodels.AuthViewModel
 import com.example.windmoiveapp.viewmodels.MovieViewModel
@@ -187,6 +188,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 }
             } else -> {}
         }
+        saveAccountNo()
         moveToDashBoard()
     }
 
@@ -215,5 +217,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         findNavController().navigateWithAnim(R.id.dashBroadScreen)
     }
 
-
+    private fun saveAccountNo() {
+        context?.let {
+            PrefUtil(it).putValue(IS_ACCOUNT, true)
+        }
+    }
 }

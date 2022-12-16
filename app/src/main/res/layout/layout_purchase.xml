@@ -8,6 +8,7 @@
     android:background="@color/black">
 
     <com.example.windmoiveapp.common.HeaderBar
+        android:id="@+id/headerBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:isShowButtonBack="true"

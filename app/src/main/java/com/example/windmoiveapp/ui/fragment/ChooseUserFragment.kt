@@ -10,6 +10,8 @@ import com.example.windmoiveapp.databinding.FragmentChooseTypeUserBinding
 import com.example.windmoiveapp.databinding.LayoutPurchaseBinding
 import com.example.windmoiveapp.extension.click
 import com.example.windmoiveapp.extension.navigateWithAnim
+import com.example.windmoiveapp.util.IS_ACCOUNT
+import com.example.windmoiveapp.util.PrefUtil
 
 class ChooseUserFragment : BaseFragment<FragmentChooseTypeUserBinding>() {
     override fun onCreateViewBinding(
@@ -33,7 +35,14 @@ class ChooseUserFragment : BaseFragment<FragmentChooseTypeUserBinding>() {
             findNavController().navigateWithAnim(R.id.startPageFragment)
         }
         binding.tvKids.click {
+            saveAccountNo()
             moveToDashBoard()
+        }
+    }
+
+    private fun saveAccountNo() {
+        context?.let {
+            PrefUtil(it).putValue(IS_ACCOUNT, false)
         }
     }
 }

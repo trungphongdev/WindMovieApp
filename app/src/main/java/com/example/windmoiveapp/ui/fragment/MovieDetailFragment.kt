@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -22,16 +23,25 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.adapter.RatingMovieAdapter
 import com.example.windmoiveapp.adapter.ViewPagerAdapter
+import com.example.windmoiveapp.constant.AccountType
 import com.example.windmoiveapp.constant.Categories
 import com.example.windmoiveapp.constant.StatusLovingMovie
 import com.example.windmoiveapp.databinding.FragmentMovieDetailBinding
 import com.example.windmoiveapp.extension.*
 import com.example.windmoiveapp.model.*
+import com.example.windmoiveapp.ui.MainActivity
+import com.example.windmoiveapp.util.IS_ACCOUNT
+import com.example.windmoiveapp.util.PrefUtil
 import com.example.windmoiveapp.viewmodels.AuthViewModel
 import com.example.windmoiveapp.viewmodels.MovieViewModel
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.tabs.TabLayoutMediator
 import timber.log.Timber
-import java.io.File
 import java.util.*
 
 
@@ -44,7 +54,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
     private var isAdd: Boolean = false
     private var positionViewTypeCmt: Int = 2
     private var downloadManager: DownloadManager? = null
-
+    private var mInterstitialAd: InterstitialAd? = null
     companion object {
         const val BUNDLE_CONTENT_MOVIE = "BUNDLE_CONTENT_MOVIE"
     }
@@ -72,6 +82,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
         savedInstanceState: Bundle?,
         isViewCreated: Boolean
     ) {
+        setUpADS()
         initViews()
         initListeners()
         initObserver()
@@ -311,11 +322,6 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             if (!fileName.contains(".mp4")) {
                 return -1L
             }
-     /*       val file = File(Environment.getExternalStorageDirectory(), "DownloadWindMovie")
-            if (file.exists().not()) {
-                file.mkdirs()
-            }
-            val result = File(file.absolutePath + File.separator + fileName)*/
             val request = DownloadManager.Request(Uri.parse(movieModel.movieUrl))
             request.setTitle("Download ${movieModel.name}")
             request.setDescription("File is downloading...")
@@ -325,13 +331,59 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             return downloadReference
         }
 
+    private fun setUpADS() {
+        val accountNo = context?.let { PrefUtil(it).getValue(IS_ACCOUNT, false) }
+        val user = authenViewModel.userModelLiveData.value
+        if (accountNo == true && user != null && user.accountType != AccountType.VIP.type) {
+           configADS()
+        }
+    }
 
-        //}
-          /*  catch (e: Exception) {
-                e.printStackTrace()
-                return -1
-            }*/
+    private fun configADS() {
+        var adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(context ?: activity?.baseContext ?: requireContext(),"ca-app-pub-3940256099942544/1033173712", adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                mInterstitialAd = null
+            }
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                mInterstitialAd = interstitialAd
+                showADS()
+            }
+        })
+        mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+            override fun onAdClicked() {
+                Timber.tag("ads").d("click")
 
+            }
+
+            override fun onAdDismissedFullScreenContent() {
+                // Called when ad is dismissed.
+                mInterstitialAd = null
+                Log.d("ads", "close")
+                Timber.tag("ads").d("close")
+            }
+
+            override fun onAdImpression() {
+                // Called when an impression is recorded for an ad.
+            }
+
+            override fun onAdShowedFullScreenContent() {
+                // Called when ad is shown.
+                Timber.tag("ads").d("full")
+
+            }
+        }
+    }
+
+    private fun showADS() {
+        (activity as? MainActivity)?.let {
+            if (mInterstitialAd != null) {
+                mInterstitialAd?.show(it)
+            } else {
+                activity?.showAlertDialog("Show ADS Failure")
+            }
+        }
+    }
 
 }
 

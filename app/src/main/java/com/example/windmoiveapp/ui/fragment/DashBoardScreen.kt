@@ -1,17 +1,21 @@
 package com.example.windmoiveapp.ui.fragment
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.windmoiveapp.R
 import com.example.windmoiveapp.adapter.ViewPagerAdapter
+import com.example.windmoiveapp.constant.AccountType
 import com.example.windmoiveapp.databinding.DashBoardScreenBinding
 import com.example.windmoiveapp.extension.setFixedAdapter
+import com.example.windmoiveapp.util.IS_ACCOUNT
+import com.example.windmoiveapp.util.PrefUtil
+import com.example.windmoiveapp.viewmodels.AuthViewModel
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
@@ -19,6 +23,7 @@ import com.google.android.gms.ads.MobileAds
 
 
 class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
+    private val authenViewModel: AuthViewModel by activityViewModels()
 
     private val listFragment by lazy {
         arrayListOf(
@@ -49,12 +54,19 @@ class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
     ) {
             initView()
             initListener()
-            initObserver()
-            val adRequest = AdRequest.Builder().build()
-            binding.adView.loadAd(adRequest)
+            setUpADS()
     }
 
-    private fun initObserver() {
+    private fun setUpADS() {
+        val accountNo = context?.let { PrefUtil(it).getValue(IS_ACCOUNT, false) }
+        val user = authenViewModel.userModelLiveData.value
+        if (accountNo == true && user != null && user.accountType != AccountType.VIP.type) {
+            val adRequest = AdRequest.Builder().build()
+            binding.adView.loadAd(adRequest)
+            binding.adView.isVisible = true
+        } else {
+            binding.adView.isGone = true
+        }
     }
 
     private fun initListener() {
@@ -104,7 +116,6 @@ class DashBoardScreen() : BaseFragment<DashBoardScreenBinding>() {
                 when (item.itemId) {
                     R.id.itemHome -> {
                         item.setIcon(R.drawable.ic_home_selected)
-                       // item.set = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.redB11313))
                         pagerDashBoard.setCurrentItem(HOME_SCREEN_POSITION, true)
                         return@setOnItemSelectedListener true
                     }

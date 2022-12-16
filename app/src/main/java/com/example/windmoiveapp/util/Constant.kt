@@ -16,6 +16,7 @@ const val REMOVE_MOVIE = 2
 const val EDIT_MOVIE = 3
 const val ZERO_INDEX = 0
 const val BULLET = "\u2022"
+const val IS_ACCOUNT = "IS_ACCOUNT"
 
 /*const val CAMERA_PERMISSION_CODE  = 1
 const val STORAGE_PERMISSION_CODE  = 1
