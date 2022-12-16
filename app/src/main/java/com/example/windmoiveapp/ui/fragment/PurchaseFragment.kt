@@ -62,7 +62,10 @@ class PurchaseFragment : BaseFragment<LayoutPurchaseBinding>() {
                 authenViewModel.updateInfoUser(userModel ?: return@observe,
                     hashMapOf(UserModel::accountType.name to AccountType.VIP.type))
                 activity?.showAlertDialog("Buy VIP package Successfully!!!") {
-                    authenViewModel.getUserInfo(userModel?.uid ?: "")
+                  //  authenViewModel.getUserInfo(userModel?.uid ?: "")
+                    authenViewModel.userModelLiveData.postValue(userModel.apply {
+                        this?.accountType = AccountType.VIP.type
+                    })
                     onBackFragment()
                 }
 
