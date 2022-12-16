@@ -145,7 +145,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnLogin"
+        android:id="@+id/tvPurchase"
         android:layout_width="@dimen/dp200"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_button"

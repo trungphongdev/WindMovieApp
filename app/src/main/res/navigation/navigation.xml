@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/startPageFragment">
+    app:startDestination="@id/chooseUserFragment">
 
     <fragment android:id="@+id/homeFragment"
         android:label="@string/homeLabel"
@@ -54,7 +54,6 @@
 
     <fragment
         android:id="@+id/dashBroadScreen"
-        android:label="@string/movieDetailLabel"
         android:name="com.example.windmoiveapp.ui.fragment.DashBoardScreen"
         tools:layout="@layout/dash_board_screen" />
 
@@ -95,5 +94,12 @@
         android:id="@+id/statisticFragment"
         android:name="com.example.windmoiveapp.ui.fragment.StatisticFragment" />
 
+    <fragment
+        android:id="@+id/purchaseFragment"
+        android:name="com.example.windmoiveapp.ui.fragment.PurchaseFragment" />
+
+    <fragment
+        android:id="@+id/chooseUserFragment"
+        android:name="com.example.windmoiveapp.ui.fragment.ChooseUserFragment" />
 
 </navigation>

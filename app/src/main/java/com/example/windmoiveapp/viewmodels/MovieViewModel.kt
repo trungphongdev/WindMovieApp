@@ -35,6 +35,8 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     var postMovieStorageLiveData: MutableLiveData<String?> = MutableLiveData()
     var postTrailerStorageLiveData: MutableLiveData<String?> = MutableLiveData()
     var postImageStorageLiveData: MutableLiveData<String?> = MutableLiveData()
+    var isUserPurchase: MutableLiveData<Boolean> = MutableLiveData()
+
 
 
     fun addMovieOnServer(model: MovieModel) {
@@ -258,6 +260,14 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             FireBaseService.postImageToServerStorage(imageUri, fileName) {
                 postImageStorageLiveData.postValue(it)
+            }
+        }
+    }
+
+    fun purchaseVip(purchaseModel: PurchaseModel) {
+        viewModelScope.launch {
+            FireBaseService.purchaseVip(purchaseModel) {
+                isUserPurchase.value = it
             }
         }
     }

@@ -3,10 +3,7 @@ package com.example.windmoiveapp.firebase
 import android.net.Uri
 import android.util.Log
 import com.example.windmoiveapp.constant.Categories
-import com.example.windmoiveapp.model.LovingMovieModel
-import com.example.windmoiveapp.model.MovieModel
-import com.example.windmoiveapp.model.RatingModel
-import com.example.windmoiveapp.model.UserModel
+import com.example.windmoiveapp.model.*
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
@@ -22,6 +19,7 @@ object FireBaseService {
     private val storageRef by lazy { Firebase.storage.reference }
     private const val USERS = "users"
     private const val MOVIES = "movies"
+    private const val PURCHASE = "purchase"
     private const val RATINGS = "ratings"
     private const val LOVING = "loving_movie"
     private const val TRAILERS = "trailers/"
@@ -530,6 +528,19 @@ object FireBaseService {
             onResult.invoke(null)
         }
 
+    }
+
+    suspend fun purchaseVip(purchaseModel: PurchaseModel, onResult: ((Boolean) -> Unit)? = null) {
+        try {
+            db.collection(PURCHASE).document(purchaseModel.token).set(purchaseModel)
+                .addOnSuccessListener {
+                    onResult?.invoke(true)
+                }.addOnFailureListener {
+                    onResult?.invoke(false)
+                }
+        } catch (e: Exception) {
+            onResult?.invoke(false)
+        }
     }
 
 }

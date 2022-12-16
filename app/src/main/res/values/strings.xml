@@ -131,4 +131,8 @@
     <string name="vipPackage">Update Vip Package</string>
     <string name="goldenmember">Update Vip Package To Be Come A Golden Member</string>
     <string name="copyright_by_phong">Copyright by Phong</string>
+    <string name="vipLabel">VIP</string>
+    <string name="kidsLabel">Kids</string>
+    <string name="members">WindMember</string>
+    <string name="who_is_watching">Who is Watching?</string>
 </resources>

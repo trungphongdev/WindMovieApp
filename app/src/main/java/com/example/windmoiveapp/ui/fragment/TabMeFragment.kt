@@ -77,6 +77,9 @@ class TabMeFragment : BaseFragment<FragmentProfileScreenBinding>() {
                 ProfileItemType.LOGOUT -> {
 
                 }
+                ProfileItemType.VIP -> {
+                    navigateToScreen(R.id.purchaseFragment)
+                }
             }
         }
     }
@@ -123,6 +126,14 @@ class TabMeFragment : BaseFragment<FragmentProfileScreenBinding>() {
                 R.drawable.updateprofile,
                 getString(R.string.myProfileLabel),
                 type = ProfileItemType.MY_PROFILE
+            )
+        )
+        mListProfile.add(
+            ProfileItemModel(
+                ++i,
+                R.drawable.vip,
+                getString(R.string.vipLabel),
+                type = ProfileItemType.VIP
             )
         )
         mListProfile.add(
